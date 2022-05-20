@@ -1,8 +1,3 @@
-"""
-@author: miguelrocha
-"""
-
-
 def createMatZeros(nl, nc):
     res = []
     for _ in range(0, nl):
