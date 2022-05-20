@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#incompleto
 
 from MyGraph import MyGraph
 
