@@ -168,7 +168,7 @@ class MyGraph:
         return None
 
     def shortest_path(self, s, d):
-        if s == d: return 0
+        if s == d: return []
         l = [(s, [])]
         visited = [s]
         while len(l) > 0:
@@ -216,7 +216,6 @@ class MyGraph:
         cc = {}
         for k in self.graph.keys():
             cc[k] = self.closeness_centrality(k)
-        print(cc)
         ord_cl = sorted(list(cc.items()), key=lambda x: x[1], reverse=True)
         return list(map(lambda x: x[0], ord_cl[:top]))
 
@@ -292,6 +291,109 @@ class MyGraph:
             ck[k] = float(tot) / len(degs_k[k])
         return ck
 
+    ## Hamiltonian
+
+    def check_if_valid_path(self, p):
+        if p[0] not in self.graph.keys(): return False
+        for i in range(1, len(p)):
+            if p[i] not in self.graph.keys() or p[i] not in self.graph[p[i - 1]]:
+                return False
+        return True
+
+    def check_if_hamiltonian_path(self, p):
+        if not self.check_if_valid_path(p): return False
+        to_visit = list(self.get_nodes())
+        if len(p) != len(to_visit): return False
+        for i in range(len(p)):
+            if p[i] in to_visit:
+                to_visit.remove(p[i])
+            else:
+                return False
+        if not to_visit:
+            return True
+        else:
+            return False
+
+    def search_hamiltonian_path(self):
+        for ke in self.graph.keys():
+            p = self.search_hamiltonian_path_from_node(ke)
+            if p != None:
+                return p
+        return None
+
+    def search_hamiltonian_path_from_node(self, start):
+        current = start
+        visited = {start: 0}
+        path = [start]
+        while len(path) < len(self.get_nodes()):
+            nxt_index = visited[current]
+            if len(self.graph[current]) > nxt_index:
+                nxtnode = self.graph[current][nxt_index]
+                visited[current] += 1
+                if nxtnode not in path:
+                    path.append(nxtnode)
+                    visited[nxtnode] = 0
+                    current = nxtnode
+            else:
+                if len(path) > 1:
+                    rmvnode = path.pop()
+                    del visited[rmvnode]
+                    current = path[-1]
+                else:
+                    return None
+        return path
+
+    # Eulerian
+
+    def check_balanced_node(self, node):
+        return self.in_degree(node) == self.out_degree(node)
+
+    def check_balanced_graph(self):
+        for n in self.graph.keys():
+            if not self.check_balanced_node(n): return False
+        return True
+
+    def check_nearly_balanced_graph(self):
+        res = None, None
+        for n in self.graph.keys():
+            indeg = self.in_degree(n)
+            outdeg = self.out_degree(n)
+            if indeg - outdeg == 1 and res[1] is None:
+                res = res[0], n
+            elif indeg - outdeg == -1 and res[0] is None:
+                res = n, res[1]
+            elif indeg == outdeg:
+                pass
+            else:
+                return None, None
+        return res
+
+    def is_connected(self):
+        total = len(self.graph.keys()) - 1
+        for v in self.graph.keys():
+            reachable_v = self.reachable_bfs(v)
+            if (len(reachable_v) < total): return False
+        return True
+
+    def eulerian_cycle(self):
+        if not self.is_connected() or not self.check_balanced_graph(): return None
+        edges_visit = list(self.get_edges())
+        res = []
+        while edges_visit:
+            pass  ## completar aqui
+        return res
+
+    def eulerian_path(self):
+        unb = self.check_nearly_balanced_graph()
+        if unb[0] is None or unb[1] is None: return None
+        self.graph[unb[1]].append(unb[0])
+        cycle = self.eulerian_cycle()
+        for i in range(len(cycle) - 1):
+            if cycle[i] == unb[1] and cycle[i + 1] == unb[0]:
+                break
+        path = cycle[i + 1:] + cycle[1:i + 1]
+        return path
+
 
 def is_in_tuple_list(tl, val):
     res = False
@@ -300,7 +402,69 @@ def is_in_tuple_list(tl, val):
     return res
 
 
-if __name__ == "__main__":
+def test1():
+    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+    gr.print_graph()
+    print(gr.get_nodes())
+    print(gr.get_edges())
+
+
+def test2():
+    gr2 = MyGraph()
+    gr2.add_vertex(1)
+    gr2.add_vertex(2)
+    gr2.add_vertex(3)
+    gr2.add_vertex(4)
+
+    gr2.add_edge(1, 2)
+    gr2.add_edge(2, 3)
+    gr2.add_edge(3, 2)
+    gr2.add_edge(3, 4)
+    gr2.add_edge(4, 2)
+
+    gr2.print_graph()
+
+
+def test3():
+    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+    gr.print_graph()
+
+    print(gr.get_successors(2))
+    print(gr.get_predecessors(2))
+    print(gr.get_adjacents(2))
+    print(gr.in_degree(2))
+    print(gr.out_degree(2))
+    print(gr.degree(2))
+
+
+def test4():
+    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+    print(gr.shortest_path(1, 4))
+    print(gr.shortest_path(4, 3))
+
+    print(gr.reachable_with_dist(1))
+    print(gr.reachable_with_dist(3))
+
+    gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
+    print(gr2.shortest_path(1, 5))
+    print(gr2.shortest_path(2, 1))
+
+    print(gr2.reachable_with_dist(1))
+    print(gr2.reachable_with_dist(5))
+
+
+def test5():
+    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+    print(gr.node_has_cycle(2))
+    print(gr.node_has_cycle(1))
+    print(gr.has_cycle())
+
+    gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
+    print(gr2.node_has_cycle(1))
+    print(gr2.has_cycle())
+
+
+def test6():
     gr = MyGraph()
     gr.add_vertex(1)
     gr.add_vertex(2)
@@ -347,3 +511,12 @@ if __name__ == "__main__":
     print(gr.mean_distances())
     print(gr.clustering_coef(1))
     print(gr.clustering_coef(2))
+
+
+if __name__ == "__main__":
+    # test1()
+    # test2()
+    # test3()
+    test4()
+    # test5()
+    # test6()
