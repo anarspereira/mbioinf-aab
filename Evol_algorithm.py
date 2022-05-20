@@ -1,4 +1,5 @@
 from Popul import Popul
+#incompleto
 
 
 class EvolAlgorithm:
