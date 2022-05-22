@@ -31,9 +31,6 @@ class Automata:
         for q in range(self.numstates):
             for a in self.alphabet:
                 possible_pattern = pattern[0:q] + a #determina todos os padrões possíveis
-
-
-
         # ...
 
     def printAutomata(self):
