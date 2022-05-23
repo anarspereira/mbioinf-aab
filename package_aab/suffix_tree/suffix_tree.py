@@ -6,10 +6,16 @@ Algoritmos Avançados de Bioinformática
 """
 Class: SuffixTree
 """
+class Node:
+
+
 class SuffixTree:
 
     def __init__(self):
-        self.nodes = {0: (-1, {})}  # root node
+        """
+        Método que guarda os valores nos restantes métodos.
+        """
+        self.nodes = {0: (-1, {})}  #
         self.num = 0
 
     def print_tree(self):
@@ -27,20 +33,20 @@ class SuffixTree:
     def add_suffix(self, p, sufnum):
         pos = 0
         node = 0
-        while pos < len(p):
+        #while pos < len(p):
 
     # ...
 
     def suffix_tree_from_seq(self, text):
         t = text + "$"
-        for i in range(len(t)):
+        #for i in range(len(t)):
 
     # ...
 
     def find_pattern(self, pattern):
         pos = 0
         node = 0
-        for pos in range(len(pattern)):
+        #for pos in range(len(pattern)):
         # ...
         return self.get_leafes_below(node)
 
