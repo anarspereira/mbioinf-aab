@@ -8,6 +8,8 @@ Grupo ?
 """
 Class: Automata
 """
+import unittest
+
 class Automata:
 
     def __init__(self, alphabet: str, pattern: str):
@@ -65,8 +67,8 @@ class Automata:
         next_state_list = [state]  # cria uma lista para guardar todas os próximos estados
         for char in seq:  # for loop para a leitura de todos os caractéres da sequência
             state = self.nextState(state, char)
-            # determina o próximo estado a apartir da posição atual (current) e do caractér atual (symbol)
-            next_state_list.append(state)  # adiciona à lista res todas os próximos estados
+            # determina o próximo estado a partir do estado atual e do caractér atual
+            next_state_list.append(state)  # adiciona à lista next_state_list todos os próximos estados
         return next_state_list
 
     def patternSeqPosition(self, seq: str) -> list:
@@ -77,9 +79,15 @@ class Automata:
         """
         state = 0 # determina o estado zero
         ocurences_list = [] # cria uma lista para guardar as posições de ocorrências
-
-        # ....
-        return res
+        for i in range(len(seq)): #for loop para leitura de todas as posições da sequência
+            state = self.nextState(state, seq[i])
+            # determina o próximo estado a partir do estado atual e da posição do caractér da sequência
+            if state == self.numstates - 1:
+                #determina se o último estado é igual ao comprimento do padrão
+                ocurences_list.append(i - self.numstates + 2)
+                #adiciona à lista as posições em que inicia uma correspondência do padrão
+                #estes cálculos são necessários para obter a posição inicial do padrão encontrado
+        return ocurences_list
 
 
 def overlap(seq1: str, seq2: str) -> int:
@@ -105,10 +113,9 @@ def test():
     auto = Automata("AC", "ACA")
     auto.printAutomata()
     print(auto.applyNextState("CACAACAA"))
-    print(auto.occurencesPattern("CACAACAA"))
+    print(auto.patternSeqPosition("CACAACAA"))
 
 
-test()
 
 # States:  4
 # Alphabet:  AC
