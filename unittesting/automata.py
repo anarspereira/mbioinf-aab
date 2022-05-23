@@ -8,6 +8,8 @@ Grupo ?
 """
 Class: Automata
 """
+import unittest
+
 class Automata:
 
     def __init__(self, alphabet: str, pattern: str):
@@ -87,7 +89,6 @@ class Automata:
                 #estes cálculos são necessários para obter a posição inicial do padrão encontrado
         return ocurences_list
 
-
 def overlap(seq1: str, seq2: str) -> int:
     """
     Método que sobrepõe duas sequências e verifica a correspondência
@@ -106,16 +107,16 @@ def overlap(seq1: str, seq2: str) -> int:
             return i
     return 0 #se não houver match devolve um zero
 
+class testAutomata(unittest.TestCase):
+    def setUp(self):
+        self.automata = Automata("AC", "ACA")
 
-def test():
-    auto = Automata("AC", "ACA")
-    auto.printAutomata()
-    print(auto.applyNextState("CACAACAA"))
-    print(auto.patternSeqPosition("CACAACAA"))
+class testAutomataMethods(testAutomata):
+    def runTest(self):
+        self.assertEqual(self.automata.patternSeqPosition("CACAACAA"), [1, 4],"lista de posições errada" )
+        self.assertEqual(self.automata.applyNextState("CACAACAA"), [0, 0, 1, 2, 3, 1, 2, 3, 1], "lista de próximos estados errada")
 
-
-test()
-
+unittest.main()
 # States:  4
 # Alphabet:  AC
 # Transition table:

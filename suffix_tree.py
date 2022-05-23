@@ -1,7 +1,13 @@
-- * - coding: utf - 8 -
-*-
+# -*- coding: utf-8 -*-
+"""
+Package de Métodos implementados nas aulas?
+Algoritmos Avançados de Bioinformática
+Grupo ?
+"""
 
-
+"""
+Class: SuffixTree
+"""
 class SuffixTree:
 
     def __init__(self):
