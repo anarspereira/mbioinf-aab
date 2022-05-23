@@ -1,5 +1,5 @@
 import unittest
-from unittesting.automata import Automata
+from automata import Automata
 
 class testAutomata(unittest.TestCase):
     def setUp(self):
