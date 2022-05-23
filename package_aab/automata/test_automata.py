@@ -2,13 +2,13 @@ import unittest
 from automata import Automata
 
 
-class testAutomata(unittest.TestCase):
+class test_Automata(unittest.TestCase):
     def setUp(self):
         self.automata = Automata("AC", "ACA")
 
 
-class testAutomataMethods(testAutomata):
-    def runTest(self):
+class test_AutomataMethods(test_Automata):
+    def test_runTest(self):
         self.assertEqual(self.automata.patternSeqPosition("CACAACAA"), [1, 4], "lista de posições errada")
         self.assertEqual(self.automata.applyNextState("CACAACAA"), [0, 0, 1, 2, 3, 1, 2, 3, 1],
                          "lista de próximos estados errada")

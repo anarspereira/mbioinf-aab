@@ -1,30 +1,44 @@
 class MySeq:
 
-    def __init__(self, seq, tipo="dna"):
+    def __init__(self, seq: str, seq_type = "dna"):
+        """
+        Método que guarda os valores utilizados nos restantes métodos.
+        :param seq: sequência introduzida
+        :param seq_type: tipo de sequênia introduzida
+        """
         self.seq = seq.upper()
-        self.tipo = tipo
+        self.seq_type = seq_type
 
     def __len__(self):
+        """
+        Método que devolve o comprimento da sequência introduzida.
+        :return: comprimento da sequência introduzida
+        """
         return len(self.seq)
 
     def __getitem__(self, n):
+        """
+
+        :param n:
+        :return:
+        """
         return self.seq[n]
 
     def __getslice__(self, i, j):
         return self.seq[i:j]
 
     def __str__(self):
-        return self.tipo + ":" + self.seq
+        return self.seq_type + ":" + self.seq
 
     def printseq(self):
         print(self.seq)
 
     def alfabeto(self):
-        if (self.tipo == "dna"):
+        if (self.seq_type == "dna"):
             return "ACGT"
-        elif (self.tipo == "rna"):
+        elif (self.seq_type == "rna"):
             return "ACGU"
-        elif (self.tipo == "protein"):
+        elif (self.seq_type == "protein"):
             return "ACDEFGHIKLMNPQRSTVWY"
         else:
             return None
@@ -42,17 +56,17 @@ class MySeq:
 
     def validaER(self):
         import re
-        if (self.tipo == "dna"):
+        if (self.seq_type == "dna"):
             if re.search("[^ACTGactg]", self.seq) != None:
                 return False
             else:
                 return True
-        elif (self.tipo == "rna"):
+        elif (self.seq_type == "rna"):
             if re.search("[^ACUGacug]", self.seq) != None:
                 return False
             else:
                 return True
-        elif (self.tipo == "protein"):
+        elif (self.seq_type == "protein"):
             if re.search("[^ACDEFGHIKLMNPQRSTVWY_acdefghiklmnpqrstvwy]", self.seq) != None:
                 return False
             else:
@@ -61,13 +75,13 @@ class MySeq:
             return False
 
     def transcricao(self):
-        if (self.tipo == "dna"):
+        if (self.seq_type == "dna"):
             return MySeq(self.seq.upper().replace("T", "U"), "rna")
         else:
             return None
 
     def compInverso(self):
-        if (self.tipo != "dna"):
+        if (self.seq_type != "dna"):
             return None
         comp = ""
         for c in self.seq.upper():
@@ -82,7 +96,7 @@ class MySeq:
         return MySeq(comp)
 
     def traduzSeq(self, iniPos=0):
-        if (self.tipo != "dna"):
+        if (self.seq_type != "dna"):
             return None
         seqM = self.seq.upper()
         seqAA = ""
@@ -92,7 +106,7 @@ class MySeq:
         return MySeq(seqAA, "protein")
 
     def orfs(self):
-        if (self.tipo != "dna"):
+        if (self.seq_type != "dna"):
             return None
         res = []
         res.append(self.traduzSeq(0))
@@ -176,7 +190,7 @@ class MySeq:
         return aa
 
     def maiorProteina(self):
-        if (self.tipo != "protein"):
+        if (self.seq_type != "protein"):
             return None
         seqAA = self.seq.upper()
         protAtual = ""
@@ -193,7 +207,7 @@ class MySeq:
 
     def maiorProteinaER(self):
         import re
-        if (self.tipo != "protein"):
+        if (self.seq_type != "protein"):
             return None
         mos = re.finditer("M[^_]*_", self.seq)
         sizem = 0
@@ -208,7 +222,7 @@ class MySeq:
         return MySeq(lprot, "protein")
 
     def todasProteinas(self):
-        if (self.tipo != "protein"):
+        if (self.seq_type != "protein"):
             return None
         seqAA = self.seq.upper()
         protsAtuais = []
@@ -228,7 +242,7 @@ class MySeq:
         return proteinas
 
     def maiorProteinaORFs(self):
-        if (self.tipo != "dna"):
+        if (self.seq_type != "dna"):
             return None
         larg = MySeq("", "protein")
         for orf in self.orfs():
