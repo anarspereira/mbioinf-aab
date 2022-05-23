@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Package de Métodos implementados nas aulas?
+Package dos Algoritmos implementados em aula
 Algoritmos Avançados de Bioinformática
-Grupo ?
 """
 
 """
 Class: Automata
 """
-import unittest
 
 class Automata:
 
