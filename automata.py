@@ -8,8 +8,6 @@ Grupo ?
 """
 Class: Automata
 """
-import unittest
-
 class Automata:
 
     def __init__(self, alphabet: str, pattern: str):
@@ -68,7 +66,7 @@ class Automata:
         for char in seq:  # for loop para a leitura de todos os caractéres da sequência
             state = self.nextState(state, char)
             # determina o próximo estado a partir do estado atual e do caractér atual
-            next_state_list.append(state)  # adiciona à lista next_state_list todos os próximos estados
+            next_state_list.append(state)  # adiciona à lista next_state_list todas os próximos estados
         return next_state_list
 
     def patternSeqPosition(self, seq: str) -> list:
@@ -116,6 +114,7 @@ def test():
     print(auto.patternSeqPosition("CACAACAA"))
 
 
+test()
 
 # States:  4
 # Alphabet:  AC
