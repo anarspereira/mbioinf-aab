@@ -4,8 +4,6 @@
 Class: Trie
 """
 
-#TODO: adicionar mais comentários
-
 class Trie:
 
     def __init__(self):
@@ -14,7 +12,7 @@ class Trie:
         :param nodes: guarda um dicionário de nodes
         :param num: guarda nº do último nó criado
         """
-        self.nodes = {0: {}}
+        self.nodes = {0: {}} # dicionário de nodes
         self.num = 0
 
     def print_trie(self):
@@ -28,11 +26,11 @@ class Trie:
         """
         Método que adiciona o nodo à trie
         :param origin:
-        :param symbol: símbolo de cada arco que sai de um nodo
+        :param symbol: símbolo de cada arco que sai de um node
         """
-        self.num += 1
+        self.num += 1 # indexa o nodo ao dicionário de nodes
         self.nodes[origin][symbol] = self.num
-        self.nodes[self.num] = {}
+        self.nodes[self.num] = {} # cria novo node com um dicionário vazio
 
     def add_pattern(self, p):
         """
@@ -41,11 +39,11 @@ class Trie:
         """
         position = 0
         node = 0
-        while position < len(p):
-            if p[position] not in self.nodes[node].keys():
-                self.add_node(node, p[position])
-            node = self.nodes[node][p[position]]
-            position += 1
+        while position < len(p): # enquanto a posição do node for menor que o tamanho do padrão,
+            if p[position] not in self.nodes[node].keys(): # se o caracter já estiver presente no node,
+                self.add_node(node, p[position]) # é adicionado um caracter ao node
+            node = self.nodes[node][p[position]] # define o node atual
+            position += 1 # passa para a próxima posição
 
     def trie_from_patterns(self, pats):
         """
@@ -53,7 +51,7 @@ class Trie:
         :param pats: padrões
         """
         for p in pats:
-            self.add_pattern(p)
+            self.add_pattern(p) # adiciona cada padrão presente na lista de padrões
 
     def prefix_trie_match(self, text: str) -> list:
         """
@@ -67,15 +65,15 @@ class Trie:
         match = "" # match inicial (resultado)
         node = 0 # nó inicial
         while position < len(text): # enquanto a posição for menor que o tamanho do texto,
-            if text[position] in self.nodes[node].keys():
-                node = self.nodes[node][text[position]]
-                match += text[position]
-                if self.nodes[node] == {}: # se atingir uma folha,
-                    return match # só dá match nesse caso
-                else:
-                    position += 1 # próxima posição
+            if text[position] in self.nodes[node].keys(): # se o caracter estiver presente na árvore,
+                node = self.nodes[node][text[position]] # guarda o node
+                match += text[position] # e dá match, adicionando o caracter ao padrão
+                if self.nodes[node] == {}: # se atingir uma folha (dicionário vazio),
+                    return match # retorna o padrão existente na árvore
+                else: # se não atingir uma folha,
+                    position += 1 # avança para a próxima posição
             else:
-                return None
+                return None # se o caracter não for encontrado, para o ciclo while
         return None
 
     def trie_matches(self, text: str) -> list:
@@ -87,9 +85,9 @@ class Trie:
         """
         res = []
         for i in range(len(text)): # para cada posição na sequência text,
-            m = self.prefix_trie_match(text[i:])
-            if m != None:
-                res.append((i, m))
+            m = self.prefix_trie_match(text[i:]) # procura no padrão os caracteres da sequência txt e guarda o valor em m
+            if m != None: # caso m seja diferente de none,
+                res.append((i, m)) # é adicionado à lista do resultado um tuplo com a posição iterada e o padrão encontrado
         return res
 
 
