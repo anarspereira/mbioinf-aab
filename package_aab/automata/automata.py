@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Package dos Algoritmos implementados em aula
+Package dos algoritmos implementados em aula
 Algoritmos Avançados de Bioinformática
 """
 

@@ -1,4 +1,17 @@
+# -*- coding: utf-8 -*-
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
+
+"""
+Class:MySeq
+"""
 class MySeq:
+    """
+
+
+    """
 
     def __init__(self, seq: str, seq_type = "dna"):
         """
