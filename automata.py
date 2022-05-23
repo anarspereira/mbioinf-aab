@@ -14,11 +14,11 @@ class Automata:
         """
         Método que guarda os valores utilizados nos restantes métodos
 
-        :param alphabet: guarda todos os caractéres presentes no texto
+        :param alphabet: guarda todos os caractéres presentes na sequência
         :param pattern: padrão que queremos procurar
         """
         self.numstates = len(pattern) + 1 #guarda o comprimento do padrão
-        self.alphabet = alphabet #todos os caractéres presentes no nosso texto
+        self.alphabet = alphabet #todos os caractéres presentes na nossa sequência
         self.transitionTable = {} #dicionário da tabela de transição
         self.buildTransitionTable(pattern) #guarda a tabela de transição
 
@@ -26,49 +26,85 @@ class Automata:
         """
         Método que constroi a tabela de transição. A tabela de transição devolve o próximo
         estado da máquima automata a partir do estado atual e estados anteriores.
-        :param pattern: padrão que queremos procurar no text
+        :param pattern: padrão que queremos procurar na sequência
         """
-        for q in range(self.numstates):
-            for a in self.alphabet:
-                possible_pattern = pattern[0:q] + a #determina todos os padrões possíveis
-        # ...
+        for char_p in range(self.numstates): #for loop para leitura de todos os caractéres do padrão
+            for char in self.alphabet: #for loop para leitura dos caractéres do alfabeto
+                possible_pattern = pattern[:char_p] + char #determina todos os padrões possíveis
+                match_next_state = overlap(possible_pattern, pattern)
+                #guarda a sequência que deu match entre o padrão e os possíveis padrões
+                self.transitionTable[(char_p, char)] = match_next_state
+                #guarda um dicionário em que cada linha é um tuplo com o valor de q e char
 
     def printAutomata(self):
+        """
+        Método que imprime os resultados.
+        """
         print("States: ", self.numstates)
         print("Alphabet: ", self.alphabet)
         print("Transition table:")
-        for k in self.transitionTable.keys():
-            print(k[0], ",", k[1], " -> ", self.transitionTable[k])
+        for keys in self.transitionTable.keys():
+            print("[", keys[0], "|", keys[1], " -> ", self.transitionTable[keys], "]")
 
-    def nextState(self, current, symbol):
-        #return self.transitionTable.get((current, symbol)) #
+    def nextState(self, current: int, char: str) -> int:
+        """
+        Método que devolve o próximo estado.
+        :param current: estado atual
+        :param char: caractér do padrão a procurar
+        :return: o próximo estado
+        """
+        return self.transitionTable.get((current, char))
 
-    # return ...
+    def applyNextState(self, seq: str) -> list:
+        """
+        Método que devolve uma lista de todos os próximos estados.
+        :param seq: sequência introduzida
+        :return: lista dos próximos estados
+        """
+        state = 0  # determina o estado zero
+        next_state_list = [state]  # cria uma lista para guardar todas os próximos estados
+        for char in seq:  # for loop para a leitura de todos os caractéres da sequência
+            state = self.nextState(state, char)
+            # determina o próximo estado a apartir da posição atual (current) e do caractér atual (symbol)
+            next_state_list.append(state)  # adiciona à lista res todas os próximos estados
+        return next_state_list
 
-    def applySeq(self, seq):
-        q = 0
-        res = [q]
-        # ...
-        return res
+    def patternSeqPosition(self, seq: str) -> list:
+        """
+        Método que devolve a lista das posições onde se inicia uma ocorrência do padrão na sequência.
+        :param seq: sequência introduzida
+        :return: lista das posições onde se inicia uma ocorrência do padrão na sequência
+        """
+        state = 0 # determina o estado zero
+        ocurences_list = [] # cria uma lista para guardar as posições de ocorrências
 
-    def occurencesPattern(self, text):
-        q = 0
-        res = []
         # ....
         return res
 
 
-def overlap(s1, s2):
-    overlap_start = min(len(s1), len(s2)) #determina qual a sequência mais pequena para começar a sobreposição
+def overlap(seq1: str, seq2: str) -> int:
+    """
+    Método que sobrepõe duas sequências e verifica a correspondência
+    :param seq1: primeira sequência
+    :param seq2: segunda sequência
+    :return: última posição da sequência mais pequena que corresponde a um match
+    """
+    overlap_start = min(len(seq1), len(seq2)) #determina qual a sequência mais pequena para começar a sobreposição
     for i in range(overlap_start, 0, -1):
-        if s1[-i:] == s2[:i]: return i
-    return 0
+        #for loop para leitura da sequência mais pequena a partir da última posição
+        #acaba o loop na primeira posição e incrementa um valor de -1
+        #ou seja, lê a sequência de trás para a frente
+        if seq1[-i:] == seq2[:i]:
+            # verifica se há correspondência entre o último caractér da primeira sequência
+            # e o primeiro caractér da segunda sequência
+            return i
+    return 0 #se não houver match devolve um zero
 
 
 def test():
     auto = Automata("AC", "ACA")
     auto.printAutomata()
-    print(auto.applySeq("CACAACAA"))
+    print(auto.applyNextState("CACAACAA"))
     print(auto.occurencesPattern("CACAACAA"))
 
 
