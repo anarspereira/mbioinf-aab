@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Mar 23 01:33:42 2017
-
-@author: miguelrocha
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
 """
 
+"""
+Class: MyGraph
+"""
 
 ## Graph represented as adjacency list using a dictionary
 ## keys are vertices
