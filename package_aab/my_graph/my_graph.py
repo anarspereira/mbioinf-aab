@@ -8,29 +8,37 @@ Algoritmos Avançados de Bioinformática
 Class: MyGraph
 """
 
-## Graph represented as adjacency list using a dictionary
 ## keys are vertices
 ## values of the dictionary represent the list of adjacent vertices of the key node
 
 class MyGraph:
 
-    def __init__(self, g={}):
-        ''' Constructor - takes dictionary to fill the graph as input; default is empty dictionary '''
+    def __init__(self, g ={}):
+        """
+        Método que guarda os valores utilizados nos restantes métodos
+        :param g: é um dicionário em que guarda o grafo
+        """
         self.graph = g
 
     def print_graph(self):
-        ''' Prints the content of the graph as adjacency list '''
+        """
+        Método que imprime o conteúdo do grafo como lista de adjacência
+        """
         for v in self.graph.keys():
             print(v, " -> ", self.graph[v])
 
-    ## get basic info
-
     def get_nodes(self):
-        ''' Returns list of nodes in the graph '''
+        """
+        Método que returna a lista de nodos
+        """
         return list(self.graph.keys())
 
     def get_edges(self):
-        ''' Returns edges in the graph as a list of tuples (origin, destination) '''
+        """
+        Método que returna a lista de arcos
+        v será a origem
+        d será o destino
+        """
         edges = []
         for v in self.graph.keys():
             for d in self.graph[v]:
@@ -38,39 +46,59 @@ class MyGraph:
         return edges
 
     def size(self):
-        ''' Returns size of the graph : number of nodes, number of edges '''
+        """
+        Método que returna o tamanho do grafo, nomeadamente número de nodos e o número de arcos
+        """
+
         return len(self.get_nodes()), len(self.get_edges())
 
-    ## add nodes and edges
-
-    def add_vertex(self, v):
-        ''' Add a vertex to the graph; tests if vertex exists not adding if it does '''
-        if v not in self.graph.keys():
+    def add_vertex(self, v:str):
+        """
+        Método que adiciona o nó v ao grafo
+        :param v: nó
+        """
+        if v not in self.graph.keys(): #caso v não exista, é adicionado
             self.graph[v] = []
 
-    def add_edge(self, o, d):
+    def add_edge(self, o:str, d:str):
+        """
+        Método que adiciona o arco (o,d) ao grafo
+        :param o: vertice do arco
+        :param d: vertice do arco
+        :return:
+        """
         ''' Add edge to the graph; if vertices do not exist, they are added to the graph '''
-        if o not in self.graph.keys():
+        if o not in self.graph.keys(): #se o não exista, é adicionado vertice o
             self.add_vertex(o)
-        if d not in self.graph.keys():
+        if d not in self.graph.keys(): #verifica se o vertice d está no dicionário, caso não esteja é adicionado
             self.add_vertex(d)
-        if d not in self.graph[o]:
-            self.graph[o].append(d)
+        if d not in self.graph[o]: #verifica se o vertice d é um valor de vertice o
+            self.graph[o].append(d) #adiciona o valor d ao o
 
-    ## successors, predecessors, adjacent nodes
-
-    def get_successors(self, v):
+    def get_successors(self, v:str):
+        """
+        :param v: nó
+        :return: returna lista de nós sucessores do nó v
+        """
         return list(
             self.graph[v])  # needed to avoid list being overwritten of result of the function is used
 
-    def get_predecessors(self, v):
+    def get_predecessors(self, v:str):
+        """
+        :param v: nó
+        :return: returna lista de nós antecessores do nó v
+        """
         res = []
         for k in self.graph.keys():
             if v in self.graph[k]:
                 res.append(k)
         return res
 
-    def get_adjacents(self, v):
+    def get_adjacents(self, v:str):
+        """
+        :param v: nó
+        :return: returna a lista de nós adjacentes do nó v
+        """
         suc = self.get_successors(v)
         pred = self.get_predecessors(v)
         res = pred
@@ -78,34 +106,61 @@ class MyGraph:
             if p not in res: res.append(p)
         return res
 
-    ## degrees
 
-    def out_degree(self, v):
+    def out_degree(self, v:str):
+        """
+        Método que calcula grau de saída do nó v
+        :param v: nó
+        :return: returna grau de saída do nó
+        """
         return len(self.graph[v])
 
-    def in_degree(self, v):
+    def in_degree(self, v:str):
+        """
+        Método que calcula grau de entrada do nó v
+        :param v: nó
+        :return: returna grau de entrada do nó
+        """
         return len(self.get_predecessors(v))
 
-    def degree(self, v):
+    def degree(self, v:str):
+        """
+        Método que calcula grau do nó v (todos os nós adjacentes quer percursores quer sucessores
+        :param v: nó
+        :return: returna grau do nó v
+        """
         return len(self.get_adjacents(v))
 
     def all_degrees(self, deg_type="inout"):
+        """
+        Método que calcula graus de entrada e saída, ou ambos para todos os nós do grafo
+        :param deg_type: tipo de grau (entrada, saída ou ambos)
+        :return:
+        """
+
         ''' Computes the degree (of a given type) for all nodes.
         deg_type can be "in", "out", or "inout" '''
         degs = {}
         for v in self.graph.keys():
-            if deg_type == "out" or deg_type == "inout":
-                degs[v] = len(self.graph[v])
+            if deg_type == "out" or deg_type == "inout": #Se for graus de saida ou de entrada e saída
+                degs[v] = len(self.graph[v]) #
             else:
                 degs[v] = 0
-        if deg_type == "in" or deg_type == "inout":
-            for v in self.graph.keys():
-                for d in self.graph[v]:
-                    if deg_type == "in" or v not in self.graph[d]:
-                        degs[d] = degs[d] + 1
+        if deg_type == "in" or deg_type == "inout": #Se for graus de entrada ou de entrada e saída
+            for v in self.graph.keys(): #para cada key no grafo
+                for d in self.graph[v]: #para cada valor de v
+                    if deg_type == "in" or v not in self.graph[d]: #Se for graus de entrada ou v não for um valor de d no grafo
+                        degs[d] = degs[d] + 1   #adiciona +1 ao valor de d
         return degs
 
     def highest_degrees(self, all_deg=None, deg_type="inout", top=10):
+        """
+        Método que calcula graus mais elevados
+        :param all_deg: graus de entrada e saída, ou ambos
+        :param deg_type:tipo de grau (entrada, saída ou ambos)
+        :param top:
+        :return:
+        """
         if all_deg is None:
             all_deg = self.all_degrees(deg_type)
         ord_deg = sorted(list(all_deg.items()), key=lambda x: x[1], reverse=True)
@@ -114,10 +169,20 @@ class MyGraph:
     ## topological metrics over degrees
 
     def mean_degree(self, deg_type="inout"):
+        """
+        Método para calcular a media de graus
+        :param deg_type: tipo de grau (entrada, saída ou ambos)
+        :return: returna a média de graus
+        """
         degs = self.all_degrees(deg_type)
         return sum(degs.values()) / float(len(degs))
 
     def prob_degree(self, deg_type="inout"):
+        """
+        Método para calcular a probabilidade de graus
+        :param deg_type: tipo de grau (entrada, saída ou ambos)
+        :return: returna a probabilidade de graus
+        """
         degs = self.all_degrees(deg_type)
         res = {}
         for k in degs.keys():
@@ -132,47 +197,71 @@ class MyGraph:
         ## BFS and DFS searches
 
     def reachable_bfs(self, v):
+        """
+        Método de nós atingíveis a partir de v, de cima para baixo (largura)
+        :param v: nó
+        :return: retorna lista de nós atingíveis a partir de v
+        """
         l = [v]
         res = []
-        while len(l) > 0:
-            node = l.pop(0)
-            if node != v: res.append(node)
-            for elem in self.graph[node]:
-                if elem not in res and elem not in l and elem != node:
-                    l.append(elem)
+        while len(l) > 0: #enquanto há elementos na lista l
+            node = l.pop(0) #isolar o primeiro elemento da lista l, queue de nós
+            if node != v: res.append(node) #se o nó for diferente de v, adicionar o nó a res
+            for elem in self.graph[node]: #para todos os sucessores do nó
+                if elem not in res and elem not in l and elem != node: #se não existe em res e em l e se o sucessor é diferente do node
+                    l.append(elem) #adicionar na queue para verificar
         return res
 
     def reachable_dfs(self, v):
+        """
+        Método de nós atingíveis a partir de v, da esquerda para a direita (em profundidade)
+        :param v: nó
+        :return: retorna lista de nós atingíveis a partir de v
+        """
         l = [v]
         res = []
-        while len(l) > 0:
-            node = l.pop(0)
-            if node != v: res.append(node)
-            s = 0
-            for elem in self.graph[node]:
-                if elem not in res and elem not in l:
-                    l.insert(s, elem)
-                    s += 1
+        while len(l) > 0: #enquanto há elementos na lista l, queue de nós
+            node = l.pop(0) #isolar o primeiro elemento da lista l
+            if node != v: res.append(node) #se o nó for diferente de v, adicionar o nó a res
+            s = 0 #ira ser usado para criar o stack//é reposto a 0 antes do loop for abaixo
+            for elem in self.graph[node]: #para todos os sucessores do nó
+                if elem not in res and elem not in l: #se não existe em res e em l e se o sucessor é diferente do node
+                    l.insert(s, elem) #cria um stack/vai voltar a verificar o mais recente/insere no inicio da lista
+                    s += 1 #caso haja multiplos sucessores, o s vai aumentar de forma a colocar as proximas iteraçoes na posicao depois da iteraçao anterior (stack)
         return res
 
     def distance(self, s, d):
-        if s == d: return 0
-        l = [(s, 0)]
-        visited = [s]
-        while len(l) > 0:
-            node, dist = l.pop(0)
-            for elem in self.graph[node]:
-                if elem == d:
-                    return dist + 1
+        """
+        Método da distância entre nós s e d
+        :param s: nó s
+        :param d: nó d
+        :return: retorna a distancia entre nós s e d
+        """
+        if s == d:
+            return 0
+        l = [(s, 0)] #lista com os tuplos do nó e a distância
+        visited = [s] #nós visitados
+        while len(l) > 0: #enquanto há elementos na lista l, queue de nós
+            node, dist = l.pop(0) #isolar o primeiro elemento da lista l
+            for elem in self.graph[node]: #para todos os sucessores do nó
+                if elem == d: #
+                    return dist + 1 #
                 elif elem not in visited:
                     l.append((elem, dist + 1))
                     visited.append(elem)
         return None
 
     def shortest_path(self, s, d):
-        if s == d: return []
-        l = [(s, [])]
-        visited = [s]
+        """
+        Método do caminho mais curto entre s e d (lista de nós por onde passa)
+        :param s: nó s
+        :param d: nó d
+        :return: retorna caminho mais curto, lista de nós por onde passa
+        """
+        if s == d:
+            return []
+        l = [(s, [])] #lista com um tuplo com o nó e o caminho
+        visited = [s] #nós visitados
         while len(l) > 0:
             node, preds = l.pop(0)
             for elem in self.graph[node]:
@@ -184,6 +273,11 @@ class MyGraph:
         return None
 
     def reachable_with_dist(self, s):
+        """
+        Método de nós atingíveis a partir de v com respetiva distância
+        :param s:
+        :return: retorna lista de pares nó, distância
+        """
         res = []
         l = [(s, 0)]
         while len(l) > 0:
