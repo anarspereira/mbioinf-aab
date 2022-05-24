@@ -16,3 +16,17 @@ class test_AutomataMethods(test_Automata):
 
 if __name__ == '__main__':
     unittest.main()
+
+# States:  4
+# Alphabet:  AC
+# Transition table:
+# 0 , A  ->  1
+# 0 , C  ->  0
+# 1 , A  ->  1
+# 1 , C  ->  2
+# 2 , A  ->  3
+# 2 , C  ->  0
+# 3 , A  ->  1
+# 3 , C  ->  2
+# [0, 0, 1, 2, 3, 1, 2, 3, 1]
+# [1, 4]
