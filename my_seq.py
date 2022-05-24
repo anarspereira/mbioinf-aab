@@ -9,11 +9,10 @@ Class:MySeq
 """
 class MySeq:
     """
-
-
+    Classe que apresenta os métodos que permitem a manipulação de sequências de ADN, RNA e proteínas.
     """
 
-    def __init__(self, seq: str, seq_type = "dna"):
+    def __init__(self, seq: str, seq_type: str):
         """
         Método que guarda os valores utilizados nos restantes métodos.
         :param seq: sequência introduzida
@@ -22,31 +21,39 @@ class MySeq:
         self.seq = seq.upper()
         self.seq_type = seq_type
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Método que devolve o comprimento da sequência introduzida.
         :return: comprimento da sequência introduzida
         """
         return len(self.seq)
 
-    def __getitem__(self, n):
+    def __getitem__(self, n: int) -> str:
         """
-
-        :param n:
+        Método dunder em python que permite devolver um item a partir da indexação de uma instância.
+        :param n: posição do valor que queremos devolver.
         :return:
         """
         return self.seq[n]
 
-    def __getslice__(self, i, j):
-        return self.seq[i:j]
-
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Método que devolve os objetos da classe como strings.
+        :return: devolve o tipo da sequência e a sequência como strings.
+        """
         return self.seq_type + ":" + self.seq
 
-    def printseq(self):
+    def printSeq(self):
+        """
+        Método que imprime as sequências introduzidas.
+        """
         print(self.seq)
 
-    def alfabeto(self):
+    def checkSeqType(self):
+        """
+        Método que verifica o tipo de sequências.
+        :return: devolve os possíveis caracteres das sequências.
+        """
         if (self.seq_type == "dna"):
             return "ACGT"
         elif (self.seq_type == "rna"):
@@ -56,18 +63,11 @@ class MySeq:
         else:
             return None
 
-    def valida(self):
-        alf = self.alfabeto()
-        res = True
-        i = 0
-        while i < len(self.seq) and res:
-            if self.seq[i] not in alf:
-                res = False
-            else:
-                i += 1
-        return res
-
-    def validaER(self):
+    def validateSeqRE(self) -> bool:
+        """
+        Método que valida as sequência de acordo com o tipo de caracteres presentes através de expressões regulares.
+        :return: valor de "False" ou "True" se as sequências forem inválidas ou válidas, respetivamente.
+        """
         import re
         if (self.seq_type == "dna"):
             if re.search("[^ACTGactg]", self.seq) != None:
@@ -87,17 +87,25 @@ class MySeq:
         else:
             return False
 
-    def transcricao(self):
-        if (self.seq_type == "dna"):
-            return MySeq(self.seq.upper().replace("T", "U"), "rna")
+    def transcription(self):
+        """
+        Método que devolve a sequência transcrita.
+        :return: sequência transcrita.
+        """
+        if (self.seq_type == "dna"): #se a sequência for do tipo DNA
+            return MySeq(self.seq.upper().replace("T", "U"), "rna") #troca o nucleótido Timina (T) por Uracilo (U)
         else:
             return None
 
-    def compInverso(self):
-        if (self.seq_type != "dna"):
+    def reverseComplement(self):
+        """
+        Método que transforma a sequência introduzida no seu complemento inverso
+        :return: sequência do complemento inverso
+        """
+        if (self.seq_type != "dna"): #aplica o método apenas para sequências do tipo DNA
             return None
         comp = ""
-        for c in self.seq.upper():
+        for c in self.seq.upper(): #troca os nucleótidos pelas bases complementares.
             if (c == 'A'):
                 comp = "T" + comp
             elif (c == "T"):
@@ -108,31 +116,49 @@ class MySeq:
                 comp = "G" + comp
         return MySeq(comp)
 
-    def traduzSeq(self, iniPos=0):
-        if (self.seq_type != "dna"):
+    def seqTranslation(self, initial_pos = 0):
+        """
+        Método que processa a tradução da sequência.
+        :param initial_pos: determina a posição inicial da leitura da sequência
+        :return:
+        """
+        if (self.seq_type != "dna"): #verifica se a sequência é do tipo DNA.
             return None
-        seqM = self.seq.upper()
-        seqAA = ""
-        for pos in range(iniPos, len(seqM)-2, 3):
-            cod = seqM[pos:pos+3]
-            seqAA += self.traduzCodao(cod)
-        return MySeq(seqAA, "protein")
+        seq = self.seq.upper()
+        seq_amino = "" #inicia uma string vazia
+        for pos in range(initial_pos, len(seq) - 2, 3): #leitura de cada caractér da posição
+            #inicia na posição inicial e para dois nucleótidos antes do final da sequência,
+            # de forma a ler o último codão inteiro
+            # incrementa 3 nucleótidos (codões)
+            codon = seq[pos:pos+3] #leitura de codões
+            seq_amino += self.codonTranslate(codon) #adiciona a proteína correspondente ao codão
+        return MySeq(seq_amino, "protein")
 
     def orfs(self):
+        """
+        Método que determina as open reading frames (ORF), i.e, as sequências compreendidas entre o codão de iniciação
+        e o codão STOP. Gera seis reading frames da sequência de DNA e do complemento inverso.
+        :return: devolve as ORF's
+        """
         if (self.seq_type != "dna"):
             return None
-        res = []
-        res.append(self.traduzSeq(0))
-        res.append(self.traduzSeq(1))
-        res.append(self.traduzSeq(2))
-        compinv = self.compInverso()
-        res.append(compinv.traduzSeq(0))
-        res.append(compinv.traduzSeq(1))
-        res.append(compinv.traduzSeq(2))
-        return res
+        frames = [] #lista de frames
+        frames.append(self.seqTranslation(0)) #inicia a leitura da frame na primeira posição
+        frames.append(self.seqTranslation(1)) #inicia a leitura da frame na segunda posição
+        frames.append(self.seqTranslation(2)) #inicia a leitura da frame na terceira posição
+        inv_comp = self.reverseComplement() #determina o complemento inverso
+        frames.append(inv_comp.seqTranslation(0)) #inicia a leitura da frame na última posição
+        frames.append(inv_comp.seqTranslation(1)) #inicia a leitura da frame na penúltima posição
+        frames.append(inv_comp.seqTranslation(2)) #inicia a leitura da frame na antepenúltima posição
+        return frames
 
-    def traduzCodao(self, cod):
-        tc = {"GCT": "A", "GCC": "A", "GCA": "A", "GCC": "A", "TGT": "C", "TGC": "C",
+    def codonTranslate(self, cod: str) -> str:
+        """
+        Método que traduz os codões nos respetivos aminoácidos.
+        :param cod: codão a procurar na tabela de codões
+        :return: sequência de aminoácidos
+        """
+        codon_table = {"GCT": "A", "GCA": "A", "GCC": "A", "TGT": "C", "TGC": "C",
               "GAT": "D", "GAC": "D", "GAA": "E", "GAG": "E", "TTT": "F", "TTC": "F",
               "GGT": "G", "GGC": "G", "GGA": "G", "GGG": "G", "CAT": "H", "CAC": "H",
               "ATA": "I", "ATT": "I", "ATC": "I",
@@ -147,143 +173,93 @@ class MySeq:
               "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
               "TGG": "W",
               "TAT": "Y", "TAC": "Y",
-              "TAA": "_", "TAG": "_", "TGA": "_"}
-        if cod in tc:
-            aa = tc[cod]
+              "TAA": "_", "TAG": "_", "TGA": "_"} #dicionário em que as chaves são os codões e os valores os aminoácidos
+        if cod in codon_table:
+            amin = codon_table[cod] #guarda o aminoácido correspondente ao codão
         else:
-            aa = "X"  # errors marked with X
-        return aa
+            amin = "X"  #marca erros de procura com um X
+        return amin
 
-    def traduzCodaoER(self, cod):
-        import re
-        if re.search("GC.", cod):
-            aa = "A"
-        elif re.search("TG[TC]", cod):
-            aa = "C"
-        elif re.search("GA[TC]", cod):
-            aa = "D"
-        elif re.search("GA[AG]", cod):
-            aa = "E"
-        elif re.search("TT[TC]", cod):
-            aa = "F"
-        elif re.search("GG.", cod):
-            aa = "G"
-        elif re.search("CA[TC]", cod):
-            aa = "H"
-        elif re.search("AT[TCA]", cod):
-            aa = "I"
-        elif re.search("AA[AG]", cod):
-            aa = "K"
-        elif re.search("TT[AG]|CT.", cod):
-            aa = "L"
-        elif re.search("ATG", cod):
-            aa = "M"
-        elif re.search("AA[TC]", cod):
-            aa = "N"
-        elif re.search("CC.", cod):
-            aa = "P"
-        elif re.search("CA[AG]", cod):
-            aa = "Q"
-        elif re.search("CG.|AG[AG]", cod):
-            aa = "R"
-        elif re.search("TC.|AG[TC]", cod):
-            aa = "S"
-        elif re.search("AC.", cod):
-            aa = "T"
-        elif re.search("GT.", cod):
-            aa = "V"
-        elif re.search("TGG", cod):
-            aa = "W"
-        elif re.search("TA[TC]", cod):
-            aa = "Y"
-        elif re.search("TA[AG]|TGA", cod):
-            aa = "_"
-        else:
-            aa = None
-        return aa
-
-    def maiorProteina(self):
-        if (self.seq_type != "protein"):
+    def longestProteinSeq(self):
+        """
+        Método que procura a sequência proteíca mais comprida.
+        :return: maior sequência proteíca.
+        """
+        if (self.seq_type != "protein"): #determina se o tipo de sequência é uma proteína
             return None
-        seqAA = self.seq.upper()
-        protAtual = ""
-        maiorprot = ""
-        for aa in seqAA:
-            if aa == "_":
-                if len(protAtual) > len(maiorprot):
-                    maiorprot = protAtual
-                protAtual = ""
+        seq_amin = self.seq.upper()
+        current_prot = "" #string vazia para guardar a sequência que está a ser lida
+        longest_prot = "" #string vazia para guardar a sequência da maior proteina
+        for aa in seq_amin: #lê cada aminoácido na sequência
+            if aa == "_": #verifica se é um codão stop
+                if len(current_prot) > len(longest_prot): #verifica se a proteína que está a ser lida é superior
+                    #à última proteina gaurdada na lista de maior proteínas
+                    longest_prot = current_prot #se for, guarda a proteína atual como a mais longa
+                current_prot = "" #volta a zerar a lista de proteínas atuais
             else:
-                if len(protAtual) > 0 or aa == "M":
-                    protAtual += aa
-        return MySeq(maiorprot, "protein")
-
-    def maiorProteinaER(self):
-        import re
-        if (self.seq_type != "protein"):
-            return None
-        mos = re.finditer("M[^_]*_", self.seq)
-        sizem = 0
-        lprot = ""
-        for x in mos:
-            ini = x.span()[0]
-            fin = x.span()[1]
-            s = fin - ini + 1
-            if s > sizem:
-                lprot = x.group()
-                sizem = s
-        return MySeq(lprot, "protein")
+                if len(current_prot) > 0 or aa == "M": #verifica se a proteina tem um cumprimento superior a zero
+                    #e começa a ler se o aminoácido for uma metionina.
+                    current_prot += aa #adiciona o aminoácido à lista
+        return MySeq(longest_prot, "protein")
 
     def todasProteinas(self):
-        if (self.seq_type != "protein"):
+        """
+        Método que procura todas as proteínas encontradas na sequência.
+        :return:
+        """
+        if (self.seq_type != "protein"): #verifica se a sequência é uma proteína
             return None
-        seqAA = self.seq.upper()
-        protsAtuais = []
-        proteinas = []
-        for aa in seqAA:
-            if aa == "_":
-                if protsAtuais:
-                    for p in protsAtuais:
-                        proteinas.append(MySeq(p, "protein"))
-                    protsAtuais = []
+        seq_aa = self.seq.upper()
+        current_prot = [] #lista da proteína a ser lida
+        prot_list = [] #lista de proteínas totais
+        for aa in seq_aa: #lê os aminoácidos da sequência
+            if aa == "_": #verifica se é um codão stop
+                if current_prot:
+                    for p in current_prot:
+                        prot_list.append(MySeq(p, "protein")) #adiciona as proteínas lidas na lista de proteínas totais
+                    current_prot = [] #zera a lista de proteínas lidas
             else:
-                if aa == "M":
-                    protsAtuais.append("")
-                for i in range(len(protsAtuais)):
-                    protsAtuais[i] += aa
+                if aa == "M": #verifica se é um codão de iniciação
+                    current_prot.append("")
+                for i in range(len(current_prot)):
+                    current_prot[i] += aa #adiciona os aminoácidos à lista
+        return prot_list
 
-        return proteinas
-
-    def maiorProteinaORFs(self):
-        if (self.seq_type != "dna"):
+    def largestOrfProtein(self):
+        """
+        Método procura a maior proteina nas open reading frames (ORF).
+        :return: devolve a maior proteina das ORF.
+        """
+        if (self.seq_type != "dna"): #verifica se a sequência é do tipo DNA
             return None
-        larg = MySeq("", "protein")
-        for orf in self.orfs():
-            prot = orf.maiorProteinaER()
-            if len(prot.seq) > len(larg.seq):
-                larg = prot
-        return larg
+        larg_prot = MySeq("", "protein")
+        for orf in self.orfs(): #lê as ORF
+            prot = orf.largestOrfProtein() #define as ORF como proteinas
+            if len(prot.seq) > len(larg_prot.seq): #verifica se a proteina a ler tem um comprimento superior
+                # à maior proteina.
+                larg_prot = prot #se sim, define a proteina como a maior proteina
+        return larg_prot
 
 
 # teste
 def teste():
     seq_dna = input("Sequencia:")
     s1 = MySeq(seq_dna)
-    s1.printseq()
+    s1.printSeq()
 
-    if s1.validaER():
+    if s1.validateSeqRE():
         print("Sequencia valida")
         print("Transcricao: ")
-        s1.transcricao().printseq()
+        s1.transcription().printSeq()
         print("Complemento inverso:")
-        s1.compInverso().printseq()
+        s1.reverseComplement().printSeq()
         print("Traducao: ")
-        s1.traduzSeq().printseq()
+        s1.seqTranslation().printSeq()
         print("ORFs:")
         for orf in s1.orfs():
-            orf.printseq()
+            orf.printSeq()
         print("Maior proteina nas ORFs:")
-        s1.maiorProteinaORFs().printseq()
+        s1.largestOrfProtein().printSeq()
     else:
         print("Sequencia invalida")
 
