@@ -482,7 +482,7 @@ class MyGraph:
         """
         Método de procura de caminhos Hamiltonianos no grafo
         :param start:primeiro node
-        :return:
+        :return:caminho em lista
         """
         current = start
         visited = {start: 0} #dicionário de nodes visitados
