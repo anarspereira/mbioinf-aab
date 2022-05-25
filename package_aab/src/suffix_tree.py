@@ -4,10 +4,11 @@ Package dos algoritmos implementados em aula
 Algoritmos Avançados de Bioinformática
 """
 """
-Class: SuffixTree
+Class: SuffixTree - Árvore de sufixos
 
 É construída uma árvore de sufixos para procurar padrões.
-Começando do primeiro caracter (duvidoso, não deveria ser último?) do padrão e raiz da ST:
+A árvore contém os ramos dos sufixos do padrão TACTA$ (TACTA$, ACTA$, CTA$, TA$, A$, $).
+Começando do primeiro caracter do padrão (string) e da raiz da ST:
 - Para o caracter atual do padrão, se houver uma aresta do nó atual da ST, percorrer a aresta. Se não houver, volta à raiz;
 - Se não houver aresta, o padrão não existe e não retorna nada;
 Se todos os caracteres do padrão foram lidos, ou seja, se existe um caminho desde a raiz para os caracteres de um dado padrão, esse padrão foi encontrado.
@@ -30,14 +31,14 @@ class SuffixTree:
         """
         Método que guarda os valores nos restantes métodos.
         """
-        self.nodes = {0: (-1, {})} # tuplo de cada nodo
+        self.nodes = {0: (-1, {})} # dicionário com tuplo de cada nodo
         # 1º elemento é o nº do sufixo (para folhas) ou -1 (se não for folha)
         # 2º elemento corresponde a um dicionário
         self.num = 0
 
-    def print_tree(self):
+    def print_tree(self) -> None:
         """
-        Método para imprimir a raiz
+        Método que imprime a árvore de sufixos.
         """
         for k in self.nodes.keys():
             if self.nodes[k][0] < 0:
@@ -45,23 +46,24 @@ class SuffixTree:
             else:
                 print(k, ":", self.nodes[k][0])
 
-    def add_node(self, origin: str, symbol: str, leafnum = -1):
+    def add_node(self, origin: str, symbol: str, leafnum = -1) -> None:
         """
-        Método que adiciona os nós à árvore
-        :param origin:
-        :param symbol:
-        :param leafnum:
+        Método que adiciona os nós à árvore.
+        :param origin: node atual
+        :param symbol: caracter referente ao node que vai ser adicionado
+        :param leafnum: número da folha
         """
-        self.num += 1
+        print("Símbolo: ", symbol)
+        print("Nº da folha: ", leafnum)
+        self.num += 1 # indexa o nodo ao dicionário de nodes
         self.nodes[origin][1][symbol] = self.num
-        self.nodes[self.num] = (leafnum, {})
+        self.nodes[self.num] = (leafnum, {}) # cria novo node com o número da folha e um dicionário vazio
 
-    def add_suffix(self, p: list, sufnum):
+    def add_suffix(self, p: list, sufnum: int) -> None:
         """
         Método que adiciona sufixo
-        :param p:
-        :param sufnum:
-        :return:
+        :param p: padrão
+        :param sufnum: número do sufixo para as folhas ou -1 para não folhas
         """
         pos = 0
         node = 0
@@ -74,44 +76,43 @@ class SuffixTree:
             node = self.nodes[node][1][p[pos]]
             pos += 1
 
-    def suffix_tree_from_seq(self, text):
+    def suffix_tree_from_seq(self, text: str) -> None:
         """
         Método que cria a árvore de sufixos, adicionando um sufixo em cada iteração
-        :param text:
-        :return:
+        :param text: sequência que será adicionada à árvore
         """
-        t = text + "$"
-        for i in range(len(t)):
-            self.add_suffix(t[i:], i)
+        t = text + "$" # adiciona $ no fim do texto
+        for i in range(len(t)): # para cada índice no range do tamanho do texto (com o $),
+            self.add_suffix(t[i:], i) # adicionar sufixo em cada iteração
 
-    def find_pattern(self, pattern):
+    def find_pattern(self, pattern: str):
         """
         Método que procura padrões (trie)
-        :param pattern:
-        :return:
+        :param pattern: padrão a procurar
+        :return: #TODO: ver o que retorna
         """
-        pos = 0
-        node = 0
-        for pos in range(len(pattern)):
-            if pattern[pos] in self.nodes[node][1].keys():
-                node = self.nodes[node][1][pattern[pos]]
-            else:
-                return None
-        return self.get_leafes_below(node)
+        pos = 0 # posição
+        node = 0 # node
+        for pos in range(len(pattern)): # para cada posição no range do tamanho do padrão a procurar,
+            if pattern[pos] in self.nodes[node][1].keys(): # se o padrão, na posição em questão, estiver presente no dicionário de nodes,
+                node = self.nodes[node][1][pattern[pos]] # adicionar o padrão ao node
+            else: # se o padrão não estiver presente no dicionário de nodes,
+                return None # retorna none
+        return self.get_leafes_below(node) # no fim do ciclo for, retorna o conjunto de folhas abaixo de um dado nó
 
-    def get_leafes_below(self, node):
+    def get_leafes_below(self, node) -> list: #TODO: type hinting
         """
         Método auxiliar para colecionar todas as folhas abaixo de um dado nó
-        :param node:
-        :return:
+        :param node: node a partir do qual se procuram as informações das folhas abaixo deste
+        :return: lista de folhas abaixo de um dado nó
         """
-        res = []
-        if self.nodes[node][0] >= 0:
-            res.append(self.nodes[node][0])
-        else:
-            for k in self.nodes[node][1].keys():
-                newnode = self.nodes[node][1][k]
-                leafes = self.get_leafes_below(newnode)
+        res = [] # lista vazia que irá conter as folhas abaixo de um dado nó e que será retornada
+        if self.nodes[node][0] >= 0: # se a folha com o padrão em questão for encontrada,
+            res.append(self.nodes[node][0]) # a folha é adicionada à lista final
+        else: # caso contrário,
+            for k in self.nodes[node][1].keys(): # para cada caracter do node,
+                newnode = self.nodes[node][1][k] # é criado um novo node com esse caracter
+                leafes = self.get_leafes_below(newnode) # é criada uma folha com o novo node
                 res.extend(leafes)
         return res
 
@@ -130,7 +131,7 @@ def test2():
     st = SuffixTree()
     st.suffix_tree_from_seq(seq)
     print(st.find_pattern("TA"))
-    print(st.repeats(2, 2))
+    #print(st.repeats(2, 2))
 
 
 test()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Class: Trie
+Class: Trie - Árvore de prefixos
 """
 
 class Trie:
@@ -9,13 +9,11 @@ class Trie:
     def __init__(self):
         """
         Método que guarda os valores utilizados nos restantes métodos
-        :param nodes: guarda um dicionário de nodes
-        :param num: guarda nº do último nó criado
         """
-        self.nodes = {0: {}} # dicionário de nodes
-        self.num = 0
+        self.nodes = {0: {}} # guarda um dicionário de nodes
+        self.num = 0 # guarda nº do último nó criado
 
-    def print_trie(self):
+    def print_trie(self) -> None:
         """
         Método que imprime a trie
         """
@@ -25,14 +23,14 @@ class Trie:
     def add_node(self, origin: str, symbol: str) -> None:
         """
         Método que adiciona o nodo à trie
-        :param origin:
-        :param symbol: símbolo de cada arco que sai de um node
+        :param origin: node atual
+        :param symbol: caracter referente ao node que vai ser adicionado
         """
         self.num += 1 # indexa o nodo ao dicionário de nodes
         self.nodes[origin][symbol] = self.num
         self.nodes[self.num] = {} # cria novo node com um dicionário vazio
 
-    def add_pattern(self, p) -> None:
+    def add_pattern(self, p: list) -> None:
         """
         Método que adiciona padrão à trie
         :param p: padrão, começa sempre na root
@@ -99,10 +97,14 @@ def test():
 
 
 def test2():
+    print("Test 2")
     patterns = ["AGAGAT", "AGC", "AGTCC", "CAGAT", "CCTA", "GAGAT", "GAT", "TC"]
     t = Trie()
     t.trie_from_patterns(patterns)
+    #t.print_trie()
+    print("prefix trie match")
     print(t.prefix_trie_match("GAGATCCTA"))
+    print("trie match")
     print(t.trie_matches("GAGATCCTA"))
 
 
