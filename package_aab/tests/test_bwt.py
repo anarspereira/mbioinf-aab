@@ -7,7 +7,7 @@ class test_BWT(unittest.TestCase):
         self.bwt = BWT("TAGACAGAGA$")
 
 
-class test_BwtMethods(test_BWT):
+class test_BWtMethods(test_BWT):
     def test_runTest(self):
         x = self.bwt.bwt
         y = "AGGGTCAAAA$"
