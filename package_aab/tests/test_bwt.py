@@ -1,10 +1,10 @@
 import unittest
-from bwt import BWT
+from src.bwt import BWT
 
 
 class test_BWT(unittest.TestCase):
     def setUp(self):
-        self.btw = BTW("TAGACAGAGA$")
+        self.btw = BWT("TAGACAGAGA$")
 
 
 class test_BwtMethods(test_BWT):
