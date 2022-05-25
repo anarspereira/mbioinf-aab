@@ -46,7 +46,7 @@ class SuffixTree:
             else:
                 print(k, ":", self.nodes[k][0])
 
-    def add_node(self, origin: str, symbol: str, leafnum = -1) -> None:
+    def add_node(self, origin: int, symbol: str, leafnum = -1) -> None:
         """
         Método que adiciona os nós à árvore.
         :param origin: node atual
@@ -89,7 +89,7 @@ class SuffixTree:
         """
         Método que procura padrões (trie)
         :param pattern: padrão a procurar
-        :return: #TODO: ver o que retorna
+        :return: lista de folhas abaixo de um dado nó
         """
         pos = 0 # posição
         node = 0 # node
@@ -98,9 +98,9 @@ class SuffixTree:
                 node = self.nodes[node][1][pattern[pos]] # adicionar o padrão ao node
             else: # se o padrão não estiver presente no dicionário de nodes,
                 return None # retorna none
-        return self.get_leafes_below(node) # no fim do ciclo for, retorna o conjunto de folhas abaixo de um dado nó
+        return self.get_leaves_below(node) # no fim do ciclo for, retorna o conjunto de folhas abaixo de um dado nó
 
-    def get_leafes_below(self, node) -> list: #TODO: type hinting
+    def get_leaves_below(self, node: int) -> list:
         """
         Método auxiliar para colecionar todas as folhas abaixo de um dado nó
         :param node: node a partir do qual se procuram as informações das folhas abaixo deste
@@ -112,8 +112,8 @@ class SuffixTree:
         else: # caso contrário,
             for k in self.nodes[node][1].keys(): # para cada caracter do node,
                 newnode = self.nodes[node][1][k] # é criado um novo node com esse caracter
-                leafes = self.get_leafes_below(newnode) # é criada uma folha com o novo node
-                res.extend(leafes)
+                leaves = self.get_leaves_below(newnode) # é criada uma folha com o novo node
+                res.extend(leaves)
         return res
 
 

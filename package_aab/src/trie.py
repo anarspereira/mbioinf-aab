@@ -20,7 +20,7 @@ class Trie:
         for k in self.nodes.keys():
             print(k, "->", self.nodes[k])
 
-    def add_node(self, origin: str, symbol: str) -> None:
+    def add_node(self, origin: int, symbol: str) -> None:
         """
         Método que adiciona o nodo à trie
         :param origin: node atual
