@@ -10,7 +10,12 @@ class MotifFinding:
     caractéres ambíguos.
     """
 
-    def __init__(self, size=8, seqs=None):
+    def __init__(self, size: int = 8, seqs = None):
+        """
+
+        :param size:
+        :param seqs:
+        """
         self.motifSize = size
         if (seqs != None):
             self.seqs = seqs
