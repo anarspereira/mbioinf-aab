@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
   <component name="NewModuleRootManager">
-    <orderEntry type="jdk" jdkName="Python 3.9 (package_algoritmos)" jdkType="Python SDK" />
+    <content url="file://$MODULE_DIR$/package_aab">
+      <sourceFolder url="file://$MODULE_DIR$/package_aab/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/package_aab/tests" isTestSource="true" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="" />
-  </component>
-  <component name="TestRunnerService">
-    <option name="PROJECT_TEST_RUNNER" value="py.test" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />
