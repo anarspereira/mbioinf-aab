@@ -1,17 +1,26 @@
 # -*- coding: utf-8 -*-
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
+
+"""
+Class: Metabolic Network
+"""
 
 from MyGraph import MyGraph
 
 
 class MetabolicNetwork(MyGraph):
+    #classe que representa as redes metabólicas
 
     def __init__(self, network_type="metabolite-reaction", split_rev=False):
         MyGraph.__init__(self, {})
         self.net_type = network_type
-        self.node_types = {}
+        self.node_types = {} # dicionário com as listas de nós de cada tipo
         if network_type == "metabolite-reaction":
-            self.node_types["metabolite"] = []
-            self.node_types["reaction"] = []
+            self.node_types["metabolite"] = [] # lista com o nós do tipo "metabolite"
+            self.node_types["reaction"] = [] # lista com os nós do tipo "reaction"
         self.split_rev = split_rev
 
     def add_vertex_type(self, v, nodetype):
