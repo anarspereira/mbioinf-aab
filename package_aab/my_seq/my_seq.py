@@ -45,7 +45,7 @@ class MySeq:
         """
         return self.seq_type + ":" + self.seq
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Método que representa os objetos da classe como strings.
         :return: objetos como strings.
@@ -117,14 +117,14 @@ class MySeq:
             inv_comp = self.seq.replace("a","T").replace("g","C").replace("c","G").replace("t","A")
         return inv_comp
 
-    def rnaCodon(self):
+    def rnaCodon(self) -> list:
         """
         Método que procura os codões da sequência, i.e, devolve a sequência de três em três nucleótidos.
         """
         codon = re.findall(r'...', self.seq)
         return codon
 
-    def seqTranslation(self, initial_pos = 0):
+    def seqTranslation(self, initial_pos: int = 0):
         """
         Método que processa a tradução da sequência.
         :param initial_pos: determina a posição inicial da leitura da sequência

@@ -33,10 +33,18 @@ def printMat(mat):
 
 class MyMotifs:
     """
-
+    Classe implementada para a procura de padrões recorrentes numa sequência biológica.
+    O padrão a procurar pode ser uma sequência exata ou um consensus degenerado em que existem
+    caractéres ambíguos.
     """
 
     def __init__(self, seqs=[], pwm=[], alphabet=None):
+        """
+
+        :param seqs:
+        :param pwm:
+        :param alphabet:
+        """
         if seqs:
             self.size = len(seqs[0])
             self.seqs = seqs  # objetos classe MySeq
