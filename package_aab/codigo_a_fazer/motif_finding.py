@@ -3,6 +3,12 @@ from MyMotifs import MyMotifs
 
 
 class MotifFinding:
+    """
+    Classe implementada para a procura de padrões recorrentes numa sequência biológica,
+    que pode ser de DNA ou proteinas.
+    O padrão a procurar pode ser uma sequência exata ou um consensus degenerado em que existem
+    caractéres ambíguos.
+    """
 
     def __init__(self, size=8, seqs=None):
         self.motifSize = size
