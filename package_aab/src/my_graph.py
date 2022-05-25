@@ -29,13 +29,13 @@ class MyGraph:
 
     def get_nodes(self):
         """
-        Método que returna a lista de nodes
+        Método que retorna a lista de nodes
         """
         return list(self.graph.keys())
 
     def get_edges(self):
         """
-        Método que returna a lista de arcos
+        Método que retorna a lista de arcos
         v será a origem
         d será o destino
         """
@@ -47,7 +47,7 @@ class MyGraph:
 
     def size(self):
         """
-        Método que returna o tamanho do grafo, nomeadamente número de nodos e o número de arcos
+        Método que retorna o tamanho do grafo, nomeadamente número de nodos e o número de arcos
         """
 
         return len(self.get_nodes()), len(self.get_edges())
@@ -78,7 +78,7 @@ class MyGraph:
     def get_successors(self, v:str):
         """
         :param v: node
-        :return: returna lista de nodes sucessores do node v
+        :return: retorna lista de nodes sucessores do node v
         """
         return list(
             self.graph[v])  # needed to avoid list being overwritten of result of the function is used
@@ -86,7 +86,7 @@ class MyGraph:
     def get_predecessors(self, v:str):
         """
         :param v: node
-        :return: returna lista de nodes antecessores do node v
+        :return: retorna lista de nodes antecessores do node v
         """
         res = []
         for k in self.graph.keys():
@@ -97,7 +97,7 @@ class MyGraph:
     def get_adjacents(self, v:str):
         """
         :param v: node
-        :return: returna a lista de nodes adjacentes do node v
+        :return: retorna a lista de nodes adjacentes do node v
         """
         suc = self.get_successors(v)
         pred = self.get_predecessors(v)
@@ -111,7 +111,7 @@ class MyGraph:
         """
         Método que calcula grau de saída do node v
         :param v: node
-        :return: returna grau de saída do node
+        :return: retorna grau de saída do node
         """
         return len(self.graph[v])
 
@@ -119,7 +119,7 @@ class MyGraph:
         """
         Método que calcula grau de entrada do node v
         :param v: node
-        :return: returna grau de entrada do node
+        :return: retorna grau de entrada do node
         """
         return len(self.get_predecessors(v))
 
@@ -127,7 +127,7 @@ class MyGraph:
         """
         Método que calcula grau do node v (todos os nodes adjacentes quer percursores quer sucessores
         :param v: node
-        :return: returna grau do node v
+        :return: retorna grau do node v
         """
         return len(self.get_adjacents(v))
 
@@ -169,7 +169,7 @@ class MyGraph:
         """
         Método para calcular a media de graus
         :param deg_type: tipo de grau (entrada, saída ou ambos)
-        :return: returna a média de graus
+        :return: retorna a média de graus
         """
         degs = self.all_degrees(deg_type)
         return sum(degs.values()) / float(len(degs))
@@ -178,7 +178,7 @@ class MyGraph:
         """
         Método para calcular a probabilidade de graus
         :param deg_type: tipo de grau (entrada, saída ou ambos)
-        :return: returna a probabilidade de graus
+        :return: retorna a probabilidade de graus
         """
         degs = self.all_degrees(deg_type)
         res = {}
@@ -343,33 +343,34 @@ class MyGraph:
     ## cycles - aula 8
     def node_has_cycle(self, v):
         """
-
+        Método para verificar de o node tem ciclo, ou seja se começa e termina no mesmo nó
         :param v: node
-        :return:
+        :return: valor de "False" ou "True" se o node não tem ou tem ciclo, respetivamente
+
         """
-        l = [v] #lista de node v
+        l = [v] #vai buscar o node v e cria uma lista
         res = False
-        visited = [v] #nodes visitados
+        visited = [v] #lista de nodes visitados
         while len(l) > 0: #enquanto há elementos na lista l, queue de nodes
             node = l.pop(0) #isolar o primeiro elemento da lista l
-            for elem in self.graph[node]: #para todos os sucessores do node
-                if elem == v:   #se
+            for elem in self.graph[node]: #para cada elemento vai buscar ao grafo (dicionário) o nodo adjacente
+                if elem == v:   #se o elemento da lista corresponder ao node
                     return True
-                elif elem not in visited:
-                    l.append(elem)
-                    visited.append(elem)
-        return res
+                elif elem not in visited: #caso o elemento da lista não corresponder ao node visitado
+                    l.append(elem) #adiciona o elemento à lista l
+                    visited.append(elem) #adiciona o elemento à lista de nodes visitados
+        return res #retorna False
 
     def has_cycle(self):
         """
-
-        :return:
+        Método que verifica se o grafo tem ciclo, ou seja se o caminho é fechado
+        :return: valor de "False" ou "True" se o caminho não é fechado ou fechado, respetivamente.
         """
         res = False
-        for v in self.graph.keys():  #para cada key no grafo
-            if self.node_has_cycle(v): #se
+        for v in self.graph.keys():  #para cada node vai buscar ao grafo (dicionário) o nodo adjacente
+            if self.node_has_cycle(v): #se o node tiver ciclo
                 return True
-        return res
+        return res #retorna False
 
     ## clustering - aula 9
 
@@ -420,7 +421,7 @@ class MyGraph:
         degs_k = {} #dicionário de grau k
         for k in degs.keys(): #para cada grau
             if degs[k] in degs_k.keys(): #se cada grau k de entrada e saída, ou ambos está dentro
-                degs_k[degs[k]].append(k) #TODO
+                degs_k[degs[k]].append(k) #TODO66
             else: #senão
                 degs_k[degs[k]] = [k] #TODO
         ck = {} #dicionário da média dos coeficientes considerando nodes de grau k.
@@ -481,29 +482,40 @@ class MyGraph:
     def search_hamiltonian_path_from_node(self, start):
         """
         Método de procura de caminhos Hamiltonianos no grafo
-        :param start:primeiro node
-        :return:caminho em lista
+        :param start: node inicial
+        :return: caminho Hamiltonianos em lista
         """
-        current = start
-        visited = {start: 0} #dicionário de nodes visitados
-        path = [start] #caminho em lista
-        while len(path) < len(self.get_nodes()): #quando o caminho é menor que os nodos
-            nxt_index = visited[current] #
+        current = start #para iniciar o node atual tem de ser o node inicial
+        visited = {start: 0}
+        #dicionário em que as key é o nodo atual e os values o index
+        path = [start] #caminho em lista dos nodes
+        while len(path) < len(self.get_nodes()):
+        #enquanto o caminho for menor que o número de nodes do grafo
+            nxt_index = visited[current] #o proximo index corresponde ao index atual
             if len(self.graph[current]) > nxt_index:
+            #se o comprimento do grafo até ao node atual for superior ao próximo index
                 nxtnode = self.graph[current][nxt_index]
+                #o próximo node é o nodo adjacente ao nodo atual
                 visited[current] += 1
+                #para percorrer todos os nodes adjacente ao node atual
                 if nxtnode not in path:
+                #se o próximo node não tiver no caminho (lista)
                     path.append(nxtnode)
+                    #adicionar à lista path o próximo node
                     visited[nxtnode] = 0
+                    #adicionar o node adjacente que visitamos ao dicionário de nodos visitados
+                    #e guarda o valor como zero para ler os nodos adjacentes a partir da primeira posição
                     current = nxtnode
-            else:
+                    #o node atual passa a ser o próximo node
+            else: #se não
                 if len(path) > 1:
-                    rmvnode = path.pop()
-                    del visited[rmvnode]
-                    current = path[-1]
-                else:
+                #se houver um caminho,ou seja, o comprimento da lista for maior que um
+                    rmvnode = path.pop() #remove o node da lista path e retorna o node removido
+                    del visited[rmvnode] #elimina o node removido do diciónario de nodes visitados
+                    current = path[-1] #inicia a nova procura de um caminho a partir do ultimo node da lista
+                else: #senão
                     return None
-        return path
+        return path #caminho hamiltonianos em lista
 
     # Eulerian - aula 11
 
