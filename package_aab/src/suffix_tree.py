@@ -30,7 +30,7 @@ class SuffixTree:
         """
         Método que guarda os valores nos restantes métodos.
         """
-        self.nodes = {0: (-1, {})} # tuplo de cada nó
+        self.nodes = {0: (-1, {})} # tuplo de cada nodo
         # 1º elemento é o nº do sufixo (para folhas) ou -1 (se não for folha)
         # 2º elemento corresponde a um dicionário
         self.num = 0
@@ -45,7 +45,7 @@ class SuffixTree:
             else:
                 print(k, ":", self.nodes[k][0])
 
-    def add_node(self, origin, symbol, leafnum = -1):
+    def add_node(self, origin: str, symbol: str, leafnum = -1):
         """
         Método que adiciona os nós à árvore
         :param origin:
@@ -56,7 +56,7 @@ class SuffixTree:
         self.nodes[origin][1][symbol] = self.num
         self.nodes[self.num] = (leafnum, {})
 
-    def add_suffix(self, p, sufnum):
+    def add_suffix(self, p: list, sufnum):
         """
         Método que adiciona sufixo
         :param p:

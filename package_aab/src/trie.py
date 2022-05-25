@@ -22,7 +22,7 @@ class Trie:
         for k in self.nodes.keys():
             print(k, "->", self.nodes[k])
 
-    def add_node(self, origin, symbol):
+    def add_node(self, origin: str, symbol: str) -> None:
         """
         Método que adiciona o nodo à trie
         :param origin:
@@ -32,7 +32,7 @@ class Trie:
         self.nodes[origin][symbol] = self.num
         self.nodes[self.num] = {} # cria novo node com um dicionário vazio
 
-    def add_pattern(self, p):
+    def add_pattern(self, p) -> None:
         """
         Método que adiciona padrão à trie
         :param p: padrão, começa sempre na root
@@ -45,7 +45,7 @@ class Trie:
             node = self.nodes[node][p[position]] # define o node atual
             position += 1 # passa para a próxima posição
 
-    def trie_from_patterns(self, pats):
+    def trie_from_patterns(self, pats) -> None:
         """
         Método que adiciona padrões à trie
         :param pats: padrões
