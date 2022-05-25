@@ -9,6 +9,16 @@ Class: Automata
 """
 
 class Automata:
+    """
+    Classe implementada para a procura de padrões em sequências de nucleótidos.
+    Este método de procura de padrões processa uma sequência de forma linear,
+    realizando a sua leitra da esquerda para a direita.
+    A procura é iniciada no primeiro estado da "máquina" e no primeiro caractér do texto,
+    em cada passo da procura é considera-se o próximo caractér da sequência, procura-se o próximo
+    estado e move-se para um novo estado.
+    O número de estados é igual ao comprimento do padrão mais um.
+    O padrão é encontrado quando o padrão em procura é igual ao comprimento do padrão introduzido.
+    """
 
     def __init__(self, alphabet: str, pattern: str):
         """

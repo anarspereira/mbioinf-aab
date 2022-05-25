@@ -1,16 +1,40 @@
-def createMatZeros(nl, nc):
-    res = []
-    for _ in range(0, nl):
-        res.append([0]*nc)
-    return res
+# -*- coding: utf-8 -*-
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
+
+"""
+Class: MyMotifs
+"""
+
+def createMatZeros(line_num, col_num):
+    """
+    Método para criar uma matriz de zeros
+    :param line_num: número de linhas da matriz
+    :param col_num: número de colunas da matriz
+    :return: matriz de zeros
+    """
+    mat_z = [] #lista vazia para criar a matriz de zeros
+    for i in range(0, line_num): #por cada linha de zero ao número de linhas desejado
+        mat_z.append([0]*col_num) #adiciona um zero col_num vezes
+    return mat_z
 
 
 def printMat(mat):
-    for i in range(0, len(mat)):
-        print(mat[i])
+    """
+    Método utilizado para imprimir a matriz.
+    :param mat: matriz a imprimir
+    :return:
+    """
+    for i in range(0, len(mat)): #por cada índice da lista da matriz
+        print(mat[i]) #imprime o valor correspondente
 
 
 class MyMotifs:
+    """
+
+    """
 
     def __init__(self, seqs=[], pwm=[], alphabet=None):
         if seqs:
@@ -95,7 +119,7 @@ class MyMotifs:
 
 def test():
     # test
-    from MySeq import MySeq
+    from my_seq import MySeq
     seq1 = MySeq("AAAGTT")
     seq2 = MySeq("CACGTG")
     seq3 = MySeq("TTGGGT")
