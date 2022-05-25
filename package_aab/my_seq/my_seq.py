@@ -8,6 +8,7 @@ Algoritmos Avançados de Bioinformática
 Class:MySeq
 """
 import re
+from typing import Union
 
 class MySeq:
     """
@@ -119,7 +120,7 @@ class MySeq:
 
     def rnaCodon(self) -> list:
         """
-        Método que procura os codões da sequência, i.e, devolve a sequência de três em três nucleótidos.
+        Método que procura os codões da sequência, i.e, devolve a sequênciafbool de três em três nucleótidos.
         """
         codon = re.findall(r'...', self.seq)
         return codon
