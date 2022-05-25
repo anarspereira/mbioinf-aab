@@ -5,7 +5,7 @@ Algoritmos Avançados de Bioinformática
 """
 
 """
-Class: Metabolic Network
+Class: Metabolic Network 
 """
 
 from MyGraph import MyGraph
