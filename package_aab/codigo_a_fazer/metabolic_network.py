@@ -21,7 +21,7 @@ class MetabolicNetwork(MyGraph):
         if network_type == "metabolite-reaction":
             self.node_types["metabolite"] = [] # lista com o nós do tipo "metabolite"
             self.node_types["reaction"] = [] # lista com os nós do tipo "reaction"
-        self.split_rev = split_rev
+        self.split_rev = split_rev #
 
     def add_vertex_type(self, v, nodetype):
         self.add_vertex(v)
