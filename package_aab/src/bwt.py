@@ -13,6 +13,11 @@
 
 
 class BWT:
+    """
+    Classe para implementação do algoritmo Burrows-Hweeler onde diferentes métodos foram criados. O algoritmo é útil para
+    compactar sequências de grande tamanho, reduzindo assim o seu espaço. Além disso, é possível encontrar padrões no
+    formato de compactação de forma eficiente.
+    """
     def __init__(self, seq='', buildsufarray=False, sa=None):
         self.bwt = self.build_bwt(seq, buildsufarray)
         self.sa = sa
@@ -57,7 +62,7 @@ class BWT:
         c = "$"  # $ é primeiro carater
         occ = 1  # primeira ocorrencia
         for i in range(len(self.bwt)):  # percorrer bwt (ultima coluna)
-            pos = find_ith_occ(self.bwt, c, occ)  # saber o índice de $ na primeira ocorrência
+            pos = findithocc(self.bwt, c, occ)  # saber o índice de $ na primeira ocorrência
             c = firstcol[pos]  # na primeira coluna diz-nos a que letra corresponde
             occ = 1
             k = pos - 1
@@ -69,15 +74,16 @@ class BWT:
 
     # implementação da procura de padrões a partir da BWT
     def last_to_first(self):
-        """método para criar a tabela com a última coluna e com a primeira
-        :return: lista
+        """
+        método para criar a tabela com a última coluna e com a primeira
+        :return: lista padrões conhecidos
         """
         res = []
         firstcol = self.get_first_col()  # chamar método para obter a primeira coluna
         for i in range(len(firstcol)):  # para cada elemento da primeira coluna
             c = self.bwt[i]
             ocs = self.bwt[:i].count(c) + 1
-            val = find_ith_occ(firstcol, c, ocs)
+            val = findithocc(firstcol, c, ocs)
             res.append(val)
         return res
 
@@ -138,23 +144,23 @@ class BWT:
         res.sort()
         return res  # retornar lista com matches encontrados
 
-    @staticmethod
-    def find_ith_occ(le, elem, index):
-        """
-        método que permite descobrir a posição da i-ésima ocorrência de um símbolo
-        numa lista (retorna -1 caso não ocorra).
-        :param le: matriz em que vamos procurar
-        :param elem: elemento a procurar
-        :param index: ocorrência a procurar
-        """
-        j, k = 0, 0  # j, numero de vezes que já encontrou; k, ndex que percorre a seq.
-        while k < index and j < len(le):
-            if le[j] == elem:
-                k += 1
-                if k == index:
-                    return j
-            j += 1
-        return -1
+
+def findithocc(le, elem, index):
+    """
+    método que permite descobrir a posição da i-ésima ocorrência de um símbolo
+    numa lista (retorna -1 caso não ocorra).
+    :param le: matriz em que vamos procurar
+    :param elem: elemento a procurar
+    :param index: ocorrência a procurar
+    """
+    j, k = 0, 0  # j, numero de vezes que já encontrou; k, ndex que percorre a seq.
+    while k < index and j < len(le):
+        if le[j] == elem:
+            k += 1
+            if k == index:
+                return j
+        j += 1
+    return -1
 
 
 def test():

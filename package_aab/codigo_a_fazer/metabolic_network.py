@@ -5,36 +5,56 @@ Algoritmos Avançados de Bioinformática
 """
 
 """
-Class: Metabolic Network
+Class: Metabolic Network 
 """
 
 from MyGraph import MyGraph
 
 
 class MetabolicNetwork(MyGraph):
-    #classe que representa as redes metabólicas
+    #subclasse da classe MyGraph que representa as redes metabólicas
 
     def __init__(self, network_type="metabolite-reaction", split_rev=False):
         MyGraph.__init__(self, {})
         self.net_type = network_type
-        self.node_types = {} # dicionário com as listas de nós de cada tipo
+        self.node_types = {} # dicionário com as listas de nodos de cada tipo
         if network_type == "metabolite-reaction":
-            self.node_types["metabolite"] = [] # lista com o nós do tipo "metabolite"
-            self.node_types["reaction"] = [] # lista com os nós do tipo "reaction"
-        self.split_rev = split_rev #
+            self.node_types["metabolite"] = [] # lista com o nodos do tipo "metabolite"
+            self.node_types["reaction"] = [] # lista com os nodos do tipo "reaction"
+        self.split_rev = split_rev
+        # indica se as reações reversíveis são para serem consideradas como duas reações distintas, sendo que como é
+        # dado como 'False' consideramos que não são duas reações distintas
 
-    def add_vertex_type(self, v, nodetype):
+    def add_vertex_type(self, v : str, nodetype : str):
+        """
+        Método que adiciona o nodo v ao dicionário node_types, conferindo se este já não existe
+        :param v: nodo
+        :param nodetype: tipo do nodo
+        """
         self.add_vertex(v)
         self.node_types[nodetype].append(v)
 
-    def get_nodes_type(self, node_type):
+    def get_nodes_type(self, node_type : str) -> Union[dict,None]:
+        """
+        Método que retorna o dicionário com as listas de nodos de cada tipo
+        :param node_type: tipo de nodo
+        :return: se o node_type dado como input pertence ao dicionário node_types é retornado o mesmo
+        se não, não retorna nada
+        """
         if node_type in self.node_types:
             return self.node_types[node_type]
         else:
             return None
 
-    def load_from_file(self, filename):
-        rf = open(filename)
+    def load_from_file(self, filename : str):
+        """
+        Método que recebe e abre o ficheiro criado anteriormente com as informações da rede metabólica e
+        (onde cada reação será uma linha) e converte a informação do mesmo para ser introduzida nos
+        atributos desta subcalsse
+        :param filename: nome do ficheiro que queremos abrir
+        :return: caso haja um erro numa linha do ficheiro retorna a indicação que aquela linha é inválida
+        """
+        rf = open(filename) #abre o ficheiro
         gmr = MetabolicNetwork("metabolite-reaction")
         for line in rf:
             if ":" in line:
