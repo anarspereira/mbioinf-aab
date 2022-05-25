@@ -347,13 +347,13 @@ class MyGraph:
         :param v: node
         :return:
         """
-        l = [v]
+        l = [v] #lista de node v
         res = False
         visited = [v] #nodes visitados
         while len(l) > 0: #enquanto há elementos na lista l, queue de nodes
             node = l.pop(0) #isolar o primeiro elemento da lista l
             for elem in self.graph[node]: #para todos os sucessores do node
-                if elem == v:
+                if elem == v:   #se
                     return True
                 elif elem not in visited:
                     l.append(elem)
@@ -375,44 +375,55 @@ class MyGraph:
 
     def clustering_coef(self, v):
         """
-        Método
-        :param v:
-        :return:
+        Método de cálculo do coeficiente de clustering, para medir até que ponto cada nó está inserido num grupo coeso
+        :param v: node
+        :return: coeficente de clustering
         """
-        adjs = self.get_adjacents(v)
-        if len(adjs) <= 1: return 0.0
+        adjs = self.get_adjacents(v) #lista de nodes adjacentes
+        if len(adjs) <= 1: #se o número de nodes adjacentes for inferior ou igual a 1, só terá 1 ou 0 nodes adjacentes
+            return 0.0 #logo, não tem nodes suficientes para formar pares
         ligs = 0
-        for i in adjs:
-            for j in adjs:
-                if i != j:
-                    if j in self.graph[i] or i in self.graph[j]:
+        for i in adjs: #para cada node i (anterior) adjacente
+            for j in adjs: #para cada node j (seguinte) adjacente
+                if i != j: #se node i diferente de node j
+                    if j in self.graph[i] or i in self.graph[j]: #se node j estiver no grafo adjacente a i ou i estiver no grafo adjacente a j
                         ligs = ligs + 1
         return float(ligs) / (len(adjs) * (len(adjs) - 1))
+        #o número de pares de nodes adjacentes a dividir pelo número de pares que é possivel serem formados
 
     def all_clustering_coefs(self):
         """
         Método que calcula todos os coeficientes
-        :return:
+        :return: dicionário de coeficientes de cada node em que a key corresponde a cada node e a cada coeficiente
         """
-        ccs = {}
-        for k in self.graph.keys():
-            ccs[k] = self.clustering_coef(k)
+        ccs = {} #dicionário de coeficientes
+        for k in self.graph.keys(): #para cada key no grafo
+            ccs[k] = self.clustering_coef(k) #cálculo do coeficiente de cada node
         return ccs
 
     def mean_clustering_coef(self):
-        ccs = self.all_clustering_coefs()
-        return sum(ccs.values()) / float(len(ccs))
+        """
+        Método da média global dos coeficientes
+        :return: o valor da média de todos os coeficientes
+        """
+        ccs = self.all_clustering_coefs() #cálculo de todos os coeficientes
+        return sum(ccs.values()) / float(len(ccs)) #cálculo da média
 
     def mean_clustering_perdegree(self, deg_type="inout"):
-        degs = self.all_degrees(deg_type)
-        ccs = self.all_clustering_coefs()
-        degs_k = {}
-        for k in degs.keys():
-            if degs[k] in degs_k.keys():
-                degs_k[degs[k]].append(k)
-            else:
-                degs_k[degs[k]] = [k]
-        ck = {}
+        """
+        Método que calcula valores para a média dos coeficientes para todos os nodes
+        :param deg_type: tipo de grau (entrada, saída ou ambos)
+        :return:
+        """
+        degs = self.all_degrees(deg_type) #graus de entrada e saída, ou ambos para todos os nodes do grafo
+        ccs = self.all_clustering_coefs() #coeficiente de todos os nodes
+        degs_k = {} #dicionário de grau k
+        for k in degs.keys(): #para cada grau
+            if degs[k] in degs_k.keys(): #se cada grau k de entrada e saída, ou ambos está dentro
+                degs_k[degs[k]].append(k) #TODO
+            else: #senão
+                degs_k[degs[k]] = [k] #TODO
+        ck = {} #dicionário da média dos coeficientes considerando nodes de grau k.
         for k in degs_k.keys():
             tot = 0
             for v in degs_k[k]: tot += ccs[v]
@@ -421,40 +432,63 @@ class MyGraph:
 
     ## Hamiltonian - aula 10
 
-    def check_if_valid_path(self, p):
-        if p[0] not in self.graph.keys(): return False
-        for i in range(1, len(p)):
+    def check_if_valid_path(self, p:list) -> bool:
+        """
+        método de verificação se caminho é correto
+        :param p:caminho
+        :return: valor de "False" ou "True" se o caminho for inválido ou válido, respetivamente.
+        """
+        if p[0] not in self.graph.keys(): #se o primeiro node do caminho não pertencer ao grafo
+            return False #caminho inválido
+        for i in range(1, len(p)): #para cada nodo no caminho
             if p[i] not in self.graph.keys() or p[i] not in self.graph[p[i - 1]]:
-                return False
-        return True
+                #se o nodo não pertencer ao grafo ou não for o primeiro no caminho
+                return False #caminho inválido
+        return True #caminho válido
 
-    def check_if_hamiltonian_path(self, p):
-        if not self.check_if_valid_path(p): return False
-        to_visit = list(self.get_nodes())
-        if len(p) != len(to_visit): return False
-        for i in range(len(p)):
-            if p[i] in to_visit:
-                to_visit.remove(p[i])
-            else:
-                return False
-        if not to_visit:
-            return True
-        else:
+    def check_if_hamiltonian_path(self, p:list) -> bool:
+        """
+        Método verificação se caminho é Hamiltonian
+        :param p: caminho
+        :return: valor de "False" ou "True" se o caminho hamiltoniano for inválido ou válido, respetivamente.
+        """
+        if not self.check_if_valid_path(p): #se não for um caminho válido
             return False
+        to_visit = list(self.get_nodes()) #lista dos nodes a visitar
+        if len(p) != len(to_visit): #verifica se o número de nodes do caminho for diferente do número de nodes a visitar
+            return False
+        for i in range(len(p)): #para cada node no caminho
+        #verifica se os nodes no caminho e na lista a visitar são iguais
+            if p[i] in to_visit: #se o node tiver na lista a visitar
+                to_visit.remove(p[i]) #remove da lista dos nodes a visitar
+                return False
+        if not to_visit: #caso contrário,se os nodes na lista de nodos não tiverem presentes na lista a visitar
+            return True # é um caminho hamiltonian pois passou por todos os nodos e não existem mais nodos a visitar
+        else: #se houver nodes na lista a visitar
+            return False #não é um caminho hamiltonian
 
     def search_hamiltonian_path(self):
-        for ke in self.graph.keys():
+        """
+        Método de procura de caminhos Hamiltonianos
+        :return:
+        """
+        for ke in self.graph.keys(): #para
             p = self.search_hamiltonian_path_from_node(ke)
             if p != None:
                 return p
         return None
 
     def search_hamiltonian_path_from_node(self, start):
+        """
+        Método de procura de caminhos Hamiltonianos no grafo
+        :param start:primeiro node
+        :return:caminho em lista
+        """
         current = start
-        visited = {start: 0}
-        path = [start]
-        while len(path) < len(self.get_nodes()):
-            nxt_index = visited[current]
+        visited = {start: 0} #dicionário de nodes visitados
+        path = [start] #caminho em lista
+        while len(path) < len(self.get_nodes()): #quando o caminho é menor que os nodos
+            nxt_index = visited[current] #
             if len(self.graph[current]) > nxt_index:
                 nxtnode = self.graph[current][nxt_index]
                 visited[current] += 1

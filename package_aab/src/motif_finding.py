@@ -1,10 +1,19 @@
-from MySeq import MySeq
-from MyMotifs import MyMotifs
-
+from my_motif import MyMotifs
 
 class MotifFinding:
+    """
+    Classe implementada para a procura de padrões recorrentes numa sequência biológica,
+    que pode ser de DNA ou proteinas.
+    O padrão a procurar pode ser uma sequência exata ou um consensus degenerado em que existem
+    caractéres ambíguos.
+    """
 
-    def __init__(self, size=8, seqs=None):
+    def __init__(self, size: int = 8, seqs = None):
+        """
+
+        :param size:
+        :param seqs:
+        """
         self.motifSize = size
         if (seqs != None):
             self.seqs = seqs

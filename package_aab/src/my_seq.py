@@ -9,12 +9,13 @@ Class:MySeq
 """
 import re
 
+
 class MySeq:
     """
     Classe que apresenta os métodos que permitem a manipulação de sequências de ADN, RNA e proteínas.
     """
 
-    def __init__(self, seq: str, seq_type: str):
+    def __init__(self, seq: str, seq_type: str) -> None:
         """
         Método que guarda os valores utilizados nos restantes métodos.
         :param seq: sequência introduzida
@@ -38,13 +39,6 @@ class MySeq:
         """
         return self.seq[n]
 
-    def __str__(self) -> str:
-        """
-        Método que devolve os objetos da classe como strings.
-        :return: devolve o tipo da sequência e a sequência como strings.
-        """
-        return self.seq_type + ":" + self.seq
-
     def __repr__(self) -> str:
         """
         Método que representa os objetos da classe como strings.
@@ -63,11 +57,11 @@ class MySeq:
         Método que verifica o tipo de sequências.
         :return: devolve os possíveis caracteres das sequências.
         """
-        if (self.seq_type == "dna"):
+        if self.seq_type == "dna":
             return "ACGT"
-        elif (self.seq_type == "rna"):
+        elif self.seq_type == "rna":
             return "ACGU"
-        elif (self.seq_type == "protein"):
+        elif self.seq_type == "protein":
             return "ACDEFGHIKLMNPQRSTVWY"
         else:
             return None
@@ -77,17 +71,17 @@ class MySeq:
         Método que valida as sequência de acordo com o tipo de caracteres presentes através de expressões regulares.
         :return: valor de "False" ou "True" se as sequências forem inválidas ou válidas, respetivamente.
         """
-        if (self.seq_type == "dna"):
+        if self.seq_type == "dna":
             if re.search("[^ACTGactg]", self.seq) != None:
                 return False
             else:
                 return True
-        elif (self.seq_type == "rna"):
+        elif self.seq_type == "rna":
             if re.search("[^ACUGacug]", self.seq) != None:
                 return False
             else:
                 return True
-        elif (self.seq_type == "protein"):
+        elif self.seq_type == "protein":
             if re.search("[^ACDEFGHIKLMNPQRSTVWY_acdefghiklmnpqrstvwy]", self.seq) != None:
                 return False
             else:
@@ -100,7 +94,7 @@ class MySeq:
         Método que devolve a sequência transcrita.
         :return: sequência transcrita.
         """
-        if (self.seq_type == "dna"): #se a sequência for do tipo DNA
+        if self.seq_type == "dna": #se a sequência for do tipo DNA
             return MySeq(self.seq.upper().replace("T", "U"), "rna") #troca o nucleótido Timina (T) por Uracilo (U)
         else:
             return None
@@ -115,11 +109,11 @@ class MySeq:
         else:
             self.seq = self.seq[::-1].lower()
             inv_comp = self.seq.replace("a","T").replace("g","C").replace("c","G").replace("t","A")
-        return inv_comp
+        return MySeq(inv_comp, "dna")
 
     def rnaCodon(self) -> list:
         """
-        Método que procura os codões da sequência, i.e, devolve a sequência de três em três nucleótidos.
+        Método que procura os codões da sequência, i.e, devolve a sequênciafbool de três em três nucleótidos.
         """
         codon = re.findall(r'...', self.seq)
         return codon

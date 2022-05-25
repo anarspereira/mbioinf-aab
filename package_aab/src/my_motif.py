@@ -33,24 +33,22 @@ def printMat(mat):
 
 class MyMotifs:
     """
-    Classe implementada para a procura de padrões recorrentes numa sequência biológica.
-    O padrão a procurar pode ser uma sequência exata ou um consensus degenerado em que existem
-    caractéres ambíguos.
+
     """
 
     def __init__(self, seqs=[], pwm=[], alphabet=None):
         """
-
-        :param seqs:
-        :param pwm:
-        :param alphabet:
+        Método que guarda os valores utilizados nos restantes métodos.
+        :param seqs: lista de sequências introduzidas
+        :param pwm: matriz de probabilidades
+        :param alphabet: tipo de caracteres da sequência introduzida
         """
-        if seqs:
-            self.size = len(seqs[0])
-            self.seqs = seqs  # objetos classe MySeq
-            self.alphabet = seqs[0].alfabeto()
-            self.doCounts()
-            self.createPWM()
+        if seqs: #se o parâmetro introduzido for uma sequência, tem de ter as seguintes instâncias.
+            self.size = len(seqs[0]) #comprimento da sequência
+            self.seqs = seqs  #objetos da classe MySeq
+            self.alphabet = seqs[0].checkSeqType() #objeto da classe Myseq, verifica o tipo
+            self.doCounts() #matriz de contagens dos caractéres das sequências
+            self.createPWM() #matriz de PWN (matriz de probabilidades)
         else:
             self.pwm = pwm
             self.size = len(pwm[0])
@@ -60,6 +58,10 @@ class MyMotifs:
         return self.size
 
     def doCounts(self):
+        """
+        Método
+        :return:
+        """
         self.counts = createMatZeros(len(self.alphabet), self.size)
         for s in self.seqs:
             for i in range(self.size):
