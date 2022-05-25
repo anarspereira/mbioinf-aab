@@ -5,7 +5,7 @@ from my_seq import MySeq
 class test_MySeq(unittest.TestCase):
     def setUp(self):
         self.seq_dna1 = MySeq("ACTGCCAT", "dna")
-        self.seq_dna2 = MySeq("ATGCATGAATGTAGATAGATGTGCCC", "dna")
+        self.seq_dna2 = MySeq("ATGCATGAAT", "dna")
         self.seq_dna3 = MySeq("ATGCCCGCTTT", "dna")
         self.seq_rna1 = MySeq("ACUGCCGUCAUA", "rna")
         self.seq_rna2 = MySeq("AGAAUGACGACCUAG", "rna")
@@ -34,9 +34,9 @@ class test_MySeq(unittest.TestCase):
 
     def test_orfs(self):
         X = self.seq_dna2.orfs()
-        Y = ["ATGCATGAATGTAGA", "ATGTGCCC"]
-        self.assertEqual(X, Y)
-        #"AttributeError: 'str' object has no attribute 'seqTranslation'"
+        Y = ["MHE", "CMN", "A_", "IHA", "FMH", "SC"]
+        for test, truth in zip(X, Y):
+            self.assertEqual(str(test), truth)
 
     def test_allProtein(self):
         X = self.seq_prot1.allProtein()

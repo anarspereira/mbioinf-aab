@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$/package_aab">
       <sourceFolder url="file://$MODULE_DIR$/package_aab/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/package_aab/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/package_aab/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
