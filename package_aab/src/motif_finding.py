@@ -1,3 +1,4 @@
+from my_seq import MySeq
 from my_motif import MyMotifs
 
 class MotifFinding:
