@@ -7,6 +7,8 @@ Algoritmos Avançados de Bioinformática
 """
 Class:MySeq
 """
+import re
+
 class MySeq:
     """
     Classe que apresenta os métodos que permitem a manipulação de sequências de ADN, RNA e proteínas.
@@ -30,7 +32,7 @@ class MySeq:
 
     def __getitem__(self, n: int) -> str:
         """
-        Método dunder em python que permite devolver um item a partir da indexação de uma instância.
+        Método que permite devolver um item a partir da indexação de uma instância.
         :param n: posição do valor que queremos devolver.
         :return:
         """
@@ -42,6 +44,13 @@ class MySeq:
         :return: devolve o tipo da sequência e a sequência como strings.
         """
         return self.seq_type + ":" + self.seq
+
+    def __repr__(self):
+        """
+        Método que representa os objetos da classe como strings.
+        :return: objetos como strings.
+        """
+        return str(self.seq)
 
     def printSeq(self):
         """
@@ -68,7 +77,6 @@ class MySeq:
         Método que valida as sequência de acordo com o tipo de caracteres presentes através de expressões regulares.
         :return: valor de "False" ou "True" se as sequências forem inválidas ou válidas, respetivamente.
         """
-        import re
         if (self.seq_type == "dna"):
             if re.search("[^ACTGactg]", self.seq) != None:
                 return False
@@ -104,17 +112,17 @@ class MySeq:
         """
         if (self.seq_type != "dna"): #aplica o método apenas para sequências do tipo DNA
             return None
-        comp = ""
-        for c in self.seq.upper(): #troca os nucleótidos pelas bases complementares.
-            if (c == 'A'):
-                comp = "T" + comp
-            elif (c == "T"):
-                comp = "A" + comp
-            elif (c == "G"):
-                comp = "C" + comp
-            elif (c == "C"):
-                comp = "G" + comp
-        return MySeq(comp)
+        else:
+            self.seq = self.seq[::-1].lower()
+            inv_comp = self.seq.replace("a","T").replace("g","C").replace("c","G").replace("t","A")
+        return inv_comp
+
+    def rnaCodon(self):
+        """
+        Método que procura os codões da sequência, i.e, devolve a sequência de três em três nucleótidos.
+        """
+        codon = re.findall(r'...', self.seq)
+        return codon
 
     def seqTranslation(self, initial_pos = 0):
         """
@@ -185,7 +193,7 @@ class MySeq:
         Método que procura a sequência proteíca mais comprida.
         :return: maior sequência proteíca.
         """
-        if (self.seq_type != "protein"): #determina se o tipo de sequência é uma proteína
+        if (self.seq_type != "prot"): #determina se o tipo de sequência é uma proteína
             return None
         seq_amin = self.seq.upper()
         current_prot = "" #string vazia para guardar a sequência que está a ser lida
@@ -202,12 +210,12 @@ class MySeq:
                     current_prot += aa #adiciona o aminoácido à lista
         return MySeq(longest_prot, "protein")
 
-    def todasProteinas(self):
+    def allProtein(self):
         """
         Método que procura todas as proteínas encontradas na sequência.
         :return:
         """
-        if (self.seq_type != "protein"): #verifica se a sequência é uma proteína
+        if (self.seq_type != "prot"): #verifica se a sequência é uma proteína
             return None
         seq_aa = self.seq.upper()
         current_prot = [] #lista da proteína a ser lida
@@ -230,39 +238,12 @@ class MySeq:
         Método procura a maior proteina nas open reading frames (ORF).
         :return: devolve a maior proteina das ORF.
         """
-        if (self.seq_type != "dna"): #verifica se a sequência é do tipo DNA
+        if (self.seq_type != "prot"): #verifica se a sequência é do tipo proteina
             return None
-        larg_prot = MySeq("", "protein")
+        larg_prot = MySeq("", "prot")
         for orf in self.orfs(): #lê as ORF
             prot = orf.largestOrfProtein() #define as ORF como proteinas
             if len(prot.seq) > len(larg_prot.seq): #verifica se a proteina a ler tem um comprimento superior
                 # à maior proteina.
                 larg_prot = prot #se sim, define a proteina como a maior proteina
         return larg_prot
-
-
-# teste
-def teste():
-    seq_dna = input("Sequencia:")
-    s1 = MySeq(seq_dna)
-    s1.printSeq()
-
-    if s1.validateSeqRE():
-        print("Sequencia valida")
-        print("Transcricao: ")
-        s1.transcription().printSeq()
-        print("Complemento inverso:")
-        s1.reverseComplement().printSeq()
-        print("Traducao: ")
-        s1.seqTranslation().printSeq()
-        print("ORFs:")
-        for orf in s1.orfs():
-            orf.printSeq()
-        print("Maior proteina nas ORFs:")
-        s1.largestOrfProtein().printSeq()
-    else:
-        print("Sequencia invalida")
-
-
-if __name__ == "__main__":
-    teste()
