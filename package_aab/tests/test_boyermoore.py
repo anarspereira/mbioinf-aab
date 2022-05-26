@@ -10,7 +10,7 @@ class test_BoyerMoore(unittest.TestCase):
 
     def test_search_pattern(self):
         x = self.boyermoore.search_pattern("ATAGAACCAATGAACCATGATGAACCATGGATACCCAACCACC")
-        y = 'n sei'
+        y = [5, 13, 23, 37]
         self.assertEqual(x, y)
 
 

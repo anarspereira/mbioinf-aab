@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # este algoritmo é baseado em duas regras:
 # – Bad-character rule
 # – Good suffix rule
@@ -23,6 +24,7 @@ class BoyerMoore:
 
     def process_bcr(self):
         """
+        Implementação de Bad Caracter rule.
         Método em que um dicionário é criado com todos os símbolos possíveis (occ) como chaves, e os valores definem
         a posição mais à direita em que o símbolo aparece no padrão (-1 significa que não ocorre). Isto permite que
         rapidamente se calcule o número de posições para seguir a procura de acordo com o mismatch no padrão (valor para
@@ -37,17 +39,19 @@ class BoyerMoore:
 
     def process_gsr(self):
         """
+        Método que implementa a regra Good Suffix Rule.
         O resultado deste método é gerar uma lista que mantém o número das posições que podem ser seguidas em frente,
         dependendo na posição do mismatch no padrão.
         """
         i = len(self.pattern)  # atribuir i o tamanho do padrão
         j = len(self.pattern) + 1  # atribuir j o tamanho do padrão +1
 
-        self.f[i] = j  # ?
+        self.f[i] = j  # altera o ultimo elemento da lista f para o valor de f
 
         while i > 0:  # enquanto cobrir o tamanho do padrão
             while j <= len(self.pattern) and self.pattern[i - 1] != self.pattern[j - 1]: # enquanto j for menor ou igual
                 # ao tamanho do padrão e o padrão[i-1] e padrão[j-1] forem diferentes
+                # vai definir lista s, em S que significa o numero de casas que se pode avançar caso não encaixe no pattern
                 if self.s[j] == 0:  # se o valor da lista for igual a 0 no indice j:
                     self.s[j] = j - i  # para esse índice subtrair o valor do tamanho do padrão+1 - iteraçao no padrao(i)
                 j = self.f[j]  #
@@ -56,7 +60,9 @@ class BoyerMoore:
             self.f[i] = j
         j = self.f[0]
 
-        for i in range(0, len(self.pattern)):  # para cada i entre 0 e o tamanho do padrão:
+        for i in range(0, len(self.pattern)):  # quando ta definido como 0 alterar para o valor de j mais recente que
+            # significa passar o restante da cadeia.
+            # para cada i entre 0 e o tamanho do padrão:
             if self.s[i] == 0:  # se o valor de s[i] estiver igual a 0:
                 self.s[i] = j  # novo valor de s[i] passa a ser j
             if i == j:
@@ -64,24 +70,23 @@ class BoyerMoore:
 
     def search_pattern(self, text) -> list[int]:
         """
-        Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe com contém o
+        Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe que contém o
         padrão e seu alfabeto.
         :param text: string do texto onde queremos procurar o nosso padrão
         :return: lista com os índices onde começa o padrão
         """
-        i = 0 #define a posição inicial como zero
-        res = [] #lisra vazia de resultados
-        while i <= (len(text) - len(self.pattern)): #enquanto
-            j = len(self.pattern) - 1
-            while (j >= 0) and (self.pattern[j] == text[j+i]):
+        i = 0  # define a posição inicial como zero
+        res = []  # lista vazia de resultados
+        while i <= (len(text) - len(self.pattern)):  # para começar a correr a sequencia e enquanto a posição na seq
+            # não ultrapassa o limite da search grid
+            j = len(self.pattern) - 1  # define o tamanho do padrão
+            while (j >= 0) and (self.pattern[j] == text[j+i]):  # continuar o ciclo enquanto esta a dar match
+                # (direita para esquerda)
                 j -= 1
-            if j < 0:
+            if j < 0:  # se j for -1 (full match)
                 res.append(i)
-                i = i + self.s[0]
+                i = i + self.s[0]  # avançar para i posições à frente como j<0 significa que deu match com um padrão
             else:
-                c = text[j+i]
-                i += max(self.s[j+1], (j-self.occ[c]))
+                c = text[j+i]  # carater de missmatch
+                i += max(self.s[j+1], (j-self.occ[c]))  # avançar uma sequencia dependo do GSR e BCR
         return res
-
-
-
