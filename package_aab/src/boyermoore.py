@@ -1,7 +1,16 @@
+# este algoritmo é baseado em duas regras:
+# – Bad-character rule
+# – Good suffix rule
+# o bad-character rule, diz podemos avançar para a próxima ocorrência no padrão do símbolo que falhou (ou se não
+# existir avançar o máximo possível).
+# good suffix rule: Avançar para a próxima ocorrência no padrão da parte que fez match antes de falhar. Se o sufixo não
+# ocorre de novo, pode avançar tamanho do padrão.
+
 class BoyerMoore:
     def __int__(self, alphabet, pattern):
         self.alphabet = alphabet
         self.pattern = pattern
+
         self.occ = {}
 
         # criação de listas de tamanho igual ao padrão +1. cada uma inicializada com zeros
@@ -13,14 +22,26 @@ class BoyerMoore:
         self.process_gsr()
 
     def process_bcr(self):
+        """
+        Método em que um dicionário é criado com todos os símbolos possíveis (occ) como chaves, e os valores definem
+        a posição mais à direita em que o símbolo aparece no padrão (-1 significa que não ocorre). Isto permite que
+        rapidamente se calcule o número de posições para seguir a procura de acordo com o mismatch no padrão (valor para
+        o símbolo no dicionário). De salientar que este valor pode ser negativo, isto quer dizer que a regra neste caso
+        não é útil e é ignorada na próxima iteração.
+        """
         for s in self.alphabet:  # a cada carater no alfabeto:
             self.occ[s] = -1  # atribuir o valor de -1 no dicionario para cada carater. chave s e valor -1
         for j in range(0, len(self.pattern)):  # para cada indice (j) entre 0 e o tamanho do padrão:
-            self.occ[self.pattern[j]] = j  # procurar entrada no dicionário e atualizar o valor para o indice j
+            c = self.pattern[j]  #
+            self.occ[c] = j  # procurar entrada no dicionário e atualizar o valor para o indice j
 
     def process_gsr(self):
-        i = len(self.pattern)  # inicializar i com tamanho do padrão
-        j = len(self.pattern) + 1  # inicializar j com tamanho do padrão +1
+        """
+        O resultado deste método é gerar uma lista que mantém o número das posições que podem ser seguidas em frente,
+        dependendo na posição do mismatch no padrão.
+        """
+        i = len(self.pattern)  # atribuir i o tamanho do padrão
+        j = len(self.pattern) + 1  # atribuir j o tamanho do padrão +1
 
         self.f[i] = j  # ?
 
@@ -42,9 +63,9 @@ class BoyerMoore:
                 j = self.f[j]
 
     def search_pattern(self, text) -> list[int]:
-        """
-
-        :param text:
+        """ Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe com contém o
+        padrão e seu alfabeto.
+        :param text: string do texto onde queremos procurar o nosso padrão
         :return: lista com valores
         """
         i = 0
@@ -58,8 +79,15 @@ class BoyerMoore:
                 i += self.s[0]
             else:
                 c = text[j+i]
-                i = max(self.s[j+1],(j-self.occ[c]))
+                i = max(self.s[j+1], (j-self.occ[c]))
+                print(res)
         return res
 
-##
+
+def test():
+    bm = BoyerMoore('ACTG', 'AT')
+    bm.search_pattern("ATAGAACCAATGAACCATGATGAACCATGGATACCCAACCACC")
+
+
+test()
 
