@@ -7,11 +7,11 @@
 # ocorre de novo, pode avançar tamanho do padrão.
 
 class BoyerMoore:
-    def __int__(self, alphabet, pattern):
+    def __init__(self, alphabet, pattern):
         self.alphabet = alphabet
         self.pattern = pattern
 
-        self.occ = {}
+        self.occ = {} # criar dicionário
 
         # criação de listas de tamanho igual ao padrão +1. cada uma inicializada com zeros
         self.f = [0] * (len(self.pattern) + 1)  # lista do tamanho do padrão, inicializada a 0
@@ -63,31 +63,25 @@ class BoyerMoore:
                 j = self.f[j]
 
     def search_pattern(self, text) -> list[int]:
-        """ Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe com contém o
+        """
+        Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe com contém o
         padrão e seu alfabeto.
         :param text: string do texto onde queremos procurar o nosso padrão
-        :return: lista com valores
+        :return: lista com os índices onde começa o padrão
         """
-        i = 0
-        res = []
-        while i <= len(text) - len(self.pattern):
+        i = 0 #define a posição inicial como zero
+        res = [] #lisra vazia de resultados
+        while i <= (len(text) - len(self.pattern)): #enquanto
             j = len(self.pattern) - 1
             while (j >= 0) and (self.pattern[j] == text[j+i]):
                 j -= 1
             if j < 0:
                 res.append(i)
-                i += self.s[0]
+                i = i + self.s[0]
             else:
                 c = text[j+i]
-                i = max(self.s[j+1], (j-self.occ[c]))
-                print(res)
+                i += max(self.s[j+1], (j-self.occ[c]))
         return res
 
 
-def test():
-    bm = BoyerMoore('ACTG', 'AT')
-    bm.search_pattern("ATAGAACCAATGAACCATGATGAACCATGGATACCCAACCACC")
-
-
-test()
 
