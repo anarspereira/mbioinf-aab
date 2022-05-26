@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
 
 """
-Class: Trie - Árvore de prefixos
-Permite fazer o pré-processamento de um conjunto de padrões.
-Os símbolos de um dado alfabeto estão associados aos arcos de uma árvore.
-A trie é construída a partir de um conjunto de padrões, começando pelo node da raiz e iterando
-cada padrão, adicionando os nós necessários para que a árvore contenha o caminho desde a raiz até à folha,
-representando o padrão.
+Class: Trie
 """
 
 class Trie:
-
+    """
+    Classe responsável pela implementação da árvore de prefixos que permite fazer o pré-processamento
+    de um conjunto de padrões. Os símbolos de um dado alfabeto estão associados aos arcos de uma árvore.
+    A trie é construída a partir de um conjunto de padrões, começando pelo node da raiz e iterando
+    cada padrão, adicionando os nós necessários para que a árvore contenha o caminho desde a raiz até à folha,
+    representando o padrão.
+    """
+    #TODO -> pôr os métodos em camelcase, se a documentação da classe foi copiada, reescrever
     def __init__(self):
         """
         Método que guarda os valores utilizados nos restantes métodos
@@ -109,22 +115,22 @@ class Trie:
 def test():
     patterns = ["GAT", "CCT", "GAG"]
     t = Trie()
-    t.trie_from_patterns(patterns)
+    # t.trie_from_patterns(patterns)
     t.print_trie()
-
-
-def test2():
-    print("Test 2")
-    patterns = ["AGAGAT", "AGC", "AGTCC", "CAGAT", "CCTA", "GAGAT", "GAT", "TC"]
-    t = Trie()
-    t.trie_from_patterns(patterns)
-    #t.print_trie()
-    print("prefix trie match")
-    print(t.prefix_trie_match("GAGATCCTA"))
-    print("trie match")
-    print(t.trie_matches("GAGATCCTA"))
+#
+#
+# def test2():
+#     print("Test 2")
+#     patterns = ["AGAGAT", "AGC", "AGTCC", "CAGAT", "CCTA", "GAGAT", "GAT", "TC"]
+#     t = Trie()
+#     t.trie_from_patterns(patterns)
+#     #t.print_trie()
+#     print("prefix trie match")
+#     print(t.prefix_trie_match("GAGATCCTA"))
+#     print("trie match")
+#     print(t.trie_matches("GAGATCCTA"))
 
 
 test()
-print()
-test2()
+# print()
+# test2()

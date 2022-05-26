@@ -6,6 +6,8 @@
 # existir avançar o máximo possível).
 # good suffix rule: Avançar para a próxima ocorrência no padrão da parte que fez match antes de falhar. Se o sufixo não
 # ocorre de novo, pode avançar tamanho do padrão.
+from typing import List
+
 
 class BoyerMoore:
     def __init__(self, alphabet, pattern):
@@ -68,7 +70,7 @@ class BoyerMoore:
             if i == j:
                 j = self.f[j]
 
-    def search_pattern(self, text) -> list[int]:
+    def search_pattern(self, text) -> List[int]:
         """
         Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe que contém o
         padrão e seu alfabeto.

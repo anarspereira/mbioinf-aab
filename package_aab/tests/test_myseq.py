@@ -12,42 +12,42 @@ class test_MySeq(unittest.TestCase):
         self.seq_prot1 = MySeq("MFLSP_AHMGREQTG_", "prot")
 
     def test_transcricao(self):
-        X = self.seq_dna1.transcription()
-        Y = "ACUGCCAU"
-        self.assertEqual(str(X), Y)
+        x = self.seq_dna1.transcription()
+        y = "ACUGCCAU"
+        self.assertEqual(str(x), y)
 
 
     def test_reverseComplement(self):
-        X = self.seq_dna1.reverseComplement()
-        Y = "ATGGCAGT"
-        self.assertEqual(str(X), Y)
+        x = self.seq_dna1.reverseComplement()
+        y = "ATGGCAGT"
+        self.assertEqual(str(x), y)
 
     def test_rnaCodon(self):
-        X = self.seq_rna1.rnaCodon()
-        Y = ["ACU", "GCC", "GUC", "AUA"]
-        self.assertEqual(X, Y)
+        x = self.seq_rna1.rnaCodon()
+        y = ["ACU", "GCC", "GUC", "AUA"]
+        self.assertEqual(x, y)
 
     def test_seqTranslation(self):
-        X = self.seq_dna3.seqTranslation()
-        Y = "MPA"
-        self.assertEqual(str(X), Y)
+        x = self.seq_dna3.seqTranslation()
+        y = "MPA"
+        self.assertEqual(str(x), y)
 
     def test_orfs(self):
-        X = self.seq_dna2.orfs()
-        Y = ["MHE", "CMN", "A_", "IHA", "FMH", "SC"]
-        for test, truth in zip(X, Y):
+        x = self.seq_dna2.orfs()
+        y = ["MHE", "CMN", "A_", "IHA", "FMH", "SC"]
+        for test, truth in zip(x, y):
             self.assertEqual(str(test), truth)
 
     def test_allProtein(self):
-        X = self.seq_prot1.allProtein()
-        Y = ["MFLSP", "MGREQTG"]
-        for test, truth in zip(X, Y):
+        x = self.seq_prot1.allProtein()
+        y = ["MFLSP", "MGREQTG"]
+        for test, truth in zip(x, y):
             self.assertEqual(str(test), truth)
 
     def test_longestProteinSeq(self):
-        X = self.seq_prot1.longestProteinSeq()
-        Y = "MGREQTG"
-        self.assertEqual(str(X), Y)
+        x = self.seq_prot1.longestProteinSeq()
+        y = "MGREQTG"
+        self.assertEqual(str(x), y)
 
 
 if __name__ == '__main__':
