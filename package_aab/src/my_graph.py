@@ -399,7 +399,8 @@ class MyGraph:
         """
         ccs = {} #dicionário de coeficientes
         for k in self.graph.keys(): #para cada key no grafo
-            ccs[k] = self.clustering_coef(k) #cálculo do coeficiente de cada node
+            ccs[k] = self.clustering_coef(k)
+            #cálculo do coeficiente de cada node, valor adicionado no dicionário ccs
         return ccs
 
     def mean_clustering_coef(self):
@@ -414,21 +415,23 @@ class MyGraph:
         """
         Método que calcula valores para a média dos coeficientes para todos os nodes
         :param deg_type: tipo de grau (entrada, saída ou ambos)
-        :return:
+        :return: retorna o dicionário de nodos e o respetivo coeficiente
         """
         degs = self.all_degrees(deg_type) #graus de entrada e saída, ou ambos para todos os nodes do grafo
-        ccs = self.all_clustering_coefs() #coeficiente de todos os nodes
+        ccs = self.all_clustering_coefs() #coeficiente de todos os nodes em dicionário
         degs_k = {} #dicionário de grau k
-        for k in degs.keys(): #para cada grau
+        for k in degs.keys(): #para cada k grau
             if degs[k] in degs_k.keys(): #se cada grau k de entrada e saída, ou ambos está dentro
-                degs_k[degs[k]].append(k) #TODO66
+                degs_k[degs[k]].append(k) #o que estava no dicionário passa para uma lista
             else: #senão
-                degs_k[degs[k]] = [k] #TODO
+                degs_k[degs[k]] = [k] #grau k permanece no dicionário
         ck = {} #dicionário da média dos coeficientes considerando nodes de grau k.
-        for k in degs_k.keys():
+        for k in degs_k.keys():#para cada k grau
             tot = 0
             for v in degs_k[k]: tot += ccs[v]
+            #para grau v calcular o total, o coeficiente de todos os nodos (dicionário)
             ck[k] = float(tot) / len(degs_k[k])
+            #calcula o coeficiente a dividir pelo comprimento do grau k
         return ck
 
     ## Hamiltonian - aula 10
@@ -471,9 +474,9 @@ class MyGraph:
     def search_hamiltonian_path(self):
         """
         Método de procura de caminhos Hamiltonianos
-        :return:
+        :return: p ou None
         """
-        for ke in self.graph.keys(): #para
+        for ke in self.graph.keys():
             p = self.search_hamiltonian_path_from_node(ke)
             if p != None:
                 return p
