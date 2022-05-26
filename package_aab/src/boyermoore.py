@@ -1,4 +1,4 @@
-class BoyerMoore
+class BoyerMoore:
     def __int__(self, alphabet, pattern):
         self.alphabet = alphabet
         self.pattern = pattern
