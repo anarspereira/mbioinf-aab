@@ -170,34 +170,3 @@ class MyMotifs:
                 max_p = p #define p como a probabilidade máxima
                 max_ind = k #define o índice atual como o índice com o valor máximo de probabilidade
         return max_ind
-
-
-def test():
-    # test
-    from my_seq import MySeq
-    seq1 = MySeq("AAAGTT", "dna")
-    seq2 = MySeq("CACGTG", "dna")
-    seq3 = MySeq("TTGGGT", "dna")
-    seq4 = MySeq("GACCGT", "dna")
-    seq5 = MySeq("AACCAT", "dna")
-    seq6 = MySeq("AACCCT", "dna")
-    seq7 = MySeq("AAACCT", "dna")
-    seq8 = MySeq("GAACCT", "dna")
-    lseqs = [seq1, seq2, seq3, seq4, seq5, seq6, seq7, seq8]
-    motifs = MyMotifs(lseqs)
-    # printMat(motifs.mat_count)
-    # printMat(motifs.pwm)
-    # print(motifs.consensus())
-    # print(motifs.alphabet)
-    #
-    print(motifs.probabSeq("AAACCT"))
-    # print(motifs.probabSeq("ATACAG"))
-    print(motifs.probAllPositions("AAACCT"))
-    # print(motifs.mostProbableSeq("CTATAAACCTTACATC"))
-    #
-    # print(motifs.consensus())
-    # print(motifs.maskedConsensus())
-
-
-if __name__ == '__main__':
-    test()
