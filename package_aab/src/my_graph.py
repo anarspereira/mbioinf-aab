@@ -7,13 +7,12 @@ Algoritmos Avançados de Bioinformática
 """
 Class: MyGraph
 """
-
 ## keys are vertices
 ## values of the dictionary represent the list of adjacent vertices of the key nodo
 
 class MyGraph:
 
-    def __init__(self, g ={}):
+    def __init__(self, g: dict = {}):
         """
         Método que guarda os valores utilizados nos restantes métodos
         :param g: é um dicionário em que guarda o grafo
@@ -83,7 +82,7 @@ class MyGraph:
         return list(
             self.graph[v])  # needed to avoid list being overwritten of result of the function is used
 
-    def get_predecessors(self, v:str):
+    def get_predecessors(self, v:str) -> list:
         """
         :param v: nodo
         :return: retorna lista de nodos antecessores do nodo v
@@ -131,7 +130,7 @@ class MyGraph:
         """
         return len(self.get_adjacents(v))
 
-    def all_degrees(self, deg_type="inout"):
+    def all_degrees(self, deg_type="inout") -> dict:
         """
         Método do cálculo de graus de entrada e saída, ou ambos para todos os nodos do grafo
         :param deg_type: tipo de grau (entrada, saída ou ambos)
@@ -313,7 +312,7 @@ class MyGraph:
         :param nodo: nodo
         :return: retorna a média das distâncias entre os nodos atingidos
         """
-        dist = self.reachable_with_dist(nodo) #a lista correspondente aos nodos atingidos e a respetiva distância
+        dist = self.reachable_with_dist(node) #a lista correspondente aos nodos atingidos e a respetiva distância
         if len(dist) == 0: #se o número de nodos atingidos for igual a 0
             return 0.0 #retorna 0
         s = 0.0
@@ -507,12 +506,12 @@ class MyGraph:
                 #para percorrer todos os nodos adjacente ao nodo atual
                 if nxtnode not in path:
                 #se o próximo nodo não tiver no caminho (lista)
-                    path.append(nxtnodo)
+                    path.append(nxtnode)
                     #adicionar à lista path o próximo nodo
-                    visited[nxtnodo] = 0
+                    visited[nxtnode] = 0
                     #adicionar o nodo adjacente que visitamos ao dicionário de nodos visitados
                     #e guarda o valor como zero para ler os nodos adjacentes a partir da primeira posição
-                    current = nxtnodo
+                    current = nxtnode
                     #o nodo atual passa a ser o próximo nodo
             else: #se não
                 if len(path) > 1:

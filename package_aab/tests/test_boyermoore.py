@@ -1,7 +1,8 @@
 import unittest
 from boyermoore import BoyerMoore
 
-class test_BoyerMoore(unittest.TestCase):
+
+class TestBoyerMoore(unittest.TestCase):
 
     def setUp(self):
         alphabet = 'ACTG'
@@ -16,4 +17,3 @@ class test_BoyerMoore(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
