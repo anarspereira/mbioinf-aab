@@ -51,7 +51,7 @@ class Trie:
         while position < len(p): # enquanto a primeira posição do padrão for menor que o tamanho do padrão,
             if p[position] not in self.nodes[node].keys(): # se a posição inicial do padrão não estiver presente nas keys do dicionário de nodes (se ainda não existir um arco),
                 self.add_node(node, p[position]) # é criado um novo nó (que irá ser considerado o current node e a iteração começará deste nó e não do anterior)
-            node = self.nodes[node][p[position]] # se existir um arco na posição inicial do padrão, esse passará a ser o current node e a iteração começará deste nó
+            node = self.nodes[node][p[position]] # se existir um arco na posição inicial do padrão, esse passará a ser o current node e a iteração começará deste node
             position += 1 # incrementar i em 1 para seguir para a próxima iteração, repetindo o processo até chegar ao fim do padrão (len(p)).
 
     def trie_from_patterns(self, pats: list) -> None:
