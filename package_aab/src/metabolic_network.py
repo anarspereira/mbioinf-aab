@@ -15,6 +15,12 @@ class MetabolicNetwork(MyGraph):
     #subclasse da classe MyGraph que representa as redes metabólicas
 
     def __init__(self, network_type="metabolite-reaction", split_rev=False):
+        """
+        Método construtor que guarda os valores utilizados nos restantes métodos
+        :param network_type: tipo de rede metabólica
+        :param split_rev: indica se as reações reversíveis são para serem consideradas como duas reações distintas
+        (se True), sendo que como é dado como 'False' consideramos que não são duas reações distintas
+        """
         MyGraph.__init__(self, {})
         self.net_type = network_type
         self.node_types = {} #dicionário com as listas de nodos de cada tipo
@@ -22,8 +28,6 @@ class MetabolicNetwork(MyGraph):
             self.node_types["metabolite"] = [] #lista com o nodos do tipo "metabolite"
             self.node_types["reaction"] = [] #lista com os nodos do tipo "reaction"
         self.split_rev = split_rev
-        # indica se as reações reversíveis são para serem consideradas como duas reações distintas, sendo que como é
-        ## dado como 'False' consideramos que não são duas reações distintas
 
     def add_vertex_type(self, v : str, nodetype : str):
         """
@@ -122,7 +126,7 @@ class MetabolicNetwork(MyGraph):
         else: #se não tiver um tipo atribuído
             self.graph = {} #dicionário que guarda o grafo
 
-    def convert_metabolite_net(self, graph_mr):
+    def convert_metabolite_net(self, graph_mr : dict):
         """
         Método para converter o graph_mr num grafo de uma rede metabólica do tipo "metabolite-metabolite"
         :param graph_mr: grafo da rede metabólica do tipo metabolite-reaction
@@ -137,7 +141,7 @@ class MetabolicNetwork(MyGraph):
                     if m != s2: #se o nodo do tipo "metabolite" for diferente do sucessor do sucessor
                         self.add_edge(m,s2) #adiciona o arco entre os dois metabolitos, o m e o s2
 
-    def convert_reaction_graph(self, graph_mr):
+    def convert_reaction_graph(self, graph_mr : dict):
         """
         Método para converter o graph_mr num grafo de uma rede metabólica do tipo "reaction-reaction"
         :param graph_mr: grafo da rede metabólica do tipo metabolite-reaction

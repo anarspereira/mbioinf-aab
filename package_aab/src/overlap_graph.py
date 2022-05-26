@@ -1,27 +1,52 @@
 # -*- coding: utf-8 -*-
 
-from MyGraph import MyGraph
+from my_graph import MyGraph
 
 
 class OverlapGraph(MyGraph):
+    #sub-classe da classe MyGraph para representar grafos orientados
 
-    def __init__(self, frags):
-        MyGraph.__init__(self, {})
-        self.create_overlap_graph(frags)
+    #def __init__(self, frags):
+    #    MyGraph.__init__(self, {})
+    #    self.create_overlap_graph(frags)
 
-    #    def __init__(self, frags, reps = False):
-    #        if reps: self.create_overlap_graph_with_reps(frags)
-    #        else: self.create_overlap_graph(frags)
-    #        self.reps = reps
+    def __init__(self, frags, reps = False):
+        if reps:
+            self.create_overlap_graph_with_reps(frags)
+        else:
+            self.create_overlap_graph(frags)
+        self.reps = reps
 
     ## create overlap graph from list of sequences (fragments)
     def create_overlap_graph(self, frags):
+        """
+        Método para criar o grafo de overlap (repetições)
+        :param frags: fragmentos ou conjuntos de sequencias
+        :return:
+        """
+        for seq in frags:
+            self.add_vertex(seq) #adiciona vertices
+        for seq in frags: #para seq
+            suf = suffix(seq)
+            for seq2 in frags:
+                if prefix(seq2) == suf:
+                    self.add_edge(seq, seq2) #adiciona arcos
 
-    # ...
 
-    def create_overlap_graph_with_reps(self, frags):  # caso de replicas de fragmentos
-
-    # ...
+    def create_overlap_graph_with_reps(self, frags):
+    #repetição caso exista repetição de elementos
+        idnum = 1
+        for seq in frags:
+            self.add_vertex(seq + "-" + str(idnum))
+            idnum = idnum + 1
+        idnum = 1
+        for seq in frags:
+            suf = suffix(seq)
+            for seq2 in frags:
+                if prefix(seq2) == suf:
+                    for x in self.get_instances(seq2):
+                        self.add_edge(seq + "-" + str(idnum), x)
+            idnum = idnum + 1
 
     def get_instances(self, seq):
         res = []
@@ -37,10 +62,13 @@ class OverlapGraph(MyGraph):
             return node
 
     def seq_from_path(self, path):
-        # ...
+        if not self.check_if_hamiltonian_path(path):
+            return None
+        seq = self.get_seq(path[0])
+        for i in range(1, len(path)):
+            nxt = self.get_seq(path[i])
+            seq += nxt[-1]
         return seq
-
-    # auxiliary
 
 
 def composition(k, seq):
@@ -81,10 +109,10 @@ def test3():
 def test4():
     frags = ["ATA", "ACC", "ATG", "ATT", "CAT", "CAT", "CAT", "CCA", "GCA", "GGC", "TAA", "TCA", "TGG", "TTC", "TTT"]
     ovgr = OverlapGraph(frags, True)
-    path = [’ACC−2’, ’CCA−8’, ’CAT−5’, ’ATG−3’]
+    path = ['ACC−2', 'CCA−8', 'CAT−5', 'ATG−3']
     print(ovgr.check_if_valid_path(path))
     print(ovgr.check_if_hamiltonian_path(path))
-    path2 = [’ACC−2’, ’CCA−8’, ’CAT−5’, ’ATG−3’, ’TGG−13’, ’GGC−10’, ’GCA−9’, ’CAT−6’, ’ATT−4’, ’TTT−15’, ’TTC−14’, ’TCA−12’, ’CAT−7’, ’ATA−1’, ’TAA−11’]
+    path2 = ['ACC−2', 'CCA−8', 'CAT−5', 'ATG−3', 'TGG−13', 'GGC−10', 'GCA−9', 'CAT−6', 'ATT−4', 'TTT−15´, ’TTC−14’, ’TCA−12’, ’CAT−7’, ’ATA−1’, ’TAA−11’]
     print(ovgr.check_if_valid_path(path2))
     print(ovgr.check_if_hamiltonian_path(path2))
     print(ovgr.seq_from_path(path2))
