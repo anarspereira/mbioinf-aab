@@ -149,8 +149,8 @@ class MyMotifs:
         :return: lista de probabilidades do padrão ocorrer a cada subsequência
         """
         subseq_prob = [] #lista vazia para devolver as probabilidades
-        for i in range(len(seq)-self.size + 1): #percorre a totalidade da sequência menos o comprimento do padrão
-            #mais um
+        for i in range(len(seq)-self.size + 1): #percorre a da sequência introduzida menos o comprimento do padrão
+            #mais um, de forma a percorrer a totalidade da sequência até atingir uma correspondência
             subseq_prob.append(self.probabSeq(seq)) #adiciona a probabilidade em lista
         return subseq_prob
 
@@ -159,16 +159,17 @@ class MyMotifs:
         Método implementado para determinar a sub-sequência com a maior probabilidade de corresponder
         ao padrão em procura.
         :param seq: sequência introduzida
-        :return:
+        :return: o índice da sub-sequência com maior probabilidade de correpsonder ao padrão em procura.
         """
-        maximo = -1.0
-        maxind = -1
+        max_p = - 1.0 #define o mínimo da probabilidade
+        max_ind = - 1 #define o valor inicial para o índice com maior probabilidade
         for k in range(len(seq)-self.size): #percorre a totalidade da sequência menos o comprimento do padrão
-            p = self.probabSeq(seq[k:k + self.size])
-            if(p > maximo):
-                maximo = p
-                maxind = k
-        return maxind
+            p = self.probabSeq(seq[k:k + self.size]) #calcula a probabilidade de encontra na sub-sequência correspondete
+            #da posição k à posição k + o comprimento da
+            if (p > max_p): #se a probabilidade for superior a - 1.0
+                max_p = p #define p como a probabilidade máxima
+                max_ind = k #define o índice atual como o índice com o valor máximo de probabilidade
+        return max_ind
 
 
 def test():
