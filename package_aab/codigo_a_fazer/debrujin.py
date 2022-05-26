@@ -11,27 +11,52 @@ Class: DeBruijn Graph
 from my_graph import MyGraph
 
 class DeBruijnGraph(MyGraph):
+    # subclasse da classe MyGraph que representa os grafos DeBruijn
 
-    def __init__(self, frags):
+    def __init__(self, frags : lst):
+        """
+        Método construtor que guarda os valores utilizados nos restantes métodos
+        :param frags: um conjunto de sequências (fragmentos)
+        """
         MyGraph.__init__(self, {})
         self.create_deBruijn_graph(frags)
 
-    def add_edge(self, o, d):
-        if o not in self.graph.keys():
-            self.add_vertex(o)
-        if d not in self.graph.keys():
-            self.add_vertex(d)
-        self.graph[o].append(d)
+    def add_edge(self, o : str, d : str):
+        """
+        Método que adiciona o arco (o,d) ao grafo, verificando se este já não existe no mesmo
+        :param o: vertice do arco
+        :param d: vertice do arco
+        """
+        if o not in self.graph.keys(): #se o vertice o não existe
+            self.add_vertex(o) #adiciona vertice o
+        if d not in self.graph.keys(): #se o vertice d não existe
+            self.add_vertex(d) #adiciona vertice d
+        self.graph[o].append(d) #adiciona o valor d ao vertice o
 
-    def in_degree(self, v):
-        res = 0
-        for k in self.graph.keys():
-            if v in self.graph[k]:
-                res += self.graph[k].count(v)
-        return res
+    def in_degree(self, v : str) -> int:
+        """
+        Método que calcula o grau de entrada do nodo v
+        :param v: nodo
+        :return: retorna grau de entrada do nodo
+        """
+        count_nodes = 0
+        for k in self.graph.keys(): #para cada nodo no grafo
+            if v in self.graph[k]: #se o nodo v se encontra no grafo
+                count_nodes += self.graph[k].count(v) #contagem dos nodos presentes no grafo
+        return count_nodes
 
-    def create_deBruijn_graph(self, frags):
-        pass
+    def create_deBruijn_graph(self, frags : lst):
+        """
+        Método que implementa a criação de um grafo DeBruijn
+        :param frags: um conjunto de sequências (fragmentos)
+        :return:
+        """
+        for seq in frags: #para cada sequência em fragmentos
+            suffix_seq = suffix(seq) #cria o sufixo da sequência
+            self.add_vertex(suf) #adiciona o sufixo como um vertice ao grafo
+            prefix_seq = prefix(seq) #cria o prefixo da sequência
+            self.add_vertex(pref) #adiciona o prefixo como um vertice ao grafo
+            self.add_edge(pref,suf) #adiciona o arco entre o prefixo e o sufixo
 
     def seq_from_path(self, path):
         seq = path[0]
