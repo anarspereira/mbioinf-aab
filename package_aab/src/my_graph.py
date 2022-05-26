@@ -9,7 +9,7 @@ Class: MyGraph
 """
 
 ## keys are vertices
-## values of the dictionary represent the list of adjacent vertices of the key node
+## values of the dictionary represent the list of adjacent vertices of the key nodo
 
 class MyGraph:
 
@@ -29,7 +29,7 @@ class MyGraph:
 
     def get_nodes(self):
         """
-        Método que retorna a lista de nodes
+        Método que retorna a lista de nodos
         """
         return list(self.graph.keys())
 
@@ -42,7 +42,7 @@ class MyGraph:
         edges = []
         for v in self.graph.keys():
             for d in self.graph[v]:
-                edges.append((v, d))
+                edges.append((v, d)) #os arcos são o par de nodos anterior e seguinte
         return edges
 
     def size(self):
@@ -54,8 +54,8 @@ class MyGraph:
 
     def add_vertex(self, v:str):
         """
-        Método que adiciona o node v ao grafo
-        :param v: node
+        Método que adiciona o nodo v ao grafo
+        :param v: nodo
         """
         if v not in self.graph.keys(): #caso v não exista, é adicionado
             self.graph[v] = []
@@ -77,16 +77,16 @@ class MyGraph:
 
     def get_successors(self, v:str):
         """
-        :param v: node
-        :return: retorna lista de nodes sucessores do node v
+        :param v: nodo
+        :return: retorna lista de nodos sucessores do nodo v
         """
         return list(
             self.graph[v])  # needed to avoid list being overwritten of result of the function is used
 
     def get_predecessors(self, v:str):
         """
-        :param v: node
-        :return: retorna lista de nodes antecessores do node v
+        :param v: nodo
+        :return: retorna lista de nodos antecessores do nodo v
         """
         res = []
         for k in self.graph.keys():
@@ -96,8 +96,8 @@ class MyGraph:
 
     def get_adjacents(self, v:str):
         """
-        :param v: node
-        :return: retorna a lista de nodes adjacentes do node v
+        :param v: nodo
+        :return: retorna a lista de nodos adjacentes do nodo v
         """
         suc = self.get_successors(v)
         pred = self.get_predecessors(v)
@@ -109,31 +109,31 @@ class MyGraph:
 
     def out_degree(self, v:str):
         """
-        Método que calcula grau de saída do node v
-        :param v: node
-        :return: retorna grau de saída do node
+        Método que calcula grau de saída do nodo v
+        :param v: nodo
+        :return: retorna grau de saída do nodo
         """
         return len(self.graph[v])
 
     def in_degree(self, v:str):
         """
-        Método que calcula grau de entrada do node v
-        :param v: node
-        :return: retorna grau de entrada do node
+        Método que calcula grau de entrada do nodo v
+        :param v: nodo
+        :return: retorna grau de entrada do nodo
         """
         return len(self.get_predecessors(v))
 
     def degree(self, v:str):
         """
-        Método que calcula grau do node v (todos os nodes adjacentes quer percursores quer sucessores
-        :param v: node
-        :return: retorna grau do node v
+        Método que calcula grau do nodo v (todos os nodos adjacentes quer percursores quer sucessores
+        :param v: nodo
+        :return: retorna grau do nodo v
         """
         return len(self.get_adjacents(v))
 
     def all_degrees(self, deg_type="inout"):
         """
-        Método do cálculo de graus de entrada e saída, ou ambos para todos os nodes do grafo
+        Método do cálculo de graus de entrada e saída, ou ambos para todos os nodos do grafo
         :param deg_type: tipo de grau (entrada, saída ou ambos)
         :return: retorna os graus
         """
@@ -195,52 +195,56 @@ class MyGraph:
 
     def reachable_bfs(self, v):
         """
-        Método de nodes atingíveis a partir de v, de cima para baixo (largura)
-        :param v: node
-        :return: retorna lista de nodes atingíveis a partir de v
+        Método de nodos atingíveis a partir de v
+        começa pelo nó de origem, depois visita todos os seus sucessores, seguindo-se pelos seus sucessores,
+        até que todos os nós possíveis sejam visitados
+        :param v: nodo
+        :return: retorna lista de nodos atingíveis a partir de v
         """
         l = [v]
         res = []
         while len(l) > 0: #enquanto há elementos na lista l
-            node = l.pop(0) #isolar o primeiro elemento da lista l, queue de nodes
-            if node != v: res.append(node) #se o node for diferente de v, adicionar o node a res
-            for elem in self.graph[node]: #para todos os sucessores do node
-                if elem not in res and elem not in l and elem != node: #se não existe em res e em l e se o sucessor é diferente do node
+            node = l.pop(0) #isolar o primeiro elemento da lista l, queue de nodos
+            if node != v: res.append(node) #se o nodo for diferente de v, adicionar o nodo a res
+            for elem in self.graph[node]: #para todos os sucessores do nodo
+                if elem not in res and elem not in l and elem != node: #se não existe em res e em l e se o sucessor é diferente do nodo
                     l.append(elem) #adicionar na queue para verificar
         return res
 
     def reachable_dfs(self, v):
         """
-        Método de nodes atingíveis a partir de v, da esquerda para a direita (em profundidade)
-        :param v: node
-        :return: retorna lista de nodes atingíveis a partir de v
+        Método de nodos atingíveis a partir de v, da esquerda para a direita (em profundidade)
+        começa pelo nó de origem, explora o seu primeiro sucessor, depois o seu primeiro sucessor,
+        até que não seja possível qualquer outra exploração, e depois volta para explorar mais alternativas.
+        :param v: nodo
+        :return: retorna lista de nodos atingíveis a partir de v
         """
         l = [v]
         res = []
-        while len(l) > 0: #enquanto há elementos na lista l, queue de nodes
+        while len(l) > 0: #enquanto há elementos na lista l, queue de nodos
             node = l.pop(0) #isolar o primeiro elemento da lista l
-            if node != v: res.append(node) #se o node for diferente de v, adicionar o node a res
+            if node != v: res.append(node) #se o nodo for diferente de v, adicionar o nodo a res
             s = 0 #ira ser usado para criar o stack//é reposto a 0 antes do loop for abaixo
-            for elem in self.graph[node]: #para todos os sucessores do node
-                if elem not in res and elem not in l: #se não existe em res e em l e se o sucessor é diferente do node
+            for elem in self.graph[node]: #para todos os sucessores do nodo
+                if elem not in res and elem not in l: #se não existe em res e em l e se o sucessor é diferente do nodo
                     l.insert(s, elem) #cria um stack/vai voltar a verificar o mais recente/insere no inicio da lista
                     s += 1 #caso haja multiplos sucessores, o s vai aumentar de forma a colocar as proximas iteraçoes na posicao depois da iteraçao anterior (stack)
         return res
 
     def distance(self, s, d):
         """
-        Método da distância entre nodes s e d
-        :param s: node s
-        :param d: node d
-        :return: retorna a distancia entre nodes s e d
+        Método da distância entre nodos s e d
+        :param s: nodo s
+        :param d: nodo d
+        :return: retorna a distancia entre nodos s e d
         """
         if s == d:
             return 0
-        l = [(s, 0)] #lista com os tuplos do node e a distância
-        visited = [s] #nodes visitados
-        while len(l) > 0: #enquanto há elementos na lista l, queue de nodes
+        l = [(s, 0)] #lista com os tuplos do nodo e a distância
+        visited = [s] #nodos visitados
+        while len(l) > 0: #enquanto há elementos na lista l, queue de nodos
             node, dist = l.pop(0) #isolar o primeiro elemento da lista l
-            for elem in self.graph[node]: #para todos os sucessores do node
+            for elem in self.graph[node]: #para todos os sucessores do nodo
                 if elem == d: #
                     return dist + 1 #
                 elif elem not in visited:
@@ -250,15 +254,15 @@ class MyGraph:
 
     def shortest_path(self, s, d):
         """
-        Método do caminho mais curto entre s e d (lista de nodes por onde passa)
-        :param s: node s
-        :param d: node d
-        :return: retorna caminho mais curto, lista de nodes por onde passa
+        Método do caminho mais curto entre s e d (lista de nodos por onde passa)
+        :param s: nodo s
+        :param d: nodo d
+        :return: retorna caminho mais curto, lista de nodos por onde passa
         """
         if s == d:
             return []
-        l = [(s, [])] #lista com um tuplo com o node e o caminho
-        visited = [s] #nodes visitados
+        l = [(s, [])] #lista com um tuplo com o nodo e o caminho
+        visited = [s] #nodos visitados
         while len(l) > 0:
             node, preds = l.pop(0)
             for elem in self.graph[node]:
@@ -271,50 +275,50 @@ class MyGraph:
 
     def reachable_with_dist(self, s):
         """
-        Método de nodes atingíveis a partir de v com respetiva distância
-        :param s: node
-        :return: retorna lista de pares nodes, distância
+        Método de nodos atingíveis a partir de v com respetiva distância
+        :param s: nodo
+        :return: retorna lista de pares nodos, distância
         """
         res = []
         l = [(s, 0)] #lista com tuplo com s e distância de s a s(0)
-        while len(l) > 0: #enquanto há elementos na lista l, queue de nodes
+        while len(l) > 0: #enquanto há elementos na lista l, queue de nodos
             node, dist = l.pop(0)
-            if node != s: #se node for diferente de s
+            if node != s: #se nodo for diferente de s
                 res.append((node, dist)) #não conta o s
             for elem in self.graph[node]: #para
                 if not is_in_tuple_list(l, elem) and not is_in_tuple_list(res, elem): # vai ver se o p se encontra dentro de l ou em res
                     l.append((elem, dist + 1)) # adiciona o vertice a que se liga
         return res
 
-    ## mean distances ignoring unreachable nodes
+    ## mean distances ignoring unreachable nodos
     def mean_distances(self):
         """
-        Método da média das distâncias de cada node
-        :return: retorna a distância média e a proporção de nodes atingíveis
+        Método da média das distâncias de cada nodo
+        :return: retorna a distância média e a proporção de nodos atingíveis
         """
         total = 0
-        num_reachable = 0 #números de nodes no grafo ligados entre si
+        num_reachable = 0 #números de nodos no grafo ligados entre si
         for k in self.graph.keys(): #para cada key no grafo
-            distsk = self.reachable_with_dist(k) #a lista correspondente aos nodes atingidos e a respetiva distância
+            distsk = self.reachable_with_dist(k) #a lista correspondente aos nodos atingidos e a respetiva distância
             for _, dist in distsk: #para cada carater correspondente à distancia na lista
                 total += dist #vamos adicionar o valor da distância ao total
-            num_reachable += len(distsk) #número de nodes atingidos vai corresponder ao comprimento da lista (distsk) obtida, todas as ligações entre todos os nodes
-        meandist = float(total) / num_reachable #média da distancia total dos nodes atingidos
-        n = len(self.get_nodes()) #número total de nodes
+            num_reachable += len(distsk) #número de nodos atingidos vai corresponder ao comprimento da lista (distsk) obtida, todas as ligações entre todos os nodos
+        meandist = float(total) / num_reachable #média da distancia total dos nodos atingidos
+        n = len(self.get_nodes()) #número total de nodos
         return meandist, float(num_reachable) / ((n - 1) * n)
 
     def closeness_centrality(self, node):
         """
-        Método de aproximação média das distâncias percorridas entre os nodes atingidos
-        :param node: node
-        :return: retorna a média das distâncias entre os nodes atingidos
+        Método de aproximação média das distâncias percorridas entre os nodos atingidos
+        :param nodo: nodo
+        :return: retorna a média das distâncias entre os nodos atingidos
         """
-        dist = self.reachable_with_dist(node) #a lista correspondente aos nodes atingidos e a respetiva distância
-        if len(dist) == 0: #se o número de nodes atingidos for igual a 0
+        dist = self.reachable_with_dist(nodo) #a lista correspondente aos nodos atingidos e a respetiva distância
+        if len(dist) == 0: #se o número de nodos atingidos for igual a 0
             return 0.0 #retorna 0
         s = 0.0
-        for d in dist: s += d[1] #para cada node é adicionada a distância à variavel s
-        return len(dist) / s #TODO: Rever
+        for d in dist: s += d[1] #para cada nodo é adicionada a distância à variavel s
+        return len(dist) / s #todos os nodos a dividir pela distancia total TODO: Rever
 
     def highest_closeness(self, top=10):
         """
@@ -324,7 +328,7 @@ class MyGraph:
         """
         cc = {} #dicionário
         for k in self.graph.keys(): #para cada key no grafo
-            cc[k] = self.closeness_centrality(k) #node corresponde
+            cc[k] = self.closeness_centrality(k) #nodo corresponde
         ord_cl = sorted(list(cc.items()), key=lambda x: x[1], reverse=True)
         return list(map(lambda x: x[0], ord_cl[:top]))
 
@@ -343,32 +347,32 @@ class MyGraph:
     ## cycles - aula 8
     def node_has_cycle(self, v):
         """
-        Método para verificar de o node tem ciclo, ou seja se começa e termina no mesmo nó
-        :param v: node
-        :return: valor de "False" ou "True" se o node não tem ou tem ciclo, respetivamente
+        Método para verificar de o nodo tem ciclo, ou seja se começa e termina no mesmo nó
+        :param v: nodo
+        :return: valor de "False" ou "True" se o nodo não tem ou tem ciclo, respetivamente
 
         """
-        l = [v] #vai buscar o node v e cria uma lista
+        l = [v] #vai buscar o nodo v e cria uma lista
         res = False
-        visited = [v] #lista de nodes visitados
-        while len(l) > 0: #enquanto há elementos na lista l, queue de nodes
+        visited = [v] #lista de nodos visitados
+        while len(l) > 0: #enquanto há elementos na lista l, queue de nodos
             node = l.pop(0) #isolar o primeiro elemento da lista l
             for elem in self.graph[node]: #para cada elemento vai buscar ao grafo (dicionário) o nodo adjacente
-                if elem == v:   #se o elemento da lista corresponder ao node
+                if elem == v:   #se o elemento da lista corresponder ao nodo
                     return True
-                elif elem not in visited: #caso o elemento da lista não corresponder ao node visitado
+                elif elem not in visited: #caso o elemento da lista não corresponder ao nodo visitado
                     l.append(elem) #adiciona o elemento à lista l
-                    visited.append(elem) #adiciona o elemento à lista de nodes visitados
+                    visited.append(elem) #adiciona o elemento à lista de nodos visitados
         return res #retorna False
 
     def has_cycle(self):
         """
         Método que verifica se o grafo tem ciclo, ou seja se o caminho é fechado
-        :return: valor de "False" ou "True" se o caminho não é fechado ou fechado, respetivamente.
+        :return: valor de "False" ou "True" se o caminho é não fechado ou fechado, respetivamente.
         """
         res = False
-        for v in self.graph.keys():  #para cada node vai buscar ao grafo (dicionário) o nodo adjacente
-            if self.node_has_cycle(v): #se o node tiver ciclo
+        for v in self.graph.keys():  #para cada nodo vai buscar ao grafo (dicionário) o nodo adjacente
+            if self.node_has_cycle(v): #se o nodo tiver ciclo
                 return True
         return res #retorna False
 
@@ -377,30 +381,30 @@ class MyGraph:
     def clustering_coef(self, v):
         """
         Método de cálculo do coeficiente de clustering, para medir até que ponto cada nó está inserido num grupo coeso
-        :param v: node
+        :param v: nodo
         :return: coeficente de clustering
         """
-        adjs = self.get_adjacents(v) #lista de nodes adjacentes
-        if len(adjs) <= 1: #se o número de nodes adjacentes for inferior ou igual a 1, só terá 1 ou 0 nodes adjacentes
-            return 0.0 #logo, não tem nodes suficientes para formar pares
+        adjs = self.get_adjacents(v) #lista de nodos adjacentes
+        if len(adjs) <= 1: #se o número de nodos adjacentes for inferior ou igual a 1, só terá 1 ou 0 nodos adjacentes
+            return 0.0 #logo, não tem nodos suficientes para formar pares
         ligs = 0
-        for i in adjs: #para cada node i (anterior) adjacente
-            for j in adjs: #para cada node j (seguinte) adjacente
-                if i != j: #se node i diferente de node j
-                    if j in self.graph[i] or i in self.graph[j]: #se node j estiver no grafo adjacente a i ou i estiver no grafo adjacente a j
+        for i in adjs: #para cada nodo i (anterior) adjacente
+            for j in adjs: #para cada nodo j (seguinte) adjacente
+                if i != j: #se nodo i diferente de nodo j
+                    if j in self.graph[i] or i in self.graph[j]: #se nodo j estiver no grafo adjacente a i ou i estiver no grafo adjacente a j
                         ligs = ligs + 1
         return float(ligs) / (len(adjs) * (len(adjs) - 1))
-        #o número de pares de nodes adjacentes a dividir pelo número de pares que é possivel serem formados
+        #o número de pares de nodos adjacentes a dividir pelo número de pares que é possivel serem formados
 
     def all_clustering_coefs(self):
         """
         Método que calcula todos os coeficientes
-        :return: dicionário de coeficientes de cada node em que a key corresponde a cada node e a cada coeficiente
+        :return: dicionário de coeficientes de cada nodo em que a key corresponde a cada nodo e a cada coeficiente
         """
         ccs = {} #dicionário de coeficientes
         for k in self.graph.keys(): #para cada key no grafo
             ccs[k] = self.clustering_coef(k)
-            #cálculo do coeficiente de cada node, valor adicionado no dicionário ccs
+            #cálculo do coeficiente de cada nodo, valor adicionado no dicionário ccs
         return ccs
 
     def mean_clustering_coef(self):
@@ -413,19 +417,19 @@ class MyGraph:
 
     def mean_clustering_perdegree(self, deg_type="inout"):
         """
-        Método que calcula valores para a média dos coeficientes para todos os nodes
+        Método que calcula valores para a média dos coeficientes para todos os nodos
         :param deg_type: tipo de grau (entrada, saída ou ambos)
         :return: retorna o dicionário de nodos e o respetivo coeficiente
         """
-        degs = self.all_degrees(deg_type) #graus de entrada e saída, ou ambos para todos os nodes do grafo
-        ccs = self.all_clustering_coefs() #coeficiente de todos os nodes em dicionário
+        degs = self.all_degrees(deg_type) #graus de entrada e saída, ou ambos para todos os nodos do grafo
+        ccs = self.all_clustering_coefs() #coeficiente de todos os nodos em dicionário
         degs_k = {} #dicionário de grau k
         for k in degs.keys(): #para cada k grau
             if degs[k] in degs_k.keys(): #se cada grau k de entrada e saída, ou ambos está dentro
                 degs_k[degs[k]].append(k) #o que estava no dicionário passa para uma lista
             else: #senão
                 degs_k[degs[k]] = [k] #grau k permanece no dicionário
-        ck = {} #dicionário da média dos coeficientes considerando nodes de grau k.
+        ck = {} #dicionário da média dos coeficientes considerando nodos de grau k.
         for k in degs_k.keys():#para cada k grau
             tot = 0
             for v in degs_k[k]: tot += ccs[v]
@@ -442,7 +446,7 @@ class MyGraph:
         :param p:caminho
         :return: valor de "False" ou "True" se o caminho for inválido ou válido, respetivamente.
         """
-        if p[0] not in self.graph.keys(): #se o primeiro node do caminho não pertencer ao grafo
+        if p[0] not in self.graph.keys(): #se o primeiro nodo do caminho não pertencer ao grafo
             return False #caminho inválido
         for i in range(1, len(p)): #para cada nodo no caminho
             if p[i] not in self.graph.keys() or p[i] not in self.graph[p[i - 1]]:
@@ -458,17 +462,17 @@ class MyGraph:
         """
         if not self.check_if_valid_path(p): #se não for um caminho válido
             return False
-        to_visit = list(self.get_nodes()) #lista dos nodes a visitar
-        if len(p) != len(to_visit): #verifica se o número de nodes do caminho for diferente do número de nodes a visitar
+        to_visit = list(self.get_nodes()) #lista dos nodos a visitar
+        if len(p) != len(to_visit): #verifica se o número de nodos do caminho for diferente do número de nodos a visitar
             return False
-        for i in range(len(p)): #para cada node no caminho
-        #verifica se os nodes no caminho e na lista a visitar são iguais
-            if p[i] in to_visit: #se o node tiver na lista a visitar
-                to_visit.remove(p[i]) #remove da lista dos nodes a visitar
+        for i in range(len(p)): #para cada nodo no caminho
+        #verifica se os nodos no caminho e na lista a visitar são iguais
+            if p[i] in to_visit: #se o nodo tiver na lista a visitar
+                to_visit.remove(p[i]) #remove da lista dos nodos a visitar
                 return False
-        if not to_visit: #caso contrário,se os nodes na lista de nodos não tiverem presentes na lista a visitar
+        if not to_visit: #caso contrário,se os nodos na lista de nodos não tiverem presentes na lista a visitar
             return True # é um caminho hamiltonian pois passou por todos os nodos e não existem mais nodos a visitar
-        else: #se houver nodes na lista a visitar
+        else: #se houver nodos na lista a visitar
             return False #não é um caminho hamiltonian
 
     def search_hamiltonian_path(self):
@@ -476,7 +480,7 @@ class MyGraph:
         Método de procura de caminhos Hamiltonianos
         :return: p ou None
         """
-        for ke in self.graph.keys():
+        for ke in self.graph.keys(): #para cada key no grafo
             p = self.search_hamiltonian_path_from_node(ke)
             if p != None:
                 return p
@@ -485,37 +489,37 @@ class MyGraph:
     def search_hamiltonian_path_from_node(self, start):
         """
         Método de procura de caminhos Hamiltonianos no grafo
-        :param start: node inicial
+        :param start: nodo inicial
         :return: caminho Hamiltonianos em lista
         """
-        current = start #para iniciar o node atual tem de ser o node inicial
+        current = start #para iniciar o nodo atual tem de ser o nodo inicial
         visited = {start: 0}
         #dicionário em que as key é o nodo atual e os values o index
-        path = [start] #caminho em lista dos nodes
+        path = [start] #caminho em lista dos nodos
         while len(path) < len(self.get_nodes()):
-        #enquanto o caminho for menor que o número de nodes do grafo
+        #enquanto o caminho for menor que o número de nodos do grafo
             nxt_index = visited[current] #o proximo index corresponde ao index atual
             if len(self.graph[current]) > nxt_index:
-            #se o comprimento do grafo até ao node atual for superior ao próximo index
+            #se o comprimento do grafo até ao nodo atual for superior ao próximo index
                 nxtnode = self.graph[current][nxt_index]
-                #o próximo node é o nodo adjacente ao nodo atual
+                #o próximo nodo é o nodo adjacente ao nodo atual
                 visited[current] += 1
-                #para percorrer todos os nodes adjacente ao node atual
+                #para percorrer todos os nodos adjacente ao nodo atual
                 if nxtnode not in path:
-                #se o próximo node não tiver no caminho (lista)
-                    path.append(nxtnode)
-                    #adicionar à lista path o próximo node
-                    visited[nxtnode] = 0
-                    #adicionar o node adjacente que visitamos ao dicionário de nodos visitados
+                #se o próximo nodo não tiver no caminho (lista)
+                    path.append(nxtnodo)
+                    #adicionar à lista path o próximo nodo
+                    visited[nxtnodo] = 0
+                    #adicionar o nodo adjacente que visitamos ao dicionário de nodos visitados
                     #e guarda o valor como zero para ler os nodos adjacentes a partir da primeira posição
-                    current = nxtnode
-                    #o node atual passa a ser o próximo node
+                    current = nxtnodo
+                    #o nodo atual passa a ser o próximo nodo
             else: #se não
                 if len(path) > 1:
                 #se houver um caminho,ou seja, o comprimento da lista for maior que um
-                    rmvnode = path.pop() #remove o node da lista path e retorna o node removido
-                    del visited[rmvnode] #elimina o node removido do diciónario de nodes visitados
-                    current = path[-1] #inicia a nova procura de um caminho a partir do ultimo node da lista
+                    rmvnode = path.pop() #remove o nodo da lista path e retorna o nodo removido
+                    del visited[rmvnode] #elimina o nodo removido do diciónario de nodos visitados
+                    current = path[-1] #inicia a nova procura de um caminho a partir do ultimo nodo da lista
                 else: #senão
                     return None
         return path #caminho hamiltonianos em lista
@@ -526,57 +530,93 @@ class MyGraph:
     def check_balanced_node(self, node):
         """
         Método de verificação se um nó é balanceado
-        :param node:
-        :return:
+        :param node: nodo
+        :return: valor de "False" ou "True", se o grau de entrada do nodo não for igual/ou for igual ao grau de saída do nodo, respetivamente
         """
         return self.in_degree(node) == self.out_degree(node)
 
     def check_balanced_graph(self):
         """
         Método de verificação se o grafo é balanceado
-        :return:valor de "False" ou "True"
+        :return:valor de "False" ou "True", se o grafo for não balanceado ou balanceado, respetivamente
         """
-        for n in self.graph.keys():
-            if not self.check_balanced_node(n): return False
+        for n in self.graph.keys(): #para cada key do grafo
+            if not self.check_balanced_node(n): #se não for um nó balanceado
+                return False
         return True
 
     def check_nearly_balanced_graph(self):
         """
         Método de verificação se o grafo é semi-balanceado
-        :return:
+        :return: retorna none (caso não se verifique que o grafo é semi-balanceado) ou o tuplo
         """
-        res = None, None
-        for n in self.graph.keys():
-            indeg = self.in_degree(n)
-            outdeg = self.out_degree(n)
+        res = None, None #forma um tuplo
+        for n in self.graph.keys(): #para cada key do grafo
+            indeg = self.in_degree(n) #indeg vai corresponder ao indice do grau de entrada
+            outdeg = self.out_degree(n) #outdeg vai corresponder ao indice do grau de saída
             if indeg - outdeg == 1 and res[1] is None:
-                res = res[0], n
+            #se o grau de entrada a subtrair pelo de saída corresponder a 1 e o tuplo de indice 1 for none
+                res = res[0], n #o tuplo vai passar o ter o valor de n
             elif indeg - outdeg == -1 and res[0] is None:
-                res = n, res[1]
+            #se o grau de entrada a subtrair pelo de saída corresponder a -1  e o tuplo de indice 0 for none
+                res = n, res[1] #vai subtituir o valor de n no tuplo de indice 0
             elif indeg == outdeg:
-                pass
+            #se o grau de entrada e saída forem iguais
+                pass #passa
             else:
                 return None, None
         return res
 
     def is_connected(self):
+        """
+        Método para verificar se está conectado ou não
+        :return: valor de "False" ou "True", se não tiver ligado ou tiver ligado, respetivamente
+        """
         total = len(self.graph.keys()) - 1
-        for v in self.graph.keys():
-            reachable_v = self.reachable_bfs(v)
-            if (len(reachable_v) < total): return False
+        for v in self.graph.keys(): #para cada key do grafo
+            reachable_v = self.reachable_bfs(v) #lista de nodos atingíveis a partir de v
+            if (len(reachable_v) < total):
+                return False
         return True
 
     def eulerian_cycle(self):
         """
         ciclo Euleriano passa por todos os arcos do grafo examante uma vez, regressando ao nó de partida
-        :return:
+        :return: valor de "None" (se não for um ciclo Euleriano) ou a lista res (lista do ciclo)
         """
-        if not self.is_connected() or not self.check_balanced_graph(): return None
-        edges_visit = list(self.get_edges())
-        res = []
-        while edges_visit:
-            pass  ## completar aqui
+        if not self.is_connected() or not self.check_balanced_graph():
+        #se não estiver conetado ou não o grafo não tiver balanceado, ou seja verifica se é Euleriano
+            return None
+        edges_visit = list(self.get_edges()) #arcos a visitar vai ser a lista de arcos
+        res = [] #lista vazia
+        while edges_visit: #enquanto os arcos a visitar
+            pair = edges_visit[0]
+            #par dos nodos correspondentes a arcos a visitar do grafo
+            # vai buscar no tuplo da primeira posição da lista de arcos
+            i = 1 #define o index como 1, para mudar a posição
+            if res != []: #se a lista não for vazia
+                while pair[0] not in res: #enquanto o primeiro par de nodos não tiver na lista correspondente ao ciclo
+                    pair = edges_visit[i] #guarda o par de nodos da posição i
+                    i = i + 1 #incrementa o index da lista de par de nodos para ir lendo a lista
+            edges_visit.remove(pair) #remove o par da lista de arcos a visitar porque vai visitar
+            start, nxt = pair #pega no par de nodos e define o primeiro nodo como o start e o segundo nodo como o nxt
+            cycle = [start, nxt] #lista do ciclo em que o star é o nodo inicial e o nxt é o último nodo
+            while nxt != start: #enquanto o próximo for diferente do inicial, para andar para a frente no grafo
+                for adj in self.graph[nxt]: #itera cada nodo adjacente ao próximo nodo
+                    if (nxt, adj) in edges_visit: #verifica se o próximo nodo e o nodo adjacente têm um arco
+                        pair = (nxt, adj) #se sim, define como arco
+                        nxt = adj #define o adjacente como próximo.
+                        cycle.append(nxt) #adiciona o próximo nodo ao ciclo.
+                        edges_visit.remove(pair) #remove o par acabado de visitar
+            if not res: #se a lista for vazia
+                res = cycle #a lista de nodos do ciclo passa a ser a lista de resolução
+            else: #caso já tenha conteúdo
+                pos = res.index(cycle[0]) #cria a variavel pos, indice do ciclo na primeira posição
+                for i in range(len(cycle) - 1): #itera as posições dos nodos na lista cycle
+                    res.insert(pos + i + 1, cycle[i + 1])
+                    #insere na lista res na dada posição (pos+i+1) o nodo da lista cycle(da posição i+1)
         return res
+
 
     def eulerian_path(self):
         """
@@ -584,13 +624,18 @@ class MyGraph:
         :return: retorna o caminho
         """
         unb = self.check_nearly_balanced_graph()
-        if unb[0] is None or unb[1] is None: return None
+        if unb[0] is None or unb[1] is None:
+            return None #se não houver pontos semibalanciados não há caminho
         self.graph[unb[1]].append(unb[0])
-        cycle = self.eulerian_cycle()
-        for i in range(len(cycle) - 1):
-            if cycle[i] == unb[1] and cycle[i + 1] == unb[0]:
-                break
-        path = cycle[i + 1:] + cycle[1:i + 1]
+        cycle = self.eulerian_cycle() #função do ciclo euleriano
+        for i in range(len(cycle) - 1): #itera as posições dos nós
+            if cycle[i] == unb[1] and cycle[i + 1] == unb[0]: 
+            #quando o nó da lista cycle na posição i for igual ao segundo nodo semibalanceado e 
+            # o nó seguinte for igual ao primeiro nodo semibalanceado
+                break #quebra o loop
+        path = cycle[i + 1:] + cycle[1:i + 1] 
+        #o path fica os nodos do ciclo começando na posição i+1 e 
+        # os nodos desde a segunda posição até i+1 
         return path
 
 
@@ -601,121 +646,130 @@ def is_in_tuple_list(tl, val):
     return res
 
 
-def test1():
-    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-    gr.print_graph()
-    print(gr.get_nodes())
-    print(gr.get_edges())
-
-
-def test2():
-    gr2 = MyGraph()
-    gr2.add_vertex(1)
-    gr2.add_vertex(2)
-    gr2.add_vertex(3)
-    gr2.add_vertex(4)
-
-    gr2.add_edge(1, 2)
-    gr2.add_edge(2, 3)
-    gr2.add_edge(3, 2)
-    gr2.add_edge(3, 4)
-    gr2.add_edge(4, 2)
-
-    gr2.print_graph()
-
-
-def test3():
-    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-    gr.print_graph()
-
-    print(gr.get_successors(2))
-    print(gr.get_predecessors(2))
-    print(gr.get_adjacents(2))
-    print(gr.in_degree(2))
-    print(gr.out_degree(2))
-    print(gr.degree(2))
-
-
-def test4():
-    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-    print(gr.shortest_path(1, 4))
-    print(gr.shortest_path(4, 3))
-
-    print(gr.reachable_with_dist(1))
-    print(gr.reachable_with_dist(3))
-
-    gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
-    print(gr2.shortest_path(1, 5))
-    print(gr2.shortest_path(2, 1))
-
-    print(gr2.reachable_with_dist(1))
-    print(gr2.reachable_with_dist(5))
-
+# def test1():
+#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+#     gr.print_graph()
+#     print(gr.get_nodes())
+#     print(gr.get_edges())
+#
+#
+#
+# def test2():
+#     gr2 = MyGraph()
+#     gr2.add_vertex(1)
+#     gr2.add_vertex(2)
+#     gr2.add_vertex(3)
+#     gr2.add_vertex(4)
+#
+#     gr2.add_edge(1, 2)
+#     gr2.add_edge(2, 3)
+#     gr2.add_edge(3, 2)
+#     gr2.add_edge(3, 4)
+#     gr2.add_edge(4, 2)
+#
+#     gr2.print_graph()
+#
+#
+# def test3():
+#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+#     gr.print_graph()
+#
+#     print(gr.get_successors(2))
+#     print(gr.get_predecessors(2))
+#     print(gr.get_adjacents(2))
+#     print(gr.in_degree(2))
+#     print(gr.out_degree(2))
+#     print(gr.degree(2))
+#
+#
+# def test4():
+#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+#     print(gr.shortest_path(1, 4))
+#     print(gr.shortest_path(4, 3))
+#
+#     print(gr.reachable_with_dist(1))
+#     print(gr.reachable_with_dist(3))
+#
+#     gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
+#     print(gr2.shortest_path(1, 5))
+#     print(gr2.shortest_path(2, 1))
+#
+#     print(gr2.reachable_with_dist(1))
+#     print(gr2.reachable_with_dist(5))
+#
+#
+# def test5():
+#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
+#     print(gr.node_has_cycle(2))
+#     print(gr.node_has_cycle(1))
+#     print(gr.has_cycle())
+#
+#     gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
+#     print(gr2.node_has_cycle(1))
+#     print(gr2.has_cycle())
+#
+#
+# def test6():
+#     gr = MyGraph()
+#     gr.add_vertex(1)
+#     gr.add_vertex(2)
+#     gr.add_vertex(3)
+#     gr.add_vertex(4)
+#     gr.add_edge(1, 2)
+#     gr.add_edge(2, 3)
+#     gr.add_edge(3, 2)
+#     gr.add_edge(3, 4)
+#     gr.add_edge(4, 2)
+#     gr.print_graph()
+#     print(gr.size())
+#
+#     print(gr.get_successors(2))
+#     print(gr.get_predecessors(2))
+#     print(gr.get_adjacents(2))
+#
+#     print(gr.in_degree(2))
+#     print(gr.out_degree(2))
+#     print(gr.degree(2))
+#
+#     print(gr.all_degrees("inout"))
+#     print(gr.all_degrees("in"))
+#     print(gr.all_degrees("out"))
+#
+#     gr2 = MyGraph({1: [2, 3, 4], 2: [5, 6], 3: [6, 8], 4: [8], 5: [7], 6: [], 7: [], 8: []})
+#     print(gr2.reachable_bfs(1))
+#     print(gr2.reachable_dfs(1))
+#
+#     print(gr2.distance(1, 7))
+#     print(gr2.shortest_path(1, 7))
+#     print(gr2.distance(1, 8))
+#     print(gr2.shortest_path(1, 8))
+#     print(gr2.distance(6, 1))
+#     print(gr2.shortest_path(6, 1))
+#
+#     print(gr2.reachable_with_dist(1))
+#
+#     print(gr.has_cycle())
+#     print(gr2.has_cycle())
+#
+#     print(gr.mean_degree())
+#     print(gr.prob_degree())
+#     print(gr.mean_distances())
+#     print(gr.clustering_coef(1))
+#     print(gr.clustering_coef(2))
+#
+#
+# if __name__ == "__main__":
+#     # test1()
+#     # test2()
+#     # test3()
+#     test4()
+#     # test5()
+#     # test6()
 
 def test5():
     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-    print(gr.node_has_cycle(2))
-    print(gr.node_has_cycle(1))
-    print(gr.has_cycle())
+    print(gr.is_connected())
+    print(gr.eulerian_cycle())
+    print(gr.eulerian_path())
 
-    gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
-    print(gr2.node_has_cycle(1))
-    print(gr2.has_cycle())
-
-
-def test6():
-    gr = MyGraph()
-    gr.add_vertex(1)
-    gr.add_vertex(2)
-    gr.add_vertex(3)
-    gr.add_vertex(4)
-    gr.add_edge(1, 2)
-    gr.add_edge(2, 3)
-    gr.add_edge(3, 2)
-    gr.add_edge(3, 4)
-    gr.add_edge(4, 2)
-    gr.print_graph()
-    print(gr.size())
-
-    print(gr.get_successors(2))
-    print(gr.get_predecessors(2))
-    print(gr.get_adjacents(2))
-
-    print(gr.in_degree(2))
-    print(gr.out_degree(2))
-    print(gr.degree(2))
-
-    print(gr.all_degrees("inout"))
-    print(gr.all_degrees("in"))
-    print(gr.all_degrees("out"))
-
-    gr2 = MyGraph({1: [2, 3, 4], 2: [5, 6], 3: [6, 8], 4: [8], 5: [7], 6: [], 7: [], 8: []})
-    print(gr2.reachable_bfs(1))
-    print(gr2.reachable_dfs(1))
-
-    print(gr2.distance(1, 7))
-    print(gr2.shortest_path(1, 7))
-    print(gr2.distance(1, 8))
-    print(gr2.shortest_path(1, 8))
-    print(gr2.distance(6, 1))
-    print(gr2.shortest_path(6, 1))
-
-    print(gr2.reachable_with_dist(1))
-
-    print(gr.has_cycle())
-    print(gr2.has_cycle())
-
-    print(gr.mean_degree())
-    print(gr.prob_degree())
-    print(gr.mean_distances())
-    print(gr.clustering_coef(1))
-    print(gr.clustering_coef(2))
-
-
-if __name__ == "__main__":
-    # test1()
-    # test2()
-    # test3()
-    test4()
-    # test5()
-    # test6()
+test5()
