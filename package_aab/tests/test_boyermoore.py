@@ -1,12 +1,12 @@
 import unittest
-from src.boyermoore import BoyerMoore
+from boyermoore import BoyerMoore
 
 class test_BoyerMoore(unittest.TestCase):
 
     def setUp(self):
-        alfabeto = 'ACTG'
-        padrao = 'ACCA'
-        self.boyermoore = BoyerMoore(alfabeto, padrao)
+        alphabet = 'ACTG'
+        pattern = 'ACCA'
+        self.boyermoore = BoyerMoore(alphabet, pattern)
 
     def test_search_pattern(self):
         x = self.boyermoore.search_pattern("ATAGAACCAATGAACCATGATGAACCATGGATACCCAACCACC")
