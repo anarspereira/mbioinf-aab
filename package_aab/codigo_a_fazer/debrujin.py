@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-#incompleto
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
 
-from MyGraph import MyGraph
+"""
+Class: DeBruijn Graph
+"""
 
+from my_graph import MyGraph
 
 class DeBruijnGraph(MyGraph):
 
