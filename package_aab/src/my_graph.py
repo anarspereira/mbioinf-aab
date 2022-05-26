@@ -520,17 +520,31 @@ class MyGraph:
                     return None
         return path #caminho hamiltonianos em lista
 
-    # Eulerian - aula 11
+    # Eulerian - aula 10 e 11
+        #Caminho que passa por todos os arcos do grafo exatamente uma vez
 
     def check_balanced_node(self, node):
+        """
+        Método de verificação se um nó é balanceado
+        :param node:
+        :return:
+        """
         return self.in_degree(node) == self.out_degree(node)
 
     def check_balanced_graph(self):
+        """
+        Método de verificação se o grafo é balanceado
+        :return:valor de "False" ou "True"
+        """
         for n in self.graph.keys():
             if not self.check_balanced_node(n): return False
         return True
 
     def check_nearly_balanced_graph(self):
+        """
+        Método de verificação se o grafo é semi-balanceado
+        :return:
+        """
         res = None, None
         for n in self.graph.keys():
             indeg = self.in_degree(n)
@@ -553,6 +567,10 @@ class MyGraph:
         return True
 
     def eulerian_cycle(self):
+        """
+        ciclo Euleriano passa por todos os arcos do grafo examante uma vez, regressando ao nó de partida
+        :return:
+        """
         if not self.is_connected() or not self.check_balanced_graph(): return None
         edges_visit = list(self.get_edges())
         res = []
@@ -561,6 +579,10 @@ class MyGraph:
         return res
 
     def eulerian_path(self):
+        """
+        Método do caminho Euleriano, caso exista
+        :return: retorna o caminho
+        """
         unb = self.check_nearly_balanced_graph()
         if unb[0] is None or unb[1] is None: return None
         self.graph[unb[1]].append(unb[0])
