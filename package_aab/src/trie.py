@@ -16,7 +16,7 @@ class Trie:
     cada padrão, adicionando os nós necessários para que a árvore contenha o caminho desde a raiz até à folha,
     representando o padrão.
     """
-    #TODO -> pôr os métodos em camelcase, se a documentação da classe foi copiada, reescrever
+    #TODO -> pôr os métodos em camelcase
     def __init__(self):
         """
         Método que guarda os valores utilizados nos restantes métodos
