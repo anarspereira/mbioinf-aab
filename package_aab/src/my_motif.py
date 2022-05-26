@@ -42,7 +42,7 @@ class MyMotifs:
     def __init__(self, lseqs: list = [], pwm: list = [], alphabet: str = None):
         """
         Método que guarda os valores utilizados nos restantes métodos.
-        :param lseqs: lista de sequências introduzidas
+        :param lseqs: lista de sequências de sequências introduzidas
         :param pwm: matriz de probabilidades
         :param alphabet: tipo de caracteres da sequência introduzida
         """
@@ -135,7 +135,7 @@ class MyMotifs:
         :return: a probabilidade de um padrão ser encontrado na sequência
         """
         prob = 1.0 #define a probabilidade inicial como 1
-        for i in range(self.size): #percorre a sequência
+        for i in range(self.size): #percorre a sequência de zero até ao comprimento das sequências introduzidas
             lin = self.alphabet.index(seq[i]) #as linhas da matriz correspondem à ordem dos caracteres no alfabeto
             prob *= self.pwm[lin][i] #multiplica o valor da célula pelo valor inicialmente definido
         return prob
@@ -146,17 +146,24 @@ class MyMotifs:
         e calcular a probabilidade de o padrão ocorrer a cada caracter da sequência, ou seja,
         de ocorrer a cada sub-sequência do tamanho do padrão.
         :param seq: sequência introduzida
-        :return:
+        :return: lista de probabilidades do padrão ocorrer a cada subsequência
         """
         subseq_prob = [] #lista vazia para devolver as probabilidades
-        for i in range(len(seq)-self.size+1): #
-            subseq_prob.append(self.probabSeq(seq))
+        for i in range(len(seq)-self.size + 1): #percorre a totalidade da sequência menos o comprimento do padrão
+            #mais um
+            subseq_prob.append(self.probabSeq(seq)) #adiciona a probabilidade em lista
         return subseq_prob
 
     def mostProbableSeq(self, seq):
+        """
+        Método implementado para determinar a sub-sequência com a maior probabilidade de corresponder
+        ao padrão em procura.
+        :param seq: sequência introduzida
+        :return:
+        """
         maximo = -1.0
         maxind = -1
-        for k in range(len(seq)-self.size):
+        for k in range(len(seq)-self.size): #percorre a totalidade da sequência menos o comprimento do padrão
             p = self.probabSeq(seq[k:k + self.size])
             if(p > maximo):
                 maximo = p
@@ -177,13 +184,14 @@ def test():
     seq8 = MySeq("GAACCT", "dna")
     lseqs = [seq1, seq2, seq3, seq4, seq5, seq6, seq7, seq8]
     motifs = MyMotifs(lseqs)
-    printMat(motifs.mat_count)
-    printMat(motifs.pwm)
-    print(motifs.consensus())
-    print(motifs.alphabet)
+    # printMat(motifs.mat_count)
+    # printMat(motifs.pwm)
+    # print(motifs.consensus())
+    # print(motifs.alphabet)
     #
-    # print(motifs.probabSeq("AAACCT"))
+    print(motifs.probabSeq("AAACCT"))
     # print(motifs.probabSeq("ATACAG"))
+    print(motifs.probAllPositions("AAACCT"))
     # print(motifs.mostProbableSeq("CTATAAACCTTACATC"))
     #
     # print(motifs.consensus())
