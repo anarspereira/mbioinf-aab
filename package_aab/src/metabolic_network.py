@@ -8,7 +8,7 @@ Algoritmos Avançados de Bioinformática
 Class: Metabolic Network 
 """
 
-from MyGraph import MyGraph
+from my_graph import MyGraph
 
 
 class MetabolicNetwork(MyGraph):
