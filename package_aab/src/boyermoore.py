@@ -61,5 +61,5 @@ class BoyerMoore
                 i = max(self.s[j+1],(j-self.occ[c]))
         return res
 
-
+##
 
