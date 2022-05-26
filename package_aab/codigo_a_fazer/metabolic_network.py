@@ -23,7 +23,7 @@ class MetabolicNetwork(MyGraph):
             self.node_types["reaction"] = [] # lista com os nodos do tipo "reaction"
         self.split_rev = split_rev
         # indica se as reações reversíveis são para serem consideradas como duas reações distintas, sendo que como é
-        # dado como 'False' consideramos que não são duas reações distintas
+        ## dado como 'False' consideramos que não são duas reações distintas
 
     def add_vertex_type(self, v : str, nodetype : str):
         """
@@ -54,65 +54,71 @@ class MetabolicNetwork(MyGraph):
         :param filename: nome do ficheiro que queremos abrir
         :return: caso haja um erro numa linha do ficheiro retorna a indicação que aquela linha é inválida
         """
-        rf = open(filename) #abre o ficheiro
-        gmr = MetabolicNetwork("metabolite-reaction")
-        for line in rf:
-            if ":" in line:
-                tokens = line.split(":")
-                reac_id = tokens[0].strip()
+        file = open(filename) #abre o ficheiro
+        graph_mr = MetabolicNetwork("metabolite-reaction") #cria o grafo da rede metabólica do tipo metabolite-reaction
+        for line in file: #para cada linha do ficheiro
+            if ":" in line: #se houver ":" na linha
+                tokens = line.split(":") #divide a linha desde os ":"
+                reac_id = tokens[0].strip() #remove os caracteres antes e depois do id da reação
                 gmr.add_vertex_type(reac_id, "reaction")
-                rline = tokens[1]
+                #adiciona a reação ao dicionário node_types, identificando o tipo "reaction"
+                reaction_line = tokens[1]
             else:
-                raise Exception("Invalid line:")
-            if "<=>" in rline:
-                left, right = rline.split("<=>")
-                mets_left = left.split("+")
-                for met in mets_left:
-                    met_id = met.strip()
-                    if met_id not in gmr.graph:
+                raise Exception("Invalid line:") #se a linha não possuir ":" é uma linha inválida
+            if "<=>" in reaction_line: #se houver "<=>" na linha da reação (reação reversível)
+                left, right = rline.split("<=>") #divide a linha desde os "<=>" em "left" e "right"
+                metabolites_left = left.split("+") #divide os metabolitos da esquerda desde o "+"
+                for met in metabolites_left: #para cada metabolito na esqueda
+                    met_id = met.strip() #remove os caracteres antes e depois do id dos metabolitos
+                    if met_id not in gmr.graph: #se o metabolito não pertencer ao grafo
                         gmr.add_vertex_type(met_id, "metabolite")
-                    if self.split_rev:
+                        #adiciona o nodo do metabolito ao dicionário node_types, identificando o tipo "metabolite"
+                    if self.split_rev: #True - se considerarmos a reação reversível como duas reações distintas
                         gmr.add_vertex_type(reac_id + "_b", "reaction")
-                        gmr.add_edge(met_id, reac_id)
-                        gmr.add_edge(reac_id + "_b", met_id)
-                    else:
-                        gmr.add_edge(met_id, reac_id)
-                        gmr.add_edge(reac_id, met_id)
-                mets_right = right.split("+")
-                for met in mets_right:
-                    met_id = met.strip()
-                    if met_id not in gmr.graph:
+                        #adiciona a reação b ao dicionário node_types, identificando o tipo "reaction"
+                        gmr.add_edge(met_id, reac_id) #adiciona o arco da primeira reação (met_id,reac_id) ao grafo
+                        gmr.add_edge(reac_id + "_b", met_id) #adiciona o arco reação b (met_id,reac_id) ao grafo
+                    else: #False - se não considerarmos a reação reversível como duas reações distintas
+                        gmr.add_edge(met_id, reac_id) #adiciona o arco da reação num sentido (met_id,reac_id) ao grafo
+                        gmr.add_edge(reac_id, met_id) #adiciona o arco da reação noutro sentido(reac_id,met_id) ao grafo
+                metabolites_right = right.split("+") #divide os metabolitos da direita desde o "+"
+                for met in metabolites_right:#para cada metabolito na direita
+                    met_id = met.strip() #remove os caracteres antes e depois do id dos metabolitos
+                    if met_id not in gmr.graph: #se o metabolito não pertencer ao grafo
                         gmr.add_vertex_type(met_id, "metabolite")
-                    if self.split_rev:
-                        gmr.add_edge(met_id, reac_id + "_b")
-                        gmr.add_edge(reac_id, met_id)
-                    else:
-                        gmr.add_edge(met_id, reac_id)
-                        gmr.add_edge(reac_id, met_id)
-            elif "=>" in line:
-                left, right = rline.split("=>")
-                mets_left = left.split("+")
-                for met in mets_left:
-                    met_id = met.strip()
-                    if met_id not in gmr.graph:
+                        #adiciona o nodo do metabolito ao dicionário node_types, identificando o tipo "metabolite"
+                    if self.split_rev: #True - se considerarmos a reação reversível como duas reações distintas
+                        gmr.add_edge(met_id, reac_id + "_b") #adiciona o arco reação b (met_id,reac_id) ao grafo
+                        gmr.add_edge(reac_id, met_id) #adiciona o arco da reação contrária (met_id,reac_id) ao grafo
+                    else: #False - se não considerarmos a reação reversível como duas reações distintas
+                        gmr.add_edge(met_id, reac_id) #adiciona o arco da reação num sentido (met_id,reac_id) ao grafo
+                        gmr.add_edge(reac_id, met_id) #adiciona o arco da reação noutro sentido(reac_id,met_id) ao grafo
+            elif "=>" in line: #se houver "=>" na linha da reação (reação irreversível)
+                left, right = rline.split("=>") #divide a linha desde os "=>" em "left" e "right"
+                metabolites_left = left.split("+") #divide os metabolitos da esquerda desde o "+"
+                for met in metabolites_left: #para cada metabolito na esqueda
+                    met_id = met.strip() #remove os caracteres antes e depois do id dos metabolitos
+                    if met_id not in gmr.graph: #se o metabolito não pertencer ao grafo
                         gmr.add_vertex_type(met_id, "metabolite")
-                    gmr.add_edge(met_id, reac_id)
-                mets_right = right.split("+")
-                for met in mets_right:
-                    met_id = met.strip()
-                    if met_id not in gmr.graph:
+                        #adiciona o nodo do metabolito ao dicionário node_types, identificando o tipo "metabolite"
+                    gmr.add_edge(met_id, reac_id) #adiciona o arco da reação (met_id,reac_id) ao grafo
+                metabolites_right = right.split("+") #divide os metabolitos da direita desde o "+"
+                for met in metabolites_right: #para cada metabolito na direita
+                    met_id = met.strip() #remove os caracteres antes e depois do id dos metabolitos
+                    if met_id not in gmr.graph: #se o metabolito não pertencer ao grafo
                         gmr.add_vertex_type(met_id, "metabolite")
-                    gmr.add_edge(reac_id, met_id)
-            else:
+                        #adiciona o nodo do metabolito ao dicionário node_types, identificando o tipo "metabolite"
+                    gmr.add_edge(reac_id, met_id) #adiciona o arco da reação (met_id,reac_id) ao grafo
+            else: #se a linha não possuir "<=>" ou "=>" é uma linha inválida
                 raise Exception("Invalid line:")
 
-        if self.net_type == "metabolite-reaction":
-            self.graph = gmr.graph
-            self.node_types = gmr.node_types
-        elif self.net_type == "metabolite-metabolite":
-            self.convert_metabolite_net(gmr)
-        elif self.net_type == "reaction-reaction":
-            self.convert_reaction_graph(gmr)
+        if self.net_type == "metabolite-reaction": #se a rede metabólica for do tipo metabolite-reaction
+            self.graph = gmr.graph #cria o grafo da rede metabólica do tipo metabolite-reaction
+            self.node_types = gmr.node_types  #dicionário com as listas de nodos de cada tipo
+        elif self.net_type == "metabolite-metabolite": #se a rede metabólica for do tipo metabolite-metabolite
+            self.convert_metabolite_net(gmr) #converter para uma rede do tipo metabolite-reaction
+        elif self.net_type == "reaction-reaction": #se a rede metabólica for do tipo reaction-reaction
+            self.convert_reaction_graph(gmr) #converter para uma rede do tipo metabolite-reaction
         else:
             self.graph = {}
 
