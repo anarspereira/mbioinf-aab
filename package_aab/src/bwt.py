@@ -13,6 +13,11 @@
 
 
 class BWT:
+    """
+    Classe para implementação do algoritmo Burrows-Hweeler onde diferentes métodos foram criados. O algoritmo é útil para
+    compactar sequências de grande tamanho, reduzindo assim o seu espaço. Além disso, é possível encontrar padrões no
+    formato de compactação de forma eficiente.
+    """
     def __init__(self, seq='', buildsufarray=False, sa=None):
         self.bwt = self.build_bwt(seq, buildsufarray)
         self.sa = sa
