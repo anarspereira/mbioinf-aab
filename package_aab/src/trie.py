@@ -5,7 +5,7 @@ Algoritmos Avançados de Bioinformática
 """
 
 """
-Class: Trie
+Class: Trie - Árvore de prefixos
 """
 
 class Trie:
@@ -16,7 +16,6 @@ class Trie:
     cada padrão, adicionando os nós necessários para que a árvore contenha o caminho desde a raiz até à folha,
     representando o padrão.
     """
-    #TODO -> pôr os métodos em camelcase
     def __init__(self):
         """
         Método que guarda os valores utilizados nos restantes métodos
@@ -27,14 +26,14 @@ class Trie:
         # nodes) <- representa as folhas da árvore.
         self.num = 0 # guarda nº do último nó criado (nº de nodes de uma árvore).
 
-    def print_trie(self):
+    def printTrie(self):
         """
         Método que imprime a trie
         """
         for k in self.nodes.keys():
             print(k, "->", self.nodes[k])
 
-    def add_node(self, origin: int, symbol: str) -> None:
+    def addNode(self, origin: int, symbol: str) -> None:
         """
         Método que adiciona o nodo à trie
         Este método é usado pelo método add_pattern.
@@ -46,7 +45,7 @@ class Trie:
         self.nodes[origin][symbol] = self.num # cria um novo node e liga-o a um já existente (através do parâmetro origin)
         self.nodes[self.num] = {} # cria novo node com um dicionário vazio
 
-    def add_pattern(self, p: list) -> None:
+    def addPattern(self, p: list) -> None:
         """
         Método que adiciona padrão à trie
 
@@ -56,20 +55,20 @@ class Trie:
         node = 0
         while position < len(p): # enquanto a primeira posição do padrão for menor que o tamanho do padrão,
             if p[position] not in self.nodes[node].keys(): # se a posição inicial do padrão não estiver presente nas keys do dicionário de nodes (se ainda não existir um arco),
-                self.add_node(node, p[position]) # é criado um novo nó (que irá ser considerado o current node e a iteração começará deste nó e não do anterior)
+                self.addNode(node, p[position]) # é criado um novo nó (que irá ser considerado o current node e a iteração começará deste nó e não do anterior)
             node = self.nodes[node][p[position]] # se existir um arco na posição inicial do padrão, esse passará a ser o current node e a iteração começará deste node
             position += 1 # incrementar i em 1 para seguir para a próxima iteração, repetindo o processo até chegar ao fim do padrão (len(p)).
 
-    def trie_from_patterns(self, pats: list) -> None:
+    def trieFromPatterns(self, pats: list) -> None:
         """
         Método que adiciona cada padrão do input à trie.
 
         :param pats: padrões do input
         """
         for p in pats:
-            self.add_pattern(p) # adiciona cada padrão presente na lista de padrões
+            self.addPattern(p) # adiciona cada padrão presente na lista de padrões
 
-    def prefix_trie_match(self, text: str):
+    def prefixTrieMatch(self, text: str):
         """
         Método para procurar se um padrão da trie é um prefixo da sequência.
         Percorre a sequência de caracteres e a árvore, começando pela raiz, seguindo os arcos correspondentes aos
@@ -95,7 +94,7 @@ class Trie:
                 return None # se o caracter não for encontrado, para o ciclo while
         return None
 
-    def trie_matches(self, text: str) -> list:
+    def trieMatches(self, text: str) -> list:
         """
         Método para, usando o método prefix_trie_match, procurar por ocorrências (matches) do padrão na sequência.
         Processo iterativo - faz match da sequência, remove o primeiro símbolo desta, repete o processo -> o processo
@@ -106,17 +105,7 @@ class Trie:
         """
         res = []
         for i in range(len(text)): # para cada posição na sequência,
-            m = self.prefix_trie_match(text[i:]) # procura no padrão os caracteres da sequência e guarda o valor em m
+            m = self.prefixTrieMatch(text[i:]) # procura no padrão os caracteres da sequência e guarda o valor em m
             if m != None: # caso m seja diferente de none,
                 res.append((i, m)) # é adicionado à lista do resultado um tuplo com a posição iterada e o padrão encontrado
         return res
-
-
-def test2():
-    patterns = ["AGAGAT", "AGC", "AGTCC", "CAGAT", "CCTA", "GAGAT", "GAT", "TC"]
-    t = Trie()
-    t.trie_from_patterns(patterns)
-    t.print_trie()
-
-
-test2()

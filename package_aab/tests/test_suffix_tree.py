@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
+
+"""
+Unit test: Suffix Tree
+"""
+
 import unittest
 from suffix_tree import SuffixTree
 
@@ -5,12 +15,23 @@ class test_SuffixTree(unittest.TestCase):
     def setUp(self):
         self.seq = "TACTA"
         self.suffixtree = SuffixTree()
-        self.suffixtree.suffix_tree_from_seq(self.seq)
+        self.suffixtree.suffixTreeFromSeq(self.seq)
 
 
 class test_SuffixTreeMethods(test_SuffixTree):
+
+    def test_findPattern(self):
+        x = self.suffixtree.findPattern("TA")
+        y = '[0, 3]'
+        self.assertEqual(str(x), y)
+
+    def test_doesntFindPattern(self):
+        x = self.suffixtree.findPattern("ACG")
+        y = 'None'
+        self.assertEqual(str(x), y)
+
     # def test_printSuffixTree(self):
-    # x = self.suffixtree.print_trie()
+    #     x = self.suffixtree.printTree()
     #     y = ["0 -> {'T': 1, 'A': 7, 'C': 12, '$': 18}",
     #          "1 -> {'A': 2}",
     #          "2 -> {'C': 3, '$': 16}",
@@ -31,18 +52,6 @@ class test_SuffixTreeMethods(test_SuffixTree):
     #          "17 : 4",
     #          "18 : 5"]
     #     self.assertEqual(x, y)
-
-
-    def test_findPattern(self):
-        x = self.suffixtree.find_pattern("TA")
-        y = "[0, 3]"
-        self.assertEqual(str(x), y)
-
-    def test_doesntFindPattern(self):
-        x = self.suffixtree.find_pattern("ACG")
-        y = 'None'
-        self.assertEqual(str(x), y)
-
 
 if __name__ == '__main__':
     unittest.main()

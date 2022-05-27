@@ -75,7 +75,7 @@ class MyMotifs:
                 lin = self.alphabet.index(seq[i]) #as linhas da matriz correspondem à ordem dos caracteres no alfabeto
                 self.mat_count[lin][i] += 1 #incrementa para fazer o resto da matriz
 
-    def createPWM(self):
+    def createPWM(self) -> None:
         """
         Método que cria a matriz probabilística. As PWM são representações probabilística dos caracteres
         em sequências biológicas, ou seja, calcula a probabilidade do nucleótido i ser encontrado na posição j.
@@ -89,7 +89,7 @@ class MyMotifs:
                 #calcula a probabilidade para cada célula através da fórmula:
                 # contagens verificadas / número de sequências.
 
-    def consensus(self):
+    def consensus(self) -> str:
         """
         Método que gera uma sequência consensus. As sequências consensus guarda os caractéres mais conservados
         em cada posição do padrão, ou seja, o valor mais alto de cada coluna da matriz de contagens.
@@ -97,7 +97,7 @@ class MyMotifs:
         """
         cons_seq = "" #abre uma string vazia para introduzir a sequência de caracteres
         for j in range(self.size): #percorre as colunas da matriz que tem o mesmo comprimento que a sequência
-            max_col = self.mat_count[0][j] #retorna o valor da primeira linha da coluna j
+            max_col = self.mat_count[0][j] #guarda o valor da primeira linha da coluna j
             index_maxval = 0 #define como valor inicial
             for i in range(1, len(self.alphabet)): #percorre todas as linhas, ou seja,
                 # os caracteres do tipo de sequência
@@ -107,7 +107,7 @@ class MyMotifs:
             cons_seq += self.alphabet[index_maxval] #adiciona à string o caractér
         return cons_seq
 
-    def maskedConsensus(self):
+    def maskedConsensus(self) -> str:
         """
         Método que gera a sequência consensus que é obtida com com os caracteres
         que têm uma incidência superior a 50%.
@@ -128,7 +128,7 @@ class MyMotifs:
                 cons_seq += "-" #se não tiver uma incidência superior a 50% não devolve um caracter
         return cons_seq
 
-    def probabSeq(self, seq):
+    def probabSeq(self, seq: str) -> float:
         """
         Método que calcula a probabilidade de um padrão ser encontrado numa sequência.
         :param seq: sequência introduzida
@@ -140,7 +140,7 @@ class MyMotifs:
             prob *= self.pwm[lin][i] #multiplica o valor da célula pelo valor inicialmente definido
         return prob
 
-    def probAllPositions(self, seq):
+    def probAllPositions(self, seq: str) -> list:
         """
         Método implementado para calcular a probabilidade de encontrar padrões em sequências mais longas
         e calcular a probabilidade de o padrão ocorrer a cada caracter da sequência, ou seja,
@@ -154,7 +154,7 @@ class MyMotifs:
             subseq_prob.append(self.probabSeq(seq)) #adiciona a probabilidade em lista
         return subseq_prob
 
-    def mostProbableSeq(self, seq):
+    def mostProbableSeq(self, seq: str) -> int:
         """
         Método implementado para determinar a sub-sequência com a maior probabilidade de corresponder
         ao padrão em procura.

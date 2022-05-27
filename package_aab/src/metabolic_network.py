@@ -12,7 +12,18 @@ from my_graph import MyGraph
 
 
 class MetabolicNetwork(MyGraph):
-    #subclasse da classe MyGraph que representa as redes metabólicas
+    """
+    Classe responsável pela implementação de redes metabólicas. As redes metabólicas são construídas através da leitura
+    de um ficheiro que possui a informação sobre a rede.
+    Esta classe é uma subclasse do MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
+    Há 3 tipos de rede metabólica, nomeadamente a:
+        - Rede de Metabolitos ("metabolite-metabolite") -> rede na qual metabolitos são os nodos do grafo e os
+    reações os arcos;
+        - Rede de Reações ("reaction-reaction") -> rede na qual as reações são os nodos do grafo e os metabolitos são
+    os arcos ;
+        - Rede de Metabolitos e reações ("metabolite-reaction") -> rede na qual os metabolitos e as reações são nodos e
+    os arcos indicam a sua interação.
+    """
 
     def __init__(self, network_type="metabolite-reaction", split_rev=False):
         """
