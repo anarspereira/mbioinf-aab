@@ -6,7 +6,6 @@ Algoritmos Avançados de Bioinformática
 
 """
 Class: OverlapGraph
-Será uma sub-classe da classe MyGraph para representar grafos orientados
 """
 
 from my_graph import MyGraph
@@ -28,12 +27,10 @@ class OverlapGraph(MyGraph):
             self.create_overlap_graph(frags)
         self.reps = reps
 
-    ## create overlap graph from list of sequences (fragments)
     def create_overlap_graph(self, frags):
         """
         Método para criar o grafo de overlap a partir das ligações do sufixos com os prefixos
         :param frags: fragmentos ou conjuntos de sequencias
-        :return:
         """
         for seq in frags:
             self.add_vertex(seq) #adiciona vertices
@@ -48,9 +45,7 @@ class OverlapGraph(MyGraph):
         """
         Método para criar grafo de overlap com repetições de elementos
         :param frags: fragmentos ou conjuntos de sequencias
-        :return:
         """
-    #repetição caso exista repetição de elementos
         idnum = 1
         for seq in frags:
             self.add_vertex(seq + "-" + str(idnum))
@@ -64,9 +59,8 @@ class OverlapGraph(MyGraph):
                         self.add_edge(seq + "-" + str(idnum), x)
             idnum = idnum + 1
 
-    def get_instances(self, seq):
+    def get_instances(self, seq) -> list:
         """
-
         :param seq: sequencia
         :return: a lista da sequencia
         """
@@ -79,7 +73,7 @@ class OverlapGraph(MyGraph):
         """
         Método que retorna o nodo
         :param node: nodo
-        :return:
+        :return: se o nodo não tiver presente no grafo retorna None,
         """
         if node not in self.graph.keys():
             return None
@@ -92,7 +86,7 @@ class OverlapGraph(MyGraph):
         """
         Método para dar a sequencia contruida dado um caminho no grafo
         :param path: caminho
-        :return:
+        :return: se o caminho não é hamiltonian retorna None, retorna seq
         """
         if not self.check_if_hamiltonian_path(path):
             return None
@@ -103,12 +97,12 @@ class OverlapGraph(MyGraph):
         return seq
 
 #funções auxiliares
-def composition(k, seq):
+def composition(k : int, seq : str) -> list:
     """
     Método da composição
     :param k: valor de k, numero de nucléotidos
     :param seq: sequencia
-    :return:
+    :return: a lista separando por k nucleótidos
     """
     res = []
     for i in range(len(seq) - k + 1):
@@ -117,7 +111,7 @@ def composition(k, seq):
     return res
 
 
-def suffix(seq):
+def suffix(seq : str) -> list:
     """
     Método do sufixo
     :param seq: sequencia
@@ -126,7 +120,7 @@ def suffix(seq):
     return seq[1:]
 
 
-def prefix(seq):
+def prefix(seq : str) -> list:
     """
     Método do prefixo
     :param seq: sequencia
