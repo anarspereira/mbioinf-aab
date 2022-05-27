@@ -63,12 +63,13 @@ class BWT:
         occ = 1  # primeira ocorrencia
         for i in range(len(self.bwt)):  # percorrer bwt (ultima coluna)
             pos = findithocc(self.bwt, c, occ)  # saber o índice de $ na primeira ocorrência
-            c = firstcol[pos]  # na primeira coluna diz-nos a que letra corresponde
+            c = firstcol[pos]  #na primeira coluna diz-nos a que letra corresponde #dá-nos o valor de "$"
             occ = 1
-            k = pos - 1
-            while firstcol[k] == c and k >= 0:  # ?
+            k = pos - 1 #posição anterior ao primeiro índice de "$"
+            while firstcol[k] == c and k >= 0:  #enquanto o valor da posição anterior a "$" for igual ao valor de $
+            #e o índice de k for superior a zero
                 occ += 1  # aumentar proxima ocorrencia
-                k -= 1  # definir k para o próximo ciclo
+                k -= 1  # definir k para o próximo ciclo #k torna-se igual pos - 2
             res += c  # adicionar carater
         return res
 
@@ -166,8 +167,9 @@ def findithocc(le, elem, index):
 def test():
     seq = "TAGACAGAGA$"
     bw = BWT(seq)
-    print(bw.bwt)
-    print(bw.last_to_first())
+    print(bw.inverse_bwt())
+    # print(bw.bwt)
+    # print(bw.last_to_first())
 
 
 test()

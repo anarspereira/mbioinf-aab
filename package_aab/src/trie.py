@@ -27,7 +27,7 @@ class Trie:
         # nodes) <- representa as folhas da árvore.
         self.num = 0 # guarda nº do último nó criado (nº de nodes de uma árvore).
 
-    def print_trie(self) -> None:
+    def print_trie(self):
         """
         Método que imprime a trie
         """
