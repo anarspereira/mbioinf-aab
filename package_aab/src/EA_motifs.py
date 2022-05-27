@@ -65,7 +65,7 @@ class EAMotifsReal (EvolAlgorithm):
 
 
 def test1():
-    ea = EAMotifsInt(100, 1000, 50, "exemploMotifs.txt")
+    ea = EAMotifsInt(100, 1000, 50, "exemploMotifs.txt") # pedem um ficheiro .txt, está na pasta dos scripts
     ea.run()
     ea.printBestSolution()
 
