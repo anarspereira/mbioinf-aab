@@ -10,6 +10,7 @@
 # , próximo passo: identificar posições desses símbolos na primeira linha, atualizando os índices T (top) e B (bottom)
 # próximo passo: procurar nas linhas selecionadas (entre T e B) as ocorrências do segundo símbolo do padrão na última
 # coluna, identificá-los na 1º coluna e atualizar T e B; Passo final: identificar o primeiro símbolo do padrão
+from typing import List
 
 
 class BWT:
@@ -25,9 +26,9 @@ class BWT:
     def set_bwt(self, bw):
         self.bwt = bw
 
-    def build_bwt(self, text, buildsufarray=False):
+    def build_bwt(self, text, buildsufarray=False) -> str:
         """
-        método para construir a matriz para transformação de Burrows-Wheeler.
+        Método para construir a matriz para transformação de Burrows-Wheeler.
         :param text: sequência que queremos utilizar
         :param buildsufarray: parâmetro para criar vetor de sufixos. Default: False.
         """
@@ -51,9 +52,9 @@ class BWT:
         return res
 
     # recuperação da sequencia original
-    def inverse_bwt(self):
+    def inverse_bwt(self) -> str:
         """
-        método para obter a sequência original
+        Método para obter a sequência original
         :return: string da sequência original
         """
         # note-se que o 1.º símbolo da sequência deve estar a seguir ao $
@@ -74,9 +75,9 @@ class BWT:
         return res
 
     # implementação da procura de padrões a partir da BWT
-    def last_to_first(self):
+    def last_to_first(self) -> List:
         """
-        método para criar a tabela com a última coluna e com a primeira
+        Método para criar a tabela com a última coluna e com a primeira
         :return: lista padrões conhecidos
         """
         res = []
@@ -88,9 +89,9 @@ class BWT:
             res.append(val)
         return res
 
-    def get_first_col(self):
+    def get_first_col(self) -> List[str]:
         """
-        método para recuperar a primeira coluna. de salientar que a primeira coluna é a ordenação alfabética da transformada
+        Método para recuperar a primeira coluna. de salientar que a primeira coluna é a ordenação alfabética da transformada
 
         :return: lista da primeira coluna
         """
@@ -100,7 +101,7 @@ class BWT:
         primeira_col.sort()  # colocar por ordem alfabética
         return primeira_col  # temos a nossa primeira coluna
 
-    def bw_matching(self, pattern):
+    def bw_matching(self, pattern=str) -> List[int]:
         """
         Método para procurar padrões a partir da trasnformação de Burrows-Wheeler.
         :param pattern: padrão que queremos encontrar
@@ -125,14 +126,14 @@ class BWT:
                     bottom = lf[bottomindex]
                 else:
                     flag = False  # caso símbolo não esteja na matriz, abortar
-            else: # não percebi isto
+            else: #
                 for i in range(top, bottom + 1):
                     res.append(i)
                 flag = False
         print("res: ", res)
         return res
 
-    def bw_matching_pos(self, patt):
+    def bw_matching_pos(self, patt) -> List:
         """
         Método que procura os matches de um padrão
         :param patt: padrão que queremos encontrar
@@ -148,7 +149,7 @@ class BWT:
 
 def findithocc(le, elem, index):
     """
-    método que permite descobrir a posição da i-ésima ocorrência de um símbolo
+    Método que permite descobrir a posição da i-ésima ocorrência de um símbolo
     numa lista (retorna -1 caso não ocorra).
     :param le: matriz em que vamos procurar
     :param elem: elemento a procurar
@@ -162,14 +163,3 @@ def findithocc(le, elem, index):
                 return j
         j += 1
     return -1
-
-
-def test():
-    seq = "TAGACAGAGA$"
-    bw = BWT(seq)
-    print(bw.inverse_bwt())
-    # print(bw.bwt)
-    # print(bw.last_to_first())
-
-
-test()
