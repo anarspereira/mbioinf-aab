@@ -3,7 +3,7 @@ from random import randint, random, shuffle, uniform
 
 class Indiv:
 
-    def __init__(self, size, genes=[], lb=0, ub=1):
+    def __init__(self, size=int, genes, lb=0, ub=1):
         """
         :param size: tamanho da população
         :param genes: lista do conjunto de genes
@@ -57,7 +57,7 @@ class Indiv:
     def getGenes(self):
         return self.genes
 
-    def init_random(self, size):
+    def init_random(self, size=int):
         """
         método para gerar indivíduos aleatoriamente
         :param size:
@@ -95,8 +95,11 @@ class Indiv:
 
 
 class IndivInt(Indiv):
+    """
+    método de representação inteira do algoritmo
+    """
 
-    def __init__(self, size, genes=[], lb=0, ub=1):
+    def __init__(self, size=int, genes, lb=0, ub=1):
         self.lb = lb
         self.ub = ub
         self.genes = genes
@@ -104,7 +107,7 @@ class IndivInt(Indiv):
         if not self.genes:
             self.initRandom(size)
 
-    def initRandom(self, size):  # criar indiviudos aleatoriamente
+    def initRandom(self, size=int):  # criar indiviudos aleatoriamente
         self.genes = []
         for _ in range(size):
             self.genes.append(randint(0, self.ub))
@@ -115,16 +118,5 @@ class IndivInt(Indiv):
         self.genes[pos] = randint(0, self.ub)  # replace da posição por um valor aleatorio (0,1)
 
 
-class IndivReal(Indiv):
-
-    def initRandom(self, size):
-        self.genes = []
-        for _ in range(size):
-            self.genes.append(uniform(self.lb, self.ub))
-
-    def mutation(self):
-        s = len(self.genes)
-        pos = randint(0, s - 1)
-        self.genes[pos] = uniform(self.lb, self.ub)
 
 
