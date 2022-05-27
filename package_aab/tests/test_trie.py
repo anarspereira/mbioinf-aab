@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+Package dos algoritmos implementados em aula
+Algoritmos Avançados de Bioinformática
+"""
+
+"""
+Unit test: Trie
+"""
+
 import unittest
 from trie import Trie
 
