@@ -53,39 +53,63 @@ class DeBruijnGraph(MyGraph):
     def create_deBruijn_graph(self, frags : lst):
         """
         Método que implementa a criação de um grafo DeBruijn
-        :param frags: um conjunto de sequências (fragmentos)
-        :return:
+        :param frags: um conjunto de sequências
         """
         for seq in frags: #para cada sequência em fragmentos
             suffix_seq = suffix(seq) #cria o sufixo da sequência
-            self.add_vertex(suf) #adiciona o sufixo como um vertice ao grafo
+            self.add_vertex(suffix_seq) #adiciona o sufixo como um vertice ao grafo
             prefix_seq = prefix(seq) #cria o prefixo da sequência
-            self.add_vertex(pref) #adiciona o prefixo como um vertice ao grafo
-            self.add_edge(pref,suf) #adiciona o arco entre o prefixo e o sufixo
+            self.add_vertex(prefix_seq) #adiciona o prefixo como um vertice ao grafo
+            self.add_edge(prefix_seq,suffix_seq) #adiciona o arco entre o prefixo e o sufixo
 
-    def seq_from_path(self, path):
+    def seq_from_path(self, path : lst) -> str:
+        """
+        Método que obtém a sequência original a partir do caminho construído.
+        :param path: caminho do grafo em lista
+        :return: retorna a sequência representada pelo caminho construído
+        """
         seq = path[0]
+        #define o início da sequência como o primeiro nodo no caminho (nodo correspondente ao index 0 da lista path)
         for i in range(1, len(path)):
-            nxt = path[i]
-            seq += nxt[-1]
+            #para cada nodo presente no caminho desde o nodo correspondente ao index 1 da lista do caminho (path)
+            next = path[i] #define o próximo nodo como sendo o nodo no index seguinte da lista do caminho
+            seq += next[-1] #adiciona o nodo à sequêcia
         return seq
 
 
-def suffix(seq):
+def suffix(seq : str) -> str:
+    """
+    Método que obtém o sufixo da sequência obtido na método "seq_from_path".
+    :param seq: sequência representada pelo caminho construído
+    :return: retorna o sufixo da sequência seq, o que corresponde à sequência exceto o primeiro caracter
+    """
     return seq[1:]
 
 
-def prefix(seq):
+def prefix(seq : str) -> str:
+    """
+    Método que obtém o prefixo da sequência obtido na método "seq_from_path".
+    :param seq: sequência representada pelo caminho construído
+    :return: retorna o prefixo da sequência seq, o que corresponde à sequência exceto o último caracter
+    """
     return seq[:-1]
 
 
-def composition(k, seq):
-    res = []
-    for i in range(len(seq) - k + 1):
-        res.append(seq[i:i + k])
-    res.sort()
-    return res
+def composition(k : int, seq : str) -> lst:
+    """
+    Método que recupera a sequência original, dando como valores de entrada a sequência obtida e o valor de k
+    :param k: tamanho dos fragmentos
+    :param seq: sequência obtida
+    :return: retorna a sequência original em lista
+    """
+    seq_original = [] #criar lista vazia da sequência original
+    for i in range(len(seq) - k + 1): #percorre a sequência, subtraindo o tamanho do fragmento e incrementando + 1
+        seq_original.append(seq[i:i + k]) #adiciona à lista o fragmento de tamanho k
+    seq_original.sort() #ordenar a lista
+    return seq_original
 
+
+#testes
 
 def test1():
     frags = ["ATA", "ACC", "ATG", "ATT", "CAT", "CAT", "CAT", "CCA", "GCA", "GGC", "TAA", "TCA", "TGG", "TTC", "TTT"]

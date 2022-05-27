@@ -10,7 +10,7 @@ class test_DeBruijnGraph(unittest.TestCase):
 
 class test_ DeBruijnGraphMethods(test_ DeBruijnGraph):
     def test_runTest(self):
-        self.assertEqual(self.debrujin.
+
 
 
 
