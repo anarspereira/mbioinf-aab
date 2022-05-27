@@ -9,7 +9,9 @@ Class: MyGraph
 """
 
 class MyGraph:
-
+    """
+    Classe para a implementação de grafos
+    """
     def __init__(self, g: dict = {}):
         """
         Método que guarda os valores utilizados nos restantes métodos
