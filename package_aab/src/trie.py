@@ -112,25 +112,11 @@ class Trie:
         return res
 
 
-# def test():
-#     patterns = ["GAT", "CCT", "GAG"]
-#     t = Trie()
-#     t.trie_from_patterns(patterns)
-#     t.print_trie()
-#
-#
 def test2():
-#     print("Test 2")
     patterns = ["AGAGAT", "AGC", "AGTCC", "CAGAT", "CCTA", "GAGAT", "GAT", "TC"]
     t = Trie()
     t.trie_from_patterns(patterns)
-    # t.print_trie()
-    # print("prefix trie match")
-    # print(t.prefix_trie_match("GAGATCCTA"))
-#     print("trie match")
-    print(t.trie_matches("GAGATCCTA"))
+    t.print_trie()
 
 
-# test()
-# print()
 test2()

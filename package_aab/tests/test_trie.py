@@ -21,10 +21,10 @@ class test_TrieMethods(test_Trie):
     #          "23 -> {}", "24 -> {}", "25 -> {'C': 26}", "26 -> {}"]
     #     self.assertEqual(x, y)
 
-    # def test_prefixTrieMatch(self):
-    #     x = self.trie.prefix_trie_match("GAGATCCTA")
-    #     y = "GAGAT"
-    #     self.assertEqual(x, y)
+    def test_prefixTrieMatch(self):
+        x = self.trie.prefix_trie_match("GAGATCCTA")
+        y = "GAGAT"
+        self.assertEqual(x, y)
 
     def test_trieMatches(self):
         x = self.trie.trie_matches("GAGATCCTA")
