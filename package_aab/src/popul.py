@@ -17,7 +17,7 @@ class Popul:
     Classe para implementar populações de indivíduos com representações binárias
     """
 
-    def __init__(self, popsize: int, indsize: int, indivs=[]):
+    def __init__(self, popsize: int, indsize: int, indivs = []):
         """
         :param popsize: Número de indivíduos da população
         :param indsize: Tamanho dos indivíduos
