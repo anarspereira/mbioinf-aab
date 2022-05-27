@@ -103,9 +103,9 @@ class Indiv:
             offsp1.append(self.genes[i])  # fica igual até à pos -1
             offsp2.append(indiv2.genes[i])  # igual até à pos -1
         for i in range(pos, s):
-            offsp2.append(self.genes[i])  # troca de pos ate ao fim (progenitor 2 troca com 1)
-            offsp1.append(indiv2.genes[i])  # troca de pos ate ao fim (progenitor 1 troca com 2)
-        res1 = self.__class__(s, offsp1, self.lb, self.ub)  # para usar o mesmo metodo numa representaçao inteira
+            offsp2.append(self.genes[i])  #
+            offsp1.append(indiv2.genes[i])
+        res1 = self.__class__(s, offsp1, self.lb, self.ub)  #
         res2 = self.__class__(s, offsp2, self.lb, self.ub)
         return res1, res2
 
