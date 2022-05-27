@@ -17,7 +17,7 @@ class SuffixTree:
     sequências.
     """
 
-    def __init__(self): #, seq: str):
+    def __init__(self):
         """
         Método que guarda os valores utilizados nos restantes métodos.
         """
@@ -26,7 +26,6 @@ class SuffixTree:
         # 2º elemento corresponde a um dicionário
         # keys: símbolos do arco; values: indíce dos destination nodes <- representa as folhas da árvore
         self.num = 0
-        #self.seq = seq
 
     def printTree(self) -> None:
         """

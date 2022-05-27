@@ -7,11 +7,11 @@ Algoritmos Avançados de Bioinformática
 """
 Class: MyGraph
 """
-## keys are vertices
-## values of the dictionary represent the list of adjacent vertices of the key nodo
 
 class MyGraph:
-
+    """
+    Classe para a implementação de grafos
+    """
     def __init__(self, g: dict = {}):
         """
         Método que guarda os valores utilizados nos restantes métodos
@@ -26,13 +26,13 @@ class MyGraph:
         for v in self.graph.keys():
             print(v, " -> ", self.graph[v])
 
-    def get_nodes(self):
+    def get_nodes(self) -> list:
         """
         Método que retorna a lista de nodos
         """
         return list(self.graph.keys())
 
-    def get_edges(self):
+    def get_edges(self) -> list:
         """
         Método que retorna a lista de arcos
         v será a origem
@@ -80,7 +80,7 @@ class MyGraph:
         :return: retorna lista de nodos sucessores do nodo v
         """
         return list(
-            self.graph[v])  # needed to avoid list being overwritten of result of the function is used
+            self.graph[v])
 
     def get_predecessors(self, v:str) -> list:
         """
@@ -93,7 +93,7 @@ class MyGraph:
                 res.append(k)
         return res
 
-    def get_adjacents(self, v:str):
+    def get_adjacents(self, v:str) -> list:
         """
         :param v: nodo
         :return: retorna a lista de nodos adjacentes do nodo v
@@ -106,7 +106,7 @@ class MyGraph:
         return res
 
 
-    def out_degree(self, v:str):
+    def out_degree(self, v:str) -> int:
         """
         Método que calcula grau de saída do nodo v
         :param v: nodo
@@ -114,7 +114,7 @@ class MyGraph:
         """
         return len(self.graph[v])
 
-    def in_degree(self, v:str):
+    def in_degree(self, v:str) -> int:
         """
         Método que calcula grau de entrada do nodo v
         :param v: nodo
@@ -122,7 +122,7 @@ class MyGraph:
         """
         return len(self.get_predecessors(v))
 
-    def degree(self, v:str):
+    def degree(self, v:str) -> int:
         """
         Método que calcula grau do nodo v (todos os nodos adjacentes quer percursores quer sucessores
         :param v: nodo
@@ -149,22 +149,20 @@ class MyGraph:
                         degs[d] = degs[d] + 1   #adiciona +1 ao valor de d
         return degs
 
-    def highest_degrees(self, all_deg=None, deg_type="inout", top=10):
+    def highest_degrees(self, all_deg=None, deg_type="inout", top=10) ->list:
         """
         Método que calcula graus mais elevados
         :param all_deg: graus de entrada e saída, ou ambos
         :param deg_type:tipo de grau (entrada, saída ou ambos)
-        :param top:
-        :return:
+        :return: lista de graus mais elevados
         """
         if all_deg is None:
             all_deg = self.all_degrees(deg_type)
         ord_deg = sorted(list(all_deg.items()), key=lambda x: x[1], reverse=True)
         return list(map(lambda x: x[0], ord_deg[:top]))
 
-    ## topological metrics over degrees
 
-    def mean_degree(self, deg_type="inout"):
+    def mean_degree(self, deg_type="inout") -> dict:
         """
         Método para calcular a media de graus
         :param deg_type: tipo de grau (entrada, saída ou ambos)
@@ -173,7 +171,7 @@ class MyGraph:
         degs = self.all_degrees(deg_type)
         return sum(degs.values()) / float(len(degs))
 
-    def prob_degree(self, deg_type="inout"):
+    def prob_degree(self, deg_type="inout") -> dict:
         """
         Método para calcular a probabilidade de graus
         :param deg_type: tipo de grau (entrada, saída ou ambos)
@@ -272,7 +270,7 @@ class MyGraph:
                     visited.append(elem)
         return None
 
-    def reachable_with_dist(self, s):
+    def reachable_with_dist(self, s: str):
         """
         Método de nodos atingíveis a partir de v com respetiva distância
         :param s: nodo
@@ -289,7 +287,6 @@ class MyGraph:
                     l.append((elem, dist + 1)) # adiciona o vertice a que se liga
         return res
 
-    ## mean distances ignoring unreachable nodos
     def mean_distances(self):
         """
         Método da média das distâncias de cada nodo
@@ -306,7 +303,7 @@ class MyGraph:
         n = len(self.get_nodes()) #número total de nodos
         return meandist, float(num_reachable) / ((n - 1) * n)
 
-    def closeness_centrality(self, node):
+    def closeness_centrality(self, node: str) ->:
         """
         Método de aproximação média das distâncias percorridas entre os nodos atingidos
         :param nodo: nodo
@@ -317,21 +314,16 @@ class MyGraph:
             return 0.0 #retorna 0
         s = 0.0
         for d in dist: s += d[1] #para cada nodo é adicionada a distância à variavel s
-        return len(dist) / s #todos os nodos a dividir pela distancia total TODO: Rever
+        return len(dist) / s
 
-    def highest_closeness(self, top=10):
-        """
-
-        :param top:
-        :return:
-        """
+    def highest_closeness(self, top=10) -> list:
         cc = {} #dicionário
         for k in self.graph.keys(): #para cada key no grafo
             cc[k] = self.closeness_centrality(k) #nodo corresponde
         ord_cl = sorted(list(cc.items()), key=lambda x: x[1], reverse=True)
         return list(map(lambda x: x[0], ord_cl[:top]))
 
-    def betweenness_centrality(self, node):
+    def betweenness_centrality(self, node) -> float:
         total_sp = 0
         sps_with_node = 0
         for s in self.graph.keys():
@@ -343,13 +335,12 @@ class MyGraph:
                         if node in sp: sps_with_node += 1
         return sps_with_node / total_sp
 
-    ## cycles - aula 8
+    ## cycles
     def node_has_cycle(self, v):
         """
         Método para verificar de o nodo tem ciclo, ou seja se começa e termina no mesmo nó
         :param v: nodo
         :return: valor de "False" ou "True" se o nodo não tem ou tem ciclo, respetivamente
-
         """
         l = [v] #vai buscar o nodo v e cria uma lista
         res = False
@@ -364,7 +355,7 @@ class MyGraph:
                     visited.append(elem) #adiciona o elemento à lista de nodos visitados
         return res #retorna False
 
-    def has_cycle(self):
+    def has_cycle(self) -> bool:
         """
         Método que verifica se o grafo tem ciclo, ou seja se o caminho é fechado
         :return: valor de "False" ou "True" se o caminho é não fechado ou fechado, respetivamente.
@@ -375,9 +366,9 @@ class MyGraph:
                 return True
         return res #retorna False
 
-    ## clustering - aula 9
+    ## clustering
 
-    def clustering_coef(self, v):
+    def clustering_coef(self, v) -> float:
         """
         Método de cálculo do coeficiente de clustering, para medir até que ponto cada nó está inserido num grupo coeso
         :param v: nodo
@@ -395,7 +386,7 @@ class MyGraph:
         return float(ligs) / (len(adjs) * (len(adjs) - 1))
         #o número de pares de nodos adjacentes a dividir pelo número de pares que é possivel serem formados
 
-    def all_clustering_coefs(self):
+    def all_clustering_coefs(self) -> dict:
         """
         Método que calcula todos os coeficientes
         :return: dicionário de coeficientes de cada nodo em que a key corresponde a cada nodo e a cada coeficiente
@@ -406,7 +397,7 @@ class MyGraph:
             #cálculo do coeficiente de cada nodo, valor adicionado no dicionário ccs
         return ccs
 
-    def mean_clustering_coef(self):
+    def mean_clustering_coef(self) -> float:
         """
         Método da média global dos coeficientes
         :return: o valor da média de todos os coeficientes
@@ -414,7 +405,7 @@ class MyGraph:
         ccs = self.all_clustering_coefs() #cálculo de todos os coeficientes
         return sum(ccs.values()) / float(len(ccs)) #cálculo da média
 
-    def mean_clustering_perdegree(self, deg_type="inout"):
+    def mean_clustering_perdegree(self, deg_type="inout") -> dict:
         """
         Método que calcula valores para a média dos coeficientes para todos os nodos
         :param deg_type: tipo de grau (entrada, saída ou ambos)
@@ -437,7 +428,7 @@ class MyGraph:
             #calcula o coeficiente a dividir pelo comprimento do grau k
         return ck
 
-    ## Hamiltonian - aula 10
+    ## Hamiltonian
 
     def check_if_valid_path(self, p:list) -> bool:
         """
@@ -474,10 +465,10 @@ class MyGraph:
         else: #se houver nodos na lista a visitar
             return False #não é um caminho hamiltonian
 
-    def search_hamiltonian_path(self):
+    def search_hamiltonian_path(self) -> Union[dict, None]:
         """
         Método de procura de caminhos Hamiltonianos
-        :return: p ou None
+        :return: se p for diferente de None retorna p senão retorna None
         """
         for ke in self.graph.keys(): #para cada key no grafo
             p = self.search_hamiltonian_path_from_node(ke)
@@ -485,7 +476,7 @@ class MyGraph:
                 return p
         return None
 
-    def search_hamiltonian_path_from_node(self, start):
+    def search_hamiltonian_path_from_node(self, start : int) -> list:
         """
         Método de procura de caminhos Hamiltonianos no grafo
         :param start: nodo inicial
@@ -523,10 +514,10 @@ class MyGraph:
                     return None
         return path #caminho hamiltonianos em lista
 
-    # Eulerian - aula 10 e 11
+    # Eulerian
         #Caminho que passa por todos os arcos do grafo exatamente uma vez
 
-    def check_balanced_node(self, node):
+    def check_balanced_node(self, node) -> bool:
         """
         Método de verificação se um nó é balanceado
         :param node: nodo
@@ -534,7 +525,7 @@ class MyGraph:
         """
         return self.in_degree(node) == self.out_degree(node)
 
-    def check_balanced_graph(self):
+    def check_balanced_graph(self) -> bool:
         """
         Método de verificação se o grafo é balanceado
         :return:valor de "False" ou "True", se o grafo for não balanceado ou balanceado, respetivamente
@@ -566,7 +557,7 @@ class MyGraph:
                 return None, None
         return res
 
-    def is_connected(self):
+    def is_connected(self) -> bool:
         """
         Método para verificar se está conectado ou não
         :return: valor de "False" ou "True", se não tiver ligado ou tiver ligado, respetivamente
@@ -578,7 +569,7 @@ class MyGraph:
                 return False
         return True
 
-    def eulerian_cycle(self):
+    def eulerian_cycle(self) -> list:
         """
         ciclo Euleriano passa por todos os arcos do grafo examante uma vez, regressando ao nó de partida
         :return: valor de "None" (se não for um ciclo Euleriano) ou a lista res (lista do ciclo)
@@ -638,137 +629,9 @@ class MyGraph:
         return path
 
 
-def is_in_tuple_list(tl, val):
+def is_in_tuple_list(tl, val) -> bool:
     res = False
     for (x, y) in tl:
-        if val == x: return True
+        if val == x:
+            return True
     return res
-
-
-# def test1():
-#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-#     gr.print_graph()
-#     print(gr.get_nodes())
-#     print(gr.get_edges())
-#
-#
-#
-# def test2():
-#     gr2 = MyGraph()
-#     gr2.add_vertex(1)
-#     gr2.add_vertex(2)
-#     gr2.add_vertex(3)
-#     gr2.add_vertex(4)
-#
-#     gr2.add_edge(1, 2)
-#     gr2.add_edge(2, 3)
-#     gr2.add_edge(3, 2)
-#     gr2.add_edge(3, 4)
-#     gr2.add_edge(4, 2)
-#
-#     gr2.print_graph()
-#
-#
-# def test3():
-#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-#     gr.print_graph()
-#
-#     print(gr.get_successors(2))
-#     print(gr.get_predecessors(2))
-#     print(gr.get_adjacents(2))
-#     print(gr.in_degree(2))
-#     print(gr.out_degree(2))
-#     print(gr.degree(2))
-#
-#
-# def test4():
-#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-#     print(gr.shortest_path(1, 4))
-#     print(gr.shortest_path(4, 3))
-#
-#     print(gr.reachable_with_dist(1))
-#     print(gr.reachable_with_dist(3))
-#
-#     gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
-#     print(gr2.shortest_path(1, 5))
-#     print(gr2.shortest_path(2, 1))
-#
-#     print(gr2.reachable_with_dist(1))
-#     print(gr2.reachable_with_dist(5))
-#
-#
-# def test5():
-#     gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-#     print(gr.node_has_cycle(2))
-#     print(gr.node_has_cycle(1))
-#     print(gr.has_cycle())
-#
-#     gr2 = MyGraph({1: [2, 3], 2: [4], 3: [5], 4: [], 5: []})
-#     print(gr2.node_has_cycle(1))
-#     print(gr2.has_cycle())
-#
-#
-# def test6():
-#     gr = MyGraph()
-#     gr.add_vertex(1)
-#     gr.add_vertex(2)
-#     gr.add_vertex(3)
-#     gr.add_vertex(4)
-#     gr.add_edge(1, 2)
-#     gr.add_edge(2, 3)
-#     gr.add_edge(3, 2)
-#     gr.add_edge(3, 4)
-#     gr.add_edge(4, 2)
-#     gr.print_graph()
-#     print(gr.size())
-#
-#     print(gr.get_successors(2))
-#     print(gr.get_predecessors(2))
-#     print(gr.get_adjacents(2))
-#
-#     print(gr.in_degree(2))
-#     print(gr.out_degree(2))
-#     print(gr.degree(2))
-#
-#     print(gr.all_degrees("inout"))
-#     print(gr.all_degrees("in"))
-#     print(gr.all_degrees("out"))
-#
-#     gr2 = MyGraph({1: [2, 3, 4], 2: [5, 6], 3: [6, 8], 4: [8], 5: [7], 6: [], 7: [], 8: []})
-#     print(gr2.reachable_bfs(1))
-#     print(gr2.reachable_dfs(1))
-#
-#     print(gr2.distance(1, 7))
-#     print(gr2.shortest_path(1, 7))
-#     print(gr2.distance(1, 8))
-#     print(gr2.shortest_path(1, 8))
-#     print(gr2.distance(6, 1))
-#     print(gr2.shortest_path(6, 1))
-#
-#     print(gr2.reachable_with_dist(1))
-#
-#     print(gr.has_cycle())
-#     print(gr2.has_cycle())
-#
-#     print(gr.mean_degree())
-#     print(gr.prob_degree())
-#     print(gr.mean_distances())
-#     print(gr.clustering_coef(1))
-#     print(gr.clustering_coef(2))
-#
-#
-# if __name__ == "__main__":
-#     # test1()
-#     # test2()
-#     # test3()
-#     test4()
-#     # test5()
-#     # test6()
-
-def test5():
-    gr = MyGraph({1: [2], 2: [3], 3: [2, 4], 4: [2]})
-    print(gr.is_connected())
-    print(gr.eulerian_cycle())
-    print(gr.eulerian_path())
-
-test5()
