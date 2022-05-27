@@ -1,9 +1,12 @@
-from random import randint, random, shuffle, uniform
+from random import randint
 
 
 class Indiv:
+    """
+    Classe para  implementar indivíduos com representações binárias.
+    """
 
-    def __init__(self, size=int, genes, lb=0, ub=1):
+    def __init__(self, size=int, genes={} or [], lb=0, ub=1):
         """
         :param size: tamanho da população
         :param genes: lista do conjunto de genes
@@ -59,7 +62,7 @@ class Indiv:
 
     def init_random(self, size=int):
         """
-        método para gerar indivíduos aleatoriamente
+        Método para gerar indivíduos aleatoriamente
         :param size:
         """
         self.genes = []
@@ -67,6 +70,9 @@ class Indiv:
             self.genes.append(randint(self.lb, self.ub))  # gerar individuos aleatoriamente entre os limites
 
     def mutation(self):
+        """
+        Método para implementar mutação para representações binárias que altera um único gene
+        """
         s = len(self.genes)
         pos = randint(0, s - 1)  # gera posição; s-1 pois o len começa a contar do 1 e no randint inclusive
         if self.genes[pos] == 0:  # se na posiçao tiver 0:
@@ -75,9 +81,19 @@ class Indiv:
             self.genes[pos] = 0  # ao contrário, passa a 0
 
     def crossover(self, indiv2):  # cruzamento de um ponto
+        """
+        Método que vai chamar outro método e finalizar o crossover.
+        :param indiv2: segundo indivíduo o qual será sujeito a crossover
+        :return: tuplo com os descendentes
+        """
         return self.one_pt_crossover(indiv2)
 
     def one_pt_crossover(self, indiv2):  # cruzar com individuo 2
+        """
+        Método para criar crossover entre dois indivíduos.
+        :param indiv2: segundo indivíduo q
+        :return: descente 1 e descendente 2
+        """
 
         offsp1 = []  # descendente 1
         offsp2 = []  # descendente 2
@@ -96,10 +112,9 @@ class Indiv:
 
 class IndivInt(Indiv):
     """
-    método de representação inteira do algoritmo
+     Classe de representação inteira do algoritmo
     """
-
-    def __init__(self, size=int, genes, lb=0, ub=1):
+    def __init__(self, size, genes, lb=0, ub=1):  # ub = seq size -  motif size
         self.lb = lb
         self.ub = ub
         self.genes = genes
@@ -108,11 +123,18 @@ class IndivInt(Indiv):
             self.initRandom(size)
 
     def initRandom(self, size=int):  # criar indiviudos aleatoriamente
+        """
+        Método para gerar indivíduos aleatoriamente
+        :param size: tamanho da população
+        """
         self.genes = []
         for _ in range(size):
             self.genes.append(randint(0, self.ub))
 
     def mutation(self):
+        """
+        Método para simular mutação
+        """
         s = len(self.genes)  # tamanho dos genes
         pos = randint(0, s - 1)  # random posicao
         self.genes[pos] = randint(0, self.ub)  # replace da posição por um valor aleatorio (0,1)
