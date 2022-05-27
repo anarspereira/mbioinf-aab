@@ -91,7 +91,7 @@ class Indiv:
     def one_pt_crossover(self, indiv2):  # cruzar com individuo 2
         """
         Método para criar crossover entre dois indivíduos.
-        :param indiv2: segundo indivíduo q
+        :param indiv2: segundo indivíduo
         :return: descente 1 e descendente 2
         """
 
