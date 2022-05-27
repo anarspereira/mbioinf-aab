@@ -40,17 +40,32 @@ class EAMotifsInt (EvolAlgorithm):
 
 class EAMotifsReal (EvolAlgorithm):
     def __init__(self, popsize, numits, noffspring, filename):
-        pass
+        self.motifs_finding = MotifFinding()
+        self.motifs.readFile(filename, "dna")
+        indsize = self.motifs.motifSize * len(self.motifs.alphabet)
+        EvolAlgorithm.__init__(self, popsize, numits, noffspring, indsize)
 
     def initPopul(self, indsize):
-        pass
+        self.popul = PopulReal(self.popsize, indsize, indivs=[], lb=0.0, ub=1.0)
 
     def evaluate(self, indivs):
-        pass
+        for i in range(len(indivs)):
+            ind = indivs[i]
+            sol = ind.getGenes()
+            # criar motifs
+            pwm = self.vec_to_pwm(sol)
+            mtf = MyMotifs(pwm=pwm, alphabet=self.motifs_finding.alphabet)
+            s = []
+            for j in range(len(self.motifs_finding.seqs)):
+                seq = self.motifs_finding.seqs[j].seq
+                p = self.motifs.mostProbableSeq(seq)
+                s.append(p)
+            fit = self.motifs_finding.score(sol)
+            ind.setFitness(fit)
 
 
 def test1():
-    ea = EAMotifsInt(100, 1000, 50, "exemploMotifs.txt")
+    ea = EAMotifsInt(100, 1000, 50, "exemploMotifs.txt") # pedem um ficheiro .txt, está na pasta dos scripts
     ea.run()
     ea.printBestSolution()
 

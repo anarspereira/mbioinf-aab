@@ -11,12 +11,17 @@ Class: DeBruijn Graph
 from my_graph import MyGraph
 
 class DeBruijnGraph(MyGraph):
-    # subclasse da classe MyGraph que representa os grafos DeBruijn
+    """
+    Classe implementada para representar os grafos de Bruijn. Estes representam os fragmentos (k-mers) como
+    arcos do grafo e os nodos como sequências de tamanho k-1, correspondendo a prefixos ou sufixos dos
+    fragmentos.
+    Esta classe é uma subclasse do MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
+    """
 
     def __init__(self, frags : lst):
         """
         Método construtor que guarda os valores utilizados nos restantes métodos
-        :param frags: um conjunto de sequências (fragmentos)
+        :param frags: um conjunto de sequências (k-mers)
         """
         MyGraph.__init__(self, {})
         self.create_deBruijn_graph(frags)

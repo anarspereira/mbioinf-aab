@@ -10,11 +10,17 @@ from typing import List
 
 
 class BoyerMoore:
-    def __init__(self, alphabet, pattern):
+    def __init__(self, alphabet=str, pattern=str):
+        """
+        Classe para implementar o algoritmo de BoyerMoore, regido por duas regras: Bad Caracter rule e Good Suffix Rule.
+        :param alphabet: alfabeto da sequência/texto a análisar. No âmbito bioinformático tipicamente são bases
+        nucleótidas.
+        :param pattern: padrão a encontrar
+        """
         self.alphabet = alphabet
         self.pattern = pattern
 
-        self.occ = {} # criar dicionário
+        self.occ = {}  # criar dicionário
 
         # criação de listas de tamanho igual ao padrão +1. cada uma inicializada com zeros
         self.f = [0] * (len(self.pattern) + 1)  # lista do tamanho do padrão, inicializada a 0
@@ -70,7 +76,7 @@ class BoyerMoore:
             if i == j:
                 j = self.f[j]
 
-    def search_pattern(self, text) -> List[int]:
+    def search_pattern(self, text=str) -> List[int]:
         """
         Este método permite encontrar um padrão num dado texto, tendo como base o objeto da classe que contém o
         padrão e seu alfabeto.
