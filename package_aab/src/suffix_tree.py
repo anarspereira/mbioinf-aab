@@ -102,25 +102,3 @@ class SuffixTree:
                 leaves = self.get_leaves_below(newnode) # é criada uma folha com o novo node
                 res.extend(leaves)
         return res
-
-
-def test():
-    seq = "TACTA"
-    st = SuffixTree()
-    st.suffix_tree_from_seq(seq)
-    #st.print_tree()
-    print(st.find_pattern("TA"))
-    #print(st.find_pattern("ACG"))
-
-
-def test2():
-    seq = "TACTA"
-    st = SuffixTree()
-    st.suffix_tree_from_seq(seq)
-    #print(st.find_pattern("TA"))
-    #print(st.repeats(2, 2))
-
-
-test()
-print()
-test2()
