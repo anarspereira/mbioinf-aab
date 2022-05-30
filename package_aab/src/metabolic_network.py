@@ -15,7 +15,7 @@ class MetabolicNetwork(MyGraph):
     """
     Classe responsável pela implementação de redes metabólicas. As redes metabólicas são construídas através da leitura
     de um ficheiro que possui a informação sobre a rede.
-    Esta classe é uma subclasse do MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
+    Esta classe é uma subclasse da MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
     Há 3 tipos de rede metabólica, nomeadamente a:
         - Rede de Metabolitos ("metabolite-metabolite") -> rede na qual metabolitos são os nodos do grafo e os
     reações os arcos;
@@ -63,9 +63,9 @@ class MetabolicNetwork(MyGraph):
 
     def load_from_file(self, filename : str):
         """
-        Método que recebe e abre o ficheiro criado anteriormente com as informações da rede metabólica e
+        Método que recebe e abre um ficheiro criado anteriormente com as informações da rede metabólica e
         (onde cada reação será uma linha) e converte a informação do mesmo para ser introduzida nos
-        atributos desta subcalsse
+        atributos desta subcalsse. Exemplo de linha no ficheiro: "R1: M1 + M2 => M3 + M4"
         :param filename: nome do ficheiro que queremos abrir
         :return: caso haja um erro numa linha do ficheiro retorna a indicação que aquela linha é inválida
         """

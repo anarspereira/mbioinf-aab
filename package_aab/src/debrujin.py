@@ -15,7 +15,7 @@ class DeBruijnGraph(MyGraph):
     Classe implementada para representar os grafos de Bruijn. Estes representam os fragmentos (k-mers) como
     arcos do grafo e os nodos como sequências de tamanho k-1, correspondendo a prefixos ou sufixos dos
     fragmentos.
-    Esta classe é uma subclasse do MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
+    Esta classe é uma subclasse da MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
     """
 
     def __init__(self, frags : lst):
@@ -64,7 +64,7 @@ class DeBruijnGraph(MyGraph):
 
     def seq_from_path(self, path : lst) -> str:
         """
-        Método que obtém a sequência original a partir do caminho construído.
+        Método que obtém a sequência a partir do caminho construído.
         :param path: caminho do grafo em lista
         :return: retorna a sequência representada pelo caminho construído
         """
