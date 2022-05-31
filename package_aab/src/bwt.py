@@ -78,7 +78,7 @@ class BWT:
     def last_to_first(self) -> List:
         """
         Método para criar a tabela com a última coluna e com a primeira
-        :return: lista padrões conhecidos
+        :return: lista de índices da transformada
         """
         res = []
         firstcol = self.get_first_col()  # chamar método para obter a primeira coluna
