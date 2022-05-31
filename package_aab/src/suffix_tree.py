@@ -9,13 +9,13 @@ Class: SuffixTree - Árvore de sufixos
 """
 
 class SuffixTree:
-    """
+    '''
     Classe que cria árvore de sufixos de um padrão que vai ser procurado numa sequência.
     Permite fazer o pré-processamento de uma sequência-alvo, tornando a sua procura mais eficiente.
     É a solução para fazer o pré-processamento de sequências muito grandes, descobrir quais árvores contêm um dado padrão,
     descobrir a substring comum mais longa num conjunto de sequências e calcular o máximo de overlap de um conjunto de
     sequências.
-    """
+    '''
 
     def __init__(self):
         """
@@ -81,7 +81,7 @@ class SuffixTree:
         """
         Método que procura padrões (trie) começando da raiz até chegar ao node final ou falhar a pesquisa.
         :param pattern: padrão a procurar
-        :return: lista de folhas abaixo de um dado nó
+        :return: lista de folhas abaixo de um dado nó ou none (caso falhe a pesquisa)
         """
         pos = 0 # posição inicial
         node = 0 # node
