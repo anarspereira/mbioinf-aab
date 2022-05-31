@@ -49,7 +49,7 @@ class MetabolicNetwork(MyGraph):
         self.add_vertex(v)
         self.node_types[nodetype].append(v)
 
-    def get_nodes_type(self, node_type : str) -> Union[dict,None]:
+    def get_nodes_type(self, node_type : str):
         """
         Método que retorna o dicionário com as listas de nodos de cada tipo
         :param node_type: tipo de nodo
