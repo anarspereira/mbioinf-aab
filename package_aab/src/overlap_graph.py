@@ -16,18 +16,15 @@ class OverlapGraph(MyGraph):
     A classe OverlapGraph será uma sub-classe da classe MyGraph para representar grafos orientados
     """
 
-    #def __init__(self, frags):
-    #    MyGraph.__init__(self, {})
-    #    self.create_overlap_graph(frags)
-
-    def __init__(self, frags, reps = False):
+    def __init__(self, frags: list, reps:bool = False):
+        MyGraph.__init__(self, {})
         if reps:
             self.create_overlap_graph_with_reps(frags)
         else:
             self.create_overlap_graph(frags)
         self.reps = reps
 
-    def create_overlap_graph(self, frags):
+    def create_overlap_graph(self, frags:list):
         """
         Método para criar o grafo de overlap a partir das ligações do sufixos com os prefixos
         :param frags: fragmentos ou conjuntos de sequencias
@@ -41,7 +38,7 @@ class OverlapGraph(MyGraph):
                     self.add_edge(seq, seq2) #adiciona arcos
 
 
-    def create_overlap_graph_with_reps(self, frags):
+    def create_overlap_graph_with_reps(self, frags:list):
         """
         Método para criar grafo de overlap com repetições de elementos
         :param frags: fragmentos ou conjuntos de sequencias
@@ -59,7 +56,7 @@ class OverlapGraph(MyGraph):
                         self.add_edge(seq + "-" + str(idnum), x)
             idnum = idnum + 1
 
-    def get_instances(self, seq) -> list:
+    def get_instances(self, seq:str) -> list:
         """
         :param seq: sequencia
         :return: a lista da sequencia
@@ -69,7 +66,7 @@ class OverlapGraph(MyGraph):
             if seq in k: res.append(k)
         return res
 
-    def get_seq(self, node):
+    def get_seq(self, node:str):
         """
         Método que retorna o nodo
         :param node: nodo
@@ -82,7 +79,7 @@ class OverlapGraph(MyGraph):
         else:
             return node
 
-    def seq_from_path(self, path):
+    def seq_from_path(self, path:list):
         """
         Método para dar a sequencia contruida dado um caminho no grafo
         :param path: caminho
