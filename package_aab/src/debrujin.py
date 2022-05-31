@@ -18,7 +18,7 @@ class DeBruijnGraph(MyGraph):
     Esta classe é uma subclasse da MyGraph e, desta forma, herdará todos os métodos definidos na mesma.
     """
 
-    def __init__(self, frags : lst):
+    def __init__(self, frags : list):
         """
         Método construtor que guarda os valores utilizados nos restantes métodos
         :param frags: um conjunto de sequências (k-mers)
@@ -50,7 +50,7 @@ class DeBruijnGraph(MyGraph):
                 count_nodes += self.graph[k].count(v) #contagem dos nodos presentes no grafo
         return count_nodes
 
-    def create_deBruijn_graph(self, frags : lst):
+    def create_deBruijn_graph(self, frags : list):
         """
         Método que implementa a criação de um grafo DeBruijn
         :param frags: um conjunto de sequências
@@ -62,7 +62,7 @@ class DeBruijnGraph(MyGraph):
             self.add_vertex(prefix_seq) #adiciona o prefixo como um vertice ao grafo
             self.add_edge(prefix_seq,suffix_seq) #adiciona o arco entre o prefixo e o sufixo
 
-    def seq_from_path(self, path : lst) -> str:
+    def seq_from_path(self, path : list) -> str:
         """
         Método que obtém a sequência a partir do caminho construído.
         :param path: caminho do grafo em lista
@@ -95,7 +95,7 @@ def prefix(seq : str) -> str:
     return seq[:-1]
 
 
-def composition(k : int, seq : str) -> lst:
+def composition(k : int, seq : str) -> list:
     """
     Método que recupera a sequência original, dando como valores de entrada a sequência obtida e o valor de k
     :param k: tamanho dos fragmentos
@@ -107,34 +107,3 @@ def composition(k : int, seq : str) -> lst:
         seq_original.append(seq[i:i + k]) #adiciona à lista o fragmento de tamanho k
     seq_original.sort() #ordenar a lista
     return seq_original
-
-
-#testes
-
-def test1():
-    frags = ["ATA", "ACC", "ATG", "ATT", "CAT", "CAT", "CAT", "CCA", "GCA", "GGC", "TAA", "TCA", "TGG", "TTC", "TTT"]
-    dbgr = DeBruijnGraph(frags)
-    dbgr.print_graph()
-
-
-def test2():
-    frags = ["ATA", "ACC", "ATG", "ATT", "CAT", "CAT", "CAT", "CCA", "GCA", "GGC", "TAA", "TCA", "TGG", "TTC", "TTT"]
-
-
-dbgr = DeBruijnGraph(frags)
-dbgr.print_graph()
-print(dbgr.check_nearly_balanced_graph())
-print(dbgr.eulerian_path())
-
-
-def test3():
-    orig_sequence = "ATGCAATGGTCTG"
-    frags = composition(3, orig_sequence)
-    # ... completar
-
-
-test1()
-print()
-# test2()
-# print()
-# test3()

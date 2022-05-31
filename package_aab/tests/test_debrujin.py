@@ -1,18 +1,22 @@
 import unittest
-from my_graph import MyGraph
 from debrujin import DeBruijnGraph
 
 
 class test_DeBruijnGraph(unittest.TestCase):
     def setUp(self):
-        self.debruijn = DeBruijnGraph(MyGraph)
+        frags = ["ATA", "ACC", "ATG", "ATT", "CAT", "CAT", "CAT", "CCA", "GCA", "GGC", "TAA", "TCA", "TGG", "TTC", "TTT"]
+        self.debruijn = DeBruijnGraph(frags)
 
+    def test_balancedGraph(self):
+        x = self.debruijn.check_nearly_balanced_graph()
+        y = ("AC", "AA")
+        self.assertEqual(x, y)
+        
+    def test_eulerianPath(self):
+        x = self.debruijn.eulerian_path()
+        y = ["AC", "CC", "CA", "AT", "TT", "TT", "TC", "CA", "AT", "TG", "GG", "GC", "CA", "AT", "TA", "AA"]
+        for test, truth in zip(x, y):
+            self.assertEqual(str(test), truth)
 
-class test_ DeBruijnGraphMethods(test_ DeBruijnGraph):
-    def test_runTest(self):
-
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

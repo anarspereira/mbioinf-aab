@@ -1,7 +1,7 @@
-from EvolAlgorithm import EvolAlgorithm
-from Popul import PopulInt, PopulReal
-from MotifFinding import MotifFinding
-from MyMotifs import MyMotifs
+from Evol_algorithm import EvolAlgorithm
+from popul import PopulInt
+from motif_finding import MotifFinding
+from my_motif import MyMotifs
 
 
 def createMatZeros(nl, nc):
@@ -44,9 +44,6 @@ class EAMotifsReal (EvolAlgorithm):
         self.motifs.readFile(filename, "dna")
         indsize = self.motifs.motifSize * len(self.motifs.alphabet)
         EvolAlgorithm.__init__(self, popsize, numits, noffspring, indsize)
-
-    def initPopul(self, indsize):
-        self.popul = PopulReal(self.popsize, indsize, indivs=[], lb=0.0, ub=1.0)
 
     def evaluate(self, indivs):
         for i in range(len(indivs)):
