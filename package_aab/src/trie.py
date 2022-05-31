@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
-"""
+'''
 Package dos algoritmos implementados em aula
 Algoritmos Avançados de Bioinformática
-"""
+'''
 
-"""
+'''
 Class: Trie - Árvore de prefixos
-"""
+'''
 
 class Trie:
-    """
+    '''
     Classe responsável pela implementação da árvore de prefixos que permite fazer o pré-processamento
     de um conjunto de padrões. Os símbolos de um dado alfabeto estão associados aos arcos de uma árvore.
     A trie é construída a partir de um conjunto de padrões, começando pelo node da raiz e iterando
     cada padrão, adicionando os nós necessários para que a árvore contenha o caminho desde a raiz até à folha,
     representando o padrão.
-    """
+    '''
     def __init__(self):
-        """
+        '''
         Método que guarda os valores utilizados nos restantes métodos
-        """
+        '''
         self.nodes = {0: {}} # guarda um dicionário de nodes com a estrutura anterior.
         # keys: valores inteiros sequenciais;
         # values: arcos que saem desse nó (em dicionário vazio. keys: símbolos do arco; values: indíce dos destination
@@ -27,30 +27,30 @@ class Trie:
         self.num = 0 # guarda nº do último nó criado (nº de nodes de uma árvore).
 
     def printTrie(self):
-        """
+        '''
         Método que imprime a trie
-        """
+        '''
         for k in self.nodes.keys():
             print(k, "->", self.nodes[k])
 
     def addNode(self, origin: int, symbol: str) -> None:
-        """
+        '''
         Método que adiciona o nodo à trie
         Este método é usado pelo método add_pattern.
 
         :param origin: node existente
         :param symbol: caracter referente ao node que vai ser adicionado (identificação do arco)
-        """
+        '''
         self.num += 1 # adiciona um nó à árvore, aumentando o seu tamanho
         self.nodes[origin][symbol] = self.num # cria um novo node e liga-o a um já existente (através do parâmetro origin)
         self.nodes[self.num] = {} # cria novo node com um dicionário vazio
 
     def addPattern(self, p: list) -> None:
-        """
+        '''
         Método que adiciona padrão à trie
 
         :param p: padrão do input
-        """
+        '''
         position = 0 # posição inicial do padrão. Itera os símbolos do padrão p, enquanto o node se mantém o node atual da árvore, começando pela raiz (node 0).
         node = 0
         while position < len(p): # enquanto a primeira posição do padrão for menor que o tamanho do padrão,
@@ -60,16 +60,16 @@ class Trie:
             position += 1 # incrementar i em 1 para seguir para a próxima iteração, repetindo o processo até chegar ao fim do padrão (len(p)).
 
     def trieFromPatterns(self, pats: list) -> None:
-        """
+        '''
         Método que adiciona cada padrão do input à trie.
 
         :param pats: padrões do input
-        """
+        '''
         for p in pats:
             self.addPattern(p) # adiciona cada padrão presente na lista de padrões
 
     def prefixTrieMatch(self, text: str):
-        """
+        '''
         Método para procurar se um padrão da trie é um prefixo da sequência.
         Percorre a sequência de caracteres e a árvore, começando pela raiz, seguindo os arcos correspondentes aos
         caracteres da sequência até que ocorra uma das seguintes situações:
@@ -78,7 +78,7 @@ class Trie:
 
         :param text: sequência de caracteres
         :return: match do prefixo ou None
-        """
+        '''
         position = 0 # posição inicial
         match = "" # match inicial (resultado)
         node = 0 # nó inicial
@@ -95,14 +95,14 @@ class Trie:
         return None
 
     def trieMatches(self, text: str) -> list:
-        """
-        Método para, usando o método prefix_trie_match, procurar por ocorrências (matches) do padrão na sequência.
+        '''
+        Método para, usando o método prefixTrieMatch, procurar por ocorrências (matches) do padrão na sequência.
         Processo iterativo - faz match da sequência, remove o primeiro símbolo desta, repete o processo -> o processo
         anterior é repetido para todos os sufixos da seq.
 
         :param text: sequência
         :return: lista de matches
-        """
+        '''
         res = []
         for i in range(len(text)): # para cada posição na sequência,
             m = self.prefixTrieMatch(text[i:]) # procura no padrão os caracteres da sequência e guarda o valor em m
