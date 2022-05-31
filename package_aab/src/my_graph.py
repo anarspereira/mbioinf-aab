@@ -303,7 +303,7 @@ class MyGraph:
         n = len(self.get_nodes()) #número total de nodos
         return meandist, float(num_reachable) / ((n - 1) * n)
 
-    def closeness_centrality(self, node: str) ->:
+    def closeness_centrality(self, node: str):
         """
         Método de aproximação média das distâncias percorridas entre os nodos atingidos
         :param nodo: nodo
@@ -465,8 +465,8 @@ class MyGraph:
         else: #se houver nodos na lista a visitar
             return False #não é um caminho hamiltonian
 
-    def search_hamiltonian_path(self) -> Union[dict, None]:
-        """
+    def search_hamiltonian_path(self):
+        """"
         Método de procura de caminhos Hamiltonianos
         :return: se p for diferente de None retorna p senão retorna None
         """
